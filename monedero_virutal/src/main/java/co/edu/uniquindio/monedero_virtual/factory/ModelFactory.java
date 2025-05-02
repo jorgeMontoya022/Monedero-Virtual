@@ -1,0 +1,30 @@
+package co.edu.uniquindio.monedero_virtual.factory;
+
+import co.edu.uniquindio.monedero_virtual.model.MonederoVirtual;
+import co.edu.uniquindio.monedero_virtual.utils.MonederoVirtualUtils;
+
+public class ModelFactory {
+
+    MonederoVirtual monederoVirtual;
+
+    private static ModelFactory modelFactory;
+
+    private ModelFactory() {
+        if (monederoVirtual == null) {
+            initializeData();
+        }
+    }
+
+    private void initializeData() {
+        monederoVirtual = MonederoVirtualUtils.initializeData();
+    }
+
+    public static ModelFactory getINSTANCE() {
+        if (modelFactory == null) {
+            
+            modelFactory = new ModelFactory();
+        }
+        return modelFactory;
+    }
+    
+}
