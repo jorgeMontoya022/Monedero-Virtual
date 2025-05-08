@@ -9,6 +9,8 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -24,13 +26,15 @@
         <VBox style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
             
             <!-- Sección superior/logo con gradiente -->
-            <VBox alignment="CENTER" spacing="10" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-padding: 25; -fx-background-radius: 15 15 0 0;">
-                <!-- Logo -->
-                <Label style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: white;" text="SOLVIT" />
+            <VBox alignment="CENTER" prefWidth="309.0" spacing="10" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-padding: 25; -fx-background-radius: 15 15 0 0;">
+            <ImageView fitHeight="68.0" fitWidth="78.0">
+               <image>
+                  <Image url="@solvi%20blanco.png" />
+               </image>
+            </ImageView>
                 
                 <!-- Icono y texto descriptivo -->
                 <HBox alignment="CENTER" spacing="15">
-                    <Label style="-fx-font-size: 35;" text="💼" />
                     <VBox alignment="CENTER_LEFT">
                         <Label style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: white;" text="Gestiona tus finanzas" />
                         <Label style="-fx-font-size: 14; -fx-text-fill: white; -fx-opacity: 0.9;" text="Tu monedero virtual seguro" wrapText="true" />
