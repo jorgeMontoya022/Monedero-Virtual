@@ -2,14 +2,16 @@ package co.edu.uniquindio.monedero_virtual.view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 
-public class LoginViewController {
+public class LoginViewController extends CoreViewController {
 
     @FXML
     private ResourceBundle resources;
@@ -30,15 +32,22 @@ public class LoginViewController {
     private CheckBox rememberCheckbox;
 
     @FXML
-    void initialize() {
-        assert emailField != null : "fx:id=\"emailField\" was not injected: check your FXML file 'login-view.fxml'.";
-        assert loginButton != null : "fx:id=\"loginButton\" was not injected: check your FXML file 'login-view.fxml'.";
-        assert passwordField != null : "fx:id=\"passwordField\" was not injected: check your FXML file 'login-view.fxml'.";
-        assert rememberCheckbox != null : "fx:id=\"rememberCheckbox\" was not injected: check your FXML file 'login-view.fxml'.";
+    void onIniciarSesión(ActionEvent event) {
+        mostrarMensaje("Error", "Error al iniciar sesión", 
+        "Actualmente estamos realizando mejoras significativas en la experiencia de usuario. Esto puede provocar ciertos inconvenientes temporales en la funcionalidad de la plataforma. Le pedimos disculpas por las molestias ocasionadas y le agradecemos su comprensión y paciencia mientras resolvemos este inconveniente.", Alert.AlertType.ERROR);
 
     }
 
+    @FXML
+    void onIrRegistro(ActionEvent event) {
+        browseWindow("/co/edu/uniquindio/monedero_virtual/registro-view.fxml", "Solvi - Registro de usuario", event);
 
+    }
 
-    
+    @FXML
+    void initialize() {
+       
+
+    }
+
 }

@@ -1,0 +1,111 @@
+/* 
+   CSS para alertas personalizadas del proyecto Solvi
+   Adaptado para mantener la coherencia con la interfaz de bienvenida
+*/
+
+.solvi-alert {
+    -fx-background-color: white;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+}
+
+.solvi-alert > *.header-panel {
+    -fx-background-color: transparent;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.solvi-alert > *.content.label {
+    -fx-font-size: 14px;
+    -fx-padding: 15px 10px;
+    -fx-text-fill: #555555;
+}
+
+.solvi-alert .button-bar {
+    -fx-padding: 10px;
+}
+
+.solvi-alert .button {
+    -fx-background-radius: 15px;
+    -fx-padding: 12px 15px;
+    -fx-cursor: hand;
+    -fx-font-size: 15px;
+    -fx-font-weight: normal;
+}
+
+/* Estilos específicos para cada tipo de alerta, usando colores que combinan con el gradiente de Solvi */
+.error-alert {
+    -fx-border-color: #e74c3c;
+}
+
+.error-alert .button-bar .button {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+}
+
+.warning-alert {
+    -fx-border-color: #f39c12;
+}
+
+.warning-alert .button-bar .button {
+    -fx-background-color: #f39c12;
+    -fx-text-fill: white;
+}
+
+.info-alert {
+    -fx-border-color: #667eea;
+}
+
+.info-alert .button-bar .button {
+    -fx-background-color: #667eea;
+    -fx-text-fill: white;
+}
+
+.confirmation-alert {
+    -fx-border-color: #764ba2;
+}
+
+.confirm-button {
+    -fx-background-color: linear-gradient(to right, #667eea, #764ba2) !important;
+    -fx-text-fill: white !important;
+}
+
+.cancel-button {
+    -fx-background-color: #f5f7fa !important;
+    -fx-text-fill: #555555 !important;
+    -fx-border-color: #c3cfe2 !important;
+    -fx-border-radius: 15px !important;
+}
+
+.solvi-text-area {
+    -fx-background-color: #f5f7fa;
+    -fx-background-radius: 10px;
+    -fx-border-color: #c3cfe2;
+    -fx-border-radius: 10px;
+    -fx-font-family: 'System', sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #555555;
+}
+
+.solvi-text-area .content {
+    -fx-background-color: transparent;
+}
+
+/* Efectos hover */
+.solvi-alert .button:hover {
+    -fx-opacity: 0.9;
+}
+
+.solvi-alert .button:pressed {
+    -fx-opacity: 0.8;
+}
+
+/* Efectos específicos para botones de confirmación */
+.confirm-button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(102, 126, 234, 0.5), 5, 0, 0, 0) !important;
+}
+
+.cancel-button:hover {
+    -fx-background-color: #eff2f7 !important;
+}

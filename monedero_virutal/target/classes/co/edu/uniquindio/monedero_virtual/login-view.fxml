@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="500.0" prefWidth="350.0" style="-fx-background-color: linear-gradient(to bottom, #f5f7fa, #c3cfe2);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.monedero_virtual.view.LoginViewController">
+<AnchorPane prefHeight="500.0" prefWidth="350.0" style="-fx-background-color: linear-gradient(to bottom, #f5f7fa, #c3cfe2);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"  stylesheets="@styles.css" fx:controller="co.edu.uniquindio.monedero_virtual.view.LoginViewController">
     
     <!-- Contenedor principal anclado a los bordes de la ventana -->
     <StackPane AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
@@ -26,7 +26,7 @@
         <VBox style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
             
             <!-- Sección superior/logo con gradiente -->
-            <VBox alignment="CENTER" prefWidth="309.0" spacing="10" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-padding: 25; -fx-background-radius: 15 15 0 0;">
+            <VBox alignment="CENTER" prefHeight="163.0" prefWidth="319.0" spacing="10" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-padding: 25; -fx-background-radius: 15 15 0 0;">
             <ImageView fitHeight="68.0" fitWidth="78.0">
                <image>
                   <Image url="@solvi%20blanco.png" />
@@ -75,7 +75,7 @@
                 <Region VBox.vgrow="ALWAYS" />
                 
                 <!-- Botón de login -->
-                <Button fx:id="loginButton" maxWidth="Infinity" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-text-fill: white; -fx-padding: 12; -fx-background-radius: 8; -fx-font-size: 15; -fx-font-weight: 500;" text="Iniciar sesión">
+                <Button fx:id="loginButton" maxWidth="Infinity" onAction="#onIniciarSesión" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-text-fill: white; -fx-padding: 12; -fx-background-radius: 8; -fx-font-size: 15; -fx-font-weight: 500;" text="Iniciar sesión">
                     <effect>
                         <DropShadow color="rgba(102, 126, 234, 0.4)" radius="5" spread="0.05" />
                     </effect>
@@ -87,7 +87,7 @@
                         <Insets top="5.0" />
                     </padding>
                     <Label style="-fx-font-size: 14; -fx-text-fill: #666666;" text="¿No tienes una cuenta?" />
-                    <Hyperlink style="-fx-font-size: 14; -fx-text-fill: #667eea; -fx-font-weight: 500;" text="Regístrate aquí" />
+                    <Hyperlink onAction="#onIrRegistro" style="-fx-font-size: 14; -fx-text-fill: #667eea; -fx-font-weight: 500;" text="Regístrate aquí" />
                 </HBox>
             </VBox>
         </VBox>

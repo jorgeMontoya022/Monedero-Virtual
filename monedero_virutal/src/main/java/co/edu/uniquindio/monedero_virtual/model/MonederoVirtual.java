@@ -19,4 +19,24 @@ public class MonederoVirtual {
     public List<Cuenta> getListaCuentas() {
         return listaCuentas;
     }
+
+
+    public boolean agregarCliente(Cliente cliente) {
+        Cliente clienteEncontrado = buscarCliente(cliente.getEmail());
+        if(clienteEncontrado != null) {
+            return false;
+        } else {
+            listaClientes.add(cliente);
+            return true;
+        }
+    }
+
+    private Cliente buscarCliente(String email) {
+        for(Cliente cliente : listaClientes) {
+            if(cliente.getEmail().equals(email)) {
+                return cliente;
+            }
+        }
+        return null;
+    }
 }

@@ -10,7 +10,7 @@ import java.io.IOException;
 public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("login-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("bienvenida-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.setWidth(450);
@@ -18,7 +18,7 @@ public class App extends Application {
         
         Image icon = new Image(getClass().getResourceAsStream("solvi.png.png"));
         stage.getIcons().add(icon);
-        stage.setTitle("Solvi - Inicio de sesión");
+        stage.setTitle("Solvi - Bienvenido/a");
         stage.show();
     }
 

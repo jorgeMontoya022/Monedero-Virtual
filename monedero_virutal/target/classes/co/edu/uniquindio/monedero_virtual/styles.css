@@ -1,0 +1,64 @@
+/* Archivo CSS para los efectos de hover en la interfaz de Bienvenida */
+
+/* Estilo base para todos los botones con efecto 3D */
+.button {
+    -fx-transition-duration: 0.4s;
+    -fx-transition-timing-function: ease-out;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);
+    -fx-background-insets: 0;
+}
+
+/* Efecto hover común para todos los botones (movimiento 3D hacia adelante) */
+.button:hover {
+    -fx-translate-z: 5; /* Efecto de profundidad */
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 8, 0, 0, 3);
+}
+
+/* Efecto específico para el botón principal con gradiente */
+.hover-button {
+    -fx-background-color: linear-gradient(to right, #667eea, #764ba2);
+    -fx-text-fill: white;
+}
+
+.hover-button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(102, 126, 234, 0.6), 12, 0, 0, 4);
+    -fx-translate-z: 10; /* Mayor profundidad para destacar */
+}
+
+/* Efecto específico para el botón outline */
+.hover-button-outline {
+    -fx-background-color: transparent;
+    -fx-text-fill: #667eea;
+    -fx-border-color: #667eea;
+    -fx-border-radius: 8;
+    -fx-border-width: 2;
+}
+
+.hover-button-outline:hover {
+    -fx-border-color: #764ba2;
+    -fx-text-fill: #764ba2;
+    -fx-effect: dropshadow(three-pass-box, rgba(102, 126, 234, 0.4), 10, 0, 0, 2);
+}
+
+/* Efecto al presionar los botones (feedback visual) */
+.button:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+    -fx-opacity: 0.9;
+    -fx-translate-z: 0; /* Regresa a su posición original */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 3, 0, 0, 1);
+}
+
+/* Estilos específicos por ID para ajustes finales */
+#loginButton {
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+}
+
+#registerButton {
+    -fx-background-radius: 8;
+    -fx-font-weight: medium;
+}
