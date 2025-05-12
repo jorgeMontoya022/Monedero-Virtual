@@ -2,7 +2,7 @@ package co.edu.uniquindio.monedero_virtual.model;
 
 import java.time.LocalDate;
 
-public class Transaccion {
+public class Transaccion implements Comparable<Transaccion>{
     private int idTransaccion;
     private LocalDate fechaTransaccion;
     private double monto;
@@ -80,11 +80,11 @@ public class Transaccion {
         this.monedero = monedero;
     }
 
-    
 
-    
+   @Override
+    public int compareTo(Transaccion otra) {
+        return this.fechaTransaccion.compareTo(otra.getFechaTransaccion());
+    }
 
-
-    
 
 }

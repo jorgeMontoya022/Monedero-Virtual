@@ -13,8 +13,8 @@ public class Cliente {
     private String celular;
     private String email;
     private String contraseña;
-    private LocalDate fechaNacimiento; // Usar LocalDate en lugar de String
-    private LocalDate fechaRegistro; // Usar LocalDate en lugar de String
+    private LocalDate fechaNacimiento; 
+    private LocalDate fechaRegistro; 
     private int id;
     private String dirección;
     private int puntos;
@@ -103,8 +103,6 @@ public class Cliente {
     public int getId() {
         return id;
     }
-
-    
 
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;

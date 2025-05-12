@@ -1,18 +1,29 @@
 package co.edu.uniquindio.monedero_virtual.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import co.edu.uniquindio.monedero_virtual.ownStructures.ownLists.OwnLinkedList;
+import co.edu.uniquindio.monedero_virtual.ownStructures.ownQueues.ownPriorityQueue;
+
+
 public class Cuenta {
     private double monto;
     private String banco;
     private int numeroCuenta;
     private Cliente clienteAsociado;
-    //lista de transacciones(por definir)
-
-
+    private Set<Monedero> monederos;
+    private ownPriorityQueue<Transaccion> transaccionesProgramadas;
+    private OwnLinkedList<Transaccion> transacciones;
+    
     public Cuenta(double monto, String banco, int numeroCuenta, Cliente clienteAsociado) {
         this.monto = monto;
         this.banco = banco;
         this.numeroCuenta = numeroCuenta;
         this.clienteAsociado = clienteAsociado;
+        this.monederos = new HashSet<>();
+        this.transaccionesProgramadas = new ownPriorityQueue<>();
+        this.transacciones = new OwnLinkedList<>();
     }
 
 
@@ -56,5 +67,36 @@ public class Cuenta {
     }
 
     
+    public OwnLinkedList<Transaccion> getTransacciones() {
+        return transacciones;
+    }
+
+
+    public void setTransacciones(OwnLinkedList<Transaccion> transacciones) {
+        this.transacciones = transacciones;
+    }
+
+
+    public ownPriorityQueue<Transaccion> getTransaccionesProgramadas() {
+        return transaccionesProgramadas;
+    }
+
+
+    public void setTransaccionesProgramadas(ownPriorityQueue<Transaccion> transaccionesProgramadas) {
+        this.transaccionesProgramadas = transaccionesProgramadas;
+    }
+
+
+    public Set<Monedero> getMonederos() {
+        return monederos;
+    }
+
+
+    public void setMonederos(Set<Monedero> monederos) {
+        this.monederos = monederos;
+    }
+
+    
+
 
 }

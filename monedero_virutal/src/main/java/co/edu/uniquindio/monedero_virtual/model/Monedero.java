@@ -4,12 +4,14 @@ public class Monedero {
     private int id;
     private double monto;
     private String nombreMonedero;
+    private Cuenta cuenta;
 
 
-    public Monedero(int id, double monto, String nombreMonedero) {
+    public Monedero(int id, double monto, String nombreMonedero, Cuenta cuenta) {
         this.id = id;
         this.monto = monto;
         this.nombreMonedero = nombreMonedero;
+        this.cuenta = cuenta;
     }
 
 
@@ -41,6 +43,18 @@ public class Monedero {
     public void setNombreMonedero(String nombreMonedero) {
         this.nombreMonedero = nombreMonedero;
     }
+
+
+    public Cuenta getCuenta() {
+        return cuenta;
+    }
+
+
+    public void setCuenta(Cuenta cuenta) {
+        this.cuenta = cuenta;
+    }
+
+
 
     
 
