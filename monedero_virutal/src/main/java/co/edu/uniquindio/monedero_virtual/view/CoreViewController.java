@@ -148,4 +148,28 @@ public abstract class CoreViewController {
         stage.close();
     }
 
+    public void openWindow(String nameFileFxml, String titleWindow, Stage ownerStage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(nameFileFxml));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle(titleWindow);
+
+            Image icon = new Image(getClass().getResourceAsStream("/co/edu/uniquindio/monedero_virtual/solvi.png.png"));
+            stage.getIcons().add(icon);
+
+            // Establecer el propietario de la nueva ventana
+            if (ownerStage != null) {
+                stage.initOwner(ownerStage);
+            }
+
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
