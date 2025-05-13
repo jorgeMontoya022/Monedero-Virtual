@@ -22,7 +22,7 @@ public class MonederoVirtual {
 
 
     public boolean agregarCliente(Cliente cliente) {
-        Cliente clienteEncontrado = buscarCliente(cliente.getEmail());
+        Cliente clienteEncontrado = buscarCliente(cliente.getId());
         if(clienteEncontrado != null) {
             return false;
         } else {
@@ -31,13 +31,37 @@ public class MonederoVirtual {
         }
     }
 
-    private Cliente buscarCliente(String email) {
+    private Cliente buscarCliente(int id) {
         for(Cliente cliente : listaClientes) {
-            if(cliente.getEmail().equals(email)) {
+            if(cliente.getId() == (id)) {
                 return cliente;
             }
         }
         return null;
+    }
+
+    public Cliente validarAcceso(String correo, int contrasenia) throws Exception {
+        for (Cliente cliente : listaClientes) {
+            if (verificarClienteExiste(correo)) {
+                if(cliente.getEmail().equals(correo) && cliente.getContraseña() == contrasenia) {
+                    return cliente;
+
+                }
+            }else {
+                throw new Exception("No existe el cliente");
+            }
+        }
+        throw new Exception("Validaciones incorrectas");
+      
+    }
+
+    private boolean verificarClienteExiste(String correo) {
+        for(Cliente cliente : listaClientes) {
+            if(cliente.getEmail().equals(correo)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

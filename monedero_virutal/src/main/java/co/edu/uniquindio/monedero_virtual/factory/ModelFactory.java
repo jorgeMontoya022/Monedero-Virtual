@@ -1,5 +1,6 @@
 package co.edu.uniquindio.monedero_virtual.factory;
 
+import co.edu.uniquindio.monedero_virtual.model.Cliente;
 import co.edu.uniquindio.monedero_virtual.model.MonederoVirtual;
 import co.edu.uniquindio.monedero_virtual.utils.MonederoVirtualUtils;
 
@@ -25,6 +26,26 @@ public class ModelFactory {
             modelFactory = new ModelFactory();
         }
         return modelFactory;
+    }
+
+    public boolean registrarUsuario(Cliente cliente) {
+        try{
+           return monederoVirtual.agregarCliente(cliente);
+        }catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    
+
+    public Cliente validarAcceso(String correo, int contrasenia) {
+        try {
+            return monederoVirtual.validarAcceso(correo, contrasenia);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
 }

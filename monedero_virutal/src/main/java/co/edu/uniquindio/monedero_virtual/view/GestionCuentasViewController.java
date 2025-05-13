@@ -2,6 +2,10 @@ package co.edu.uniquindio.monedero_virtual.view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import co.edu.uniquindio.monedero_virtual.controller.GestionCuentasController;
+import co.edu.uniquindio.monedero_virtual.model.Cliente;
+import co.edu.uniquindio.monedero_virtual.utils.Sesion;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -13,6 +17,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class GestionCuentasViewController extends CoreViewController {
+
+    GestionCuentasController gestionCuentasController;
+
+    Cliente clienteLogueado;
 
     @FXML
     private ResourceBundle resources;
@@ -88,8 +96,22 @@ public class GestionCuentasViewController extends CoreViewController {
 
     @FXML
     void initialize() {
+        gestionCuentasController = new GestionCuentasController();
+        clienteLogueado = (Cliente) Sesion.getInstance().getCliente();
+        initView();
        
 
     }
+
+    private void initView() {
+       mostrarInformacion();
+    }
+
+    private void mostrarInformacion() {
+    String nombreCompleto = clienteLogueado.getNombreCompleto();
+    String primerNombre = nombreCompleto.split(" ")[0]; // divide por espacios y toma el primero
+    userNameLabel.setText("Hola, " + primerNombre);
+}
+
 
 }

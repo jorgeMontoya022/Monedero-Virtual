@@ -12,7 +12,7 @@ public class Cliente {
     private String nombreCompleto;
     private String celular;
     private String email;
-    private String contraseña;
+    private int contraseña;
     private LocalDate fechaNacimiento; 
     private LocalDate fechaRegistro; 
     private int id;
@@ -23,17 +23,18 @@ public class Cliente {
     private OwnCircularList<Notificacion> listaNotificacion;
     private OwnLinkedList<PuntosCliente> puntosCliente;
 
-    public Cliente(String nombreCompleto, String celular, String email, String contraseña, LocalDate fechaNacimiento,
-            LocalDate fechaRegistro, int puntos, TipoRango tipoRango, int id) {
+    public Cliente(String nombreCompleto, String celular, String email, int contraseña, LocalDate fechaNacimiento,
+            LocalDate fechaRegistro, int puntos,String direccion ,TipoRango tipoRango, int id) {
         this.nombreCompleto = nombreCompleto;
         this.celular = celular;
         this.email = email;
-        this.contraseña = contraseña; // Debería ser encriptada
+        this.contraseña = contraseña; 
         this.fechaNacimiento = fechaNacimiento;
         this.fechaRegistro = fechaRegistro;
         this.puntos = puntos;
         this.tipoRango = tipoRango;
         this.id = id;
+        this.dirección = direccion;
         this.listaCuentas = new ArrayList<>();
         this.listaNotificacion = new OwnCircularList<>();
         this.puntosCliente = new OwnLinkedList<>();
@@ -52,11 +53,11 @@ public class Cliente {
         return email;
     }
 
-    public String getContraseña() {
+    public int getContraseña() {
         return contraseña;
     }
 
-    public void setContraseña(String contraseña) {
+    public void setContraseña(int contraseña) {
         this.contraseña = contraseña;
     }
 
