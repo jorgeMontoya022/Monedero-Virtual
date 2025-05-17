@@ -22,7 +22,6 @@ public class PuntosCliente {
             puntos = (int) (monto/100) *2;
         }else if (transaccion instanceof Transferencia) {
             puntos = (int)(monto/100) *3;
-            
         }
     }
 

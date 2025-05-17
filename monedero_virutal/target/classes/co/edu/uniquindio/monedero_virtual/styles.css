@@ -60,5 +60,5 @@
 
 #registerButton {
     -fx-background-radius: 8;
-    -fx-font-weight: bold;
+    -fx-font-weight: medium;
 }

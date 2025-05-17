@@ -54,9 +54,15 @@ public class Monedero {
         this.cuenta = cuenta;
     }
 
+    public void agregarDinero(double cantidadAgregar){
+        monto += cantidadAgregar;
+    }
 
+    public void retirarDinero(double cantidadRetirar)throws Exception{
+        if(cantidadRetirar > monto){
+            throw new Exception("Error al retirar dinero del monedero: Saldos insuficientes");
+        }
+        monto -= cantidadRetirar;
+    }
 
-    
-
-    
 }

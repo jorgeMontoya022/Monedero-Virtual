@@ -5,6 +5,7 @@ import java.util.Set;
 
 import co.edu.uniquindio.monedero_virtual.ownStructures.ownLists.OwnLinkedList;
 import co.edu.uniquindio.monedero_virtual.ownStructures.ownQueues.ownPriorityQueue;
+import co.edu.uniquindio.monedero_virtual.ownStructures.ownStack.ownStack;
 
 
 public class Cuenta {
@@ -13,6 +14,7 @@ public class Cuenta {
     private int numeroCuenta;
     private Cliente clienteAsociado;
     private Set<Monedero> monederos;
+    private ownStack<Transaccion> transaccionesReversibles;
     private ownPriorityQueue<Transaccion> transaccionesProgramadas;
     private OwnLinkedList<Transaccion> transacciones;
     
@@ -22,6 +24,7 @@ public class Cuenta {
         this.numeroCuenta = numeroCuenta;
         this.clienteAsociado = clienteAsociado;
         this.monederos = new HashSet<>();
+        this.transaccionesReversibles = new ownStack<>();
         this.transaccionesProgramadas = new ownPriorityQueue<>();
         this.transacciones = new OwnLinkedList<>();
     }
@@ -66,6 +69,13 @@ public class Cuenta {
         this.clienteAsociado = clienteAsociado;
     }
 
+    public ownStack<Transaccion> getTransaccionesReversibles() {
+        return transaccionesReversibles;
+    }
+
+    public void setTransaccionesReversibles(ownStack<Transaccion> transaccionesReversibles) {
+        this.transaccionesReversibles = transaccionesReversibles;
+    }
     
     public OwnLinkedList<Transaccion> getTransacciones() {
         return transacciones;
@@ -96,7 +106,13 @@ public class Cuenta {
         this.monederos = monederos;
     }
 
+    public void agregarTransaccion(Transaccion transaccion){
+        transacciones.add(transaccion);
+    }
     
+    public void agregarTransaccionReversible(Transaccion transaccion){
+        transaccionesReversibles.push(transaccion);
+    }
 
 
 }
