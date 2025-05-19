@@ -101,7 +101,7 @@ public class LoginViewController extends CoreViewController {
     private void abrirDashBoard(Cliente clienteValidado, ActionEvent event) {
         try{
             if (clienteValidado != null) {
-                browseWindow("/co/edu/uniquindio/monedero_virtual/gestion-cuentas-view.fxml", "Solvi - Mis cuentas", event);
+                browseWindow("/co/edu/uniquindio/monedero_virtual/container-view.fxml", "Dashboard", event);
             }
 
         } catch (Exception e) {
