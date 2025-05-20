@@ -13,38 +13,38 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f0f2f5;" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.monedero_virtual.view.ContainerViewController">
+<AnchorPane prefHeight="650.0" prefWidth="900.0" style="-fx-background-color: #f0f2f5;" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.monedero_virtual.view.ContainerViewController">
     <children>
         <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <!-- Panel lateral del menú -->
+            <!-- Panel lateral del menú - Reducido de 220px a 200px -->
             <left>
-                <VBox prefWidth="220.0" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);">
+                <VBox prefWidth="200.0" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);">
                     <!-- Encabezado del menú con logo/título -->
                     <children>
-                        <VBox alignment="CENTER" prefHeight="120.0" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-padding: 15;">
+                        <VBox alignment="CENTER" prefHeight="100.0" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-padding: 10;">
                             <children>
                                 <!-- Logo o icono de la aplicación -->
-                                <Circle radius="32" style="-fx-fill: white;">
+                                <Circle radius="28" style="-fx-fill: white;">
                                     <effect>
                                         <DropShadow color="rgba(0,0,0,0.2)" radius="5" />
                                     </effect>
                                 </Circle>
-                                <Label style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: white;" text="Monedero Virtual">
+                                <Label style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: white;" text="Monedero Virtual">
                                     <VBox.margin>
-                                        <Insets top="10.0" />
+                                        <Insets top="8.0" />
                                     </VBox.margin>
                                 </Label>
                             </children>
                         </VBox>
                         
-                        <!-- Información del usuario -->
-                        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 15 15 15 15;">
+                        <!-- Información del usuario - Compactada -->
+                        <HBox alignment="CENTER_LEFT" spacing="8" style="-fx-padding: 10 10 10 10;">
                             <children>
-                                <Circle radius="20" style="-fx-fill: #f0f2f5;" />
+                                <Circle radius="18" style="-fx-fill: #f0f2f5;" />
                                 <VBox>
                                     <children>
-                                        <Label fx:id="userNameLabel" style="-fx-font-weight: bold; -fx-font-size: 14;" text="Carlos Rodríguez" />
-                                        <Label style="-fx-font-size: 12; -fx-text-fill: #666666;" text="Cuenta Personal" />
+                                        <Label fx:id="userNameLabel" style="-fx-font-weight: bold; -fx-font-size: 13;" text="Carlos Rodríguez" />
+                                        <Label style="-fx-font-size: 11; -fx-text-fill: #666666;" text="Cuenta Personal" />
                                     </children>
                                 </VBox>
                             </children>
@@ -52,87 +52,82 @@
                         
                         <Separator />
                         
-                        <!-- Opciones del menú -->
-                        <VBox spacing="5" style="-fx-padding: 10 0 0 0;" VBox.vgrow="ALWAYS">
+                        <!-- Opciones del menú - Compactadas -->
+                        <VBox spacing="3" style="-fx-padding: 5 0 0 0;" VBox.vgrow="ALWAYS">
                             <children>
                                 
                                 <!-- Gestión de Cuentas -->
-                                <Button fx:id="accountsButton" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#onAccountsButtonClicked" prefHeight="45.0" prefWidth="220.0" styleClass="menu-button" text="Mis Cuentas">
+                                <Button fx:id="accountsButton" alignment="BASELINE_LEFT" graphicTextGap="12.0" mnemonicParsing="false" onAction="#onAccountsButtonClicked" prefHeight="40.0" prefWidth="200.0" styleClass="menu-button" text="Mis Cuentas">
                                     <graphic>
-                                        <Label style="-fx-font-size: 16;" text="🏦" />
+                                        <Label style="-fx-font-size: 15;" text="🏦" />
                                     </graphic>
                                     <padding>
-                                        <Insets left="20.0" />
+                                        <Insets left="15.0" />
                                     </padding>
                                 </Button>
                                 
                                 <!-- Movimientos -->
-                                <Button fx:id="transactionsButton" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#onTransactionsButtonClicked" prefHeight="45.0" prefWidth="220.0" styleClass="menu-button" text="Movimientos">
+                                <Button fx:id="transactionsButton" alignment="BASELINE_LEFT" graphicTextGap="12.0" mnemonicParsing="false" onAction="#onTransactionsButtonClicked" prefHeight="40.0" prefWidth="200.0" styleClass="menu-button" text="Movimientos">
                                     <graphic>
-                                        <Label style="-fx-font-size: 16;" text="📝" />
+                                        <Label style="-fx-font-size: 15;" text="📝" />
                                     </graphic>
                                     <padding>
-                                        <Insets left="20.0" />
+                                        <Insets left="15.0" />
                                     </padding>
                                 </Button>
                                 
                                 <!-- Transferencias -->
-                                <Button fx:id="transfersButton" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#onTransfersButtonClicked" prefHeight="45.0" prefWidth="220.0" styleClass="menu-button" text="Transferencias">
+                                <Button fx:id="transfersButton" alignment="BASELINE_LEFT" graphicTextGap="12.0" mnemonicParsing="false" onAction="#onTransfersButtonClicked" prefHeight="40.0" prefWidth="200.0" styleClass="menu-button" text="Transferencias">
                                     <graphic>
-                                        <Label style="-fx-font-size: 16;" text="↔️" />
+                                        <Label style="-fx-font-size: 15;" text="↔️" />
                                     </graphic>
                                     <padding>
-                                        <Insets left="20.0" />
+                                        <Insets left="15.0" />
                                     </padding>
                                 </Button>
-
 
                                  <!-- Depósitos -->
-                                <Button fx:id="depositsButton" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#onDepositsButtonClicked" prefHeight="45.0" prefWidth="220.0" styleClass="menu-button" text="Depósitos">
+                                <Button fx:id="depositsButton" alignment="BASELINE_LEFT" graphicTextGap="12.0" mnemonicParsing="false" onAction="#onDepositsButtonClicked" prefHeight="40.0" prefWidth="200.0" styleClass="menu-button" text="Depósitos">
                                     <graphic>
-                                        <Label style="-fx-font-size: 16;" text="🛅" />
+                                        <Label style="-fx-font-size: 15;" text="🛅" />
                                     </graphic>
                                     <padding>
-                                        <Insets left="20.0" />
+                                        <Insets left="15.0" />
                                     </padding>
                                 </Button>
-
 
                                  <!-- Retiros -->
-                                <Button fx:id="retirosButton" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#onRetirosButtonClicked" prefHeight="45.0" prefWidth="220.0" styleClass="menu-button" text="Retiros">
+                                <Button fx:id="retirosButton" alignment="BASELINE_LEFT" graphicTextGap="12.0" mnemonicParsing="false" onAction="#onRetirosButtonClicked" prefHeight="40.0" prefWidth="200.0" styleClass="menu-button" text="Retiros">
                                     <graphic>
-                                        <Label style="-fx-font-size: 16;" text="⏏️" />
+                                        <Label style="-fx-font-size: 15;" text="⏏️" />
                                     </graphic>
                                     <padding>
-                                        <Insets left="20.0" />
+                                        <Insets left="15.0" />
                                     </padding>
                                 </Button>
-
 
                                 <!-- Estadísticas -->
-                                <Button fx:id="statsButton" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#onStatsButtonClicked" prefHeight="45.0" prefWidth="220.0" styleClass="menu-button" text="Estadísticas">
+                                <Button fx:id="statsButton" alignment="BASELINE_LEFT" graphicTextGap="12.0" mnemonicParsing="false" onAction="#onStatsButtonClicked" prefHeight="40.0" prefWidth="200.0" styleClass="menu-button" text="Estadísticas">
                                     <graphic>
-                                        <Label style="-fx-font-size: 16;" text="📈" />
+                                        <Label style="-fx-font-size: 15;" text="📈" />
                                     </graphic>
                                     <padding>
-                                        <Insets left="20.0" />
+                                        <Insets left="15.0" />
                                     </padding>
                                 </Button>
-
                                
-                                
                                 <Region VBox.vgrow="ALWAYS" />
                                 
                                 <!-- Botón para cerrar sesión -->
-                                <Button fx:id="logoutButton" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#onLogoutButtonClicked" prefHeight="45.0" prefWidth="220.0" style="-fx-text-fill: #ff4757;" styleClass="menu-button" text="Cerrar Sesión">
+                                <Button fx:id="logoutButton" alignment="BASELINE_LEFT" graphicTextGap="12.0" mnemonicParsing="false" onAction="#onLogoutButtonClicked" prefHeight="40.0" prefWidth="200.0" style="-fx-text-fill: #ff4757;" styleClass="menu-button" text="Cerrar Sesión">
                                     <graphic>
-                                        <Label style="-fx-font-size: 16;" text="🚪" />
+                                        <Label style="-fx-font-size: 15;" text="🚪" />
                                     </graphic>
                                     <padding>
-                                        <Insets left="20.0" />
+                                        <Insets left="15.0" />
                                     </padding>
                                     <VBox.margin>
-                                        <Insets bottom="15.0" />
+                                        <Insets bottom="10.0" />
                                     </VBox.margin>
                                 </Button>
                             </children>
@@ -144,15 +139,15 @@
             <!-- Área de contenido principal donde se cargarán las vistas -->
             <center>
                 <VBox>
-                    <!-- Barra superior con información contextual -->
-                    <HBox alignment="CENTER_LEFT" prefHeight="60.0" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2); -fx-padding: 0 20 0 20;">
+                    <!-- Barra superior con información contextual - Reducida en altura -->
+                    <HBox alignment="CENTER_LEFT" prefHeight="50.0" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2); -fx-padding: 0 15 0 15;">
                         <children>
                             <!-- Título de la sección actual -->
-                            <Label fx:id="currentSectionLabel" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Dashboard" />
+                            <Label fx:id="currentSectionLabel" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Dashboard" />
                             
                             <Region HBox.hgrow="ALWAYS" />
                             
-                            <!-- Botón para expandir/contraer menú (para implementación futura) -->
+                            <!-- Botón para expandir/contraer menú -->
                             <Button fx:id="toggleMenuButton" mnemonicParsing="false" onAction="#onToggleMenuButtonClicked" style="-fx-background-color: transparent;">
                                 <graphic>
                                     <Label style="-fx-font-size: 16;" text="≡" />
@@ -161,14 +156,15 @@
                         </children>
                     </HBox>
                     
-                    <!-- Contenedor donde se cargarán dinámicamente las vistas -->
+                    <!-- Contenedor donde se cargarán dinámicamente las vistas - Padding reducido -->
                     <StackPane fx:id="contentArea" style="-fx-background-color: #f5f7fa;" VBox.vgrow="ALWAYS">
                         <children>
                             <fx:include fx:id="gestionCuentasView" source="gestion-cuentas-view.fxml" visible="true" />
                             <fx:include fx:id="gestionMovimientosView" source="gestion-movimientos-view.fxml" visible="false" />
+                            <fx:include fx:id="gestionTransferenciasView" source="gestion-transferencias-view.fxml" visible="false" />
                         </children>
                         <padding>
-                            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                         </padding>
                     </StackPane>
                 </VBox>

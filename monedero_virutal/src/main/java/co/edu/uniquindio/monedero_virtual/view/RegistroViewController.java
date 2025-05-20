@@ -70,6 +70,17 @@ public class RegistroViewController extends CoreViewController {
     }
 
     @FXML
+    void onLimpiarCampos(ActionEvent event) {
+        limpiarCampos();
+
+    }
+
+    @FXML
+    void onRecordarDatos(ActionEvent event) {
+
+    }
+
+    @FXML
     void initialize() {
         registroController = new RegistroController();
 
@@ -140,14 +151,15 @@ public class RegistroViewController extends CoreViewController {
     }
 
     private void limpiarCampos() {
-        txtNombreCompleto.clear();
-        txtCelular.clear();
-        txtId.clear();
-        txtCorreo.clear();
-        txtDirección.clear();
-        txtConfirmarContraseña.clear();
-        dpFechaNacimiento = null;
-    }
+    txtNombreCompleto.clear();
+    txtCelular.clear();
+    txtId.clear();
+    txtCorreo.clear();
+    txtDirección.clear();
+    txtContraseña.clear();
+    txtConfirmarContraseña.clear();
+    dpFechaNacimiento.setValue(null); 
+}
 
     private boolean validarDatos(Cliente cliente) {
         String mensaje = "";

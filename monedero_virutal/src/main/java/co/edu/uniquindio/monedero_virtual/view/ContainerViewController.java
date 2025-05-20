@@ -37,7 +37,6 @@ public class ContainerViewController implements Initializable {
     @FXML
     private Button depositsButton;
 
-
     @FXML
     private Label currentSectionLabel;
 
@@ -53,6 +52,9 @@ public class ContainerViewController implements Initializable {
 
     @FXML
     private Node gestionMovimientosView;
+
+    @FXML
+    private Node gestionTransferenciasView;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -77,8 +79,8 @@ public class ContainerViewController implements Initializable {
 
     @FXML
     private void onTransfersButtonClicked(ActionEvent event) {
-        // Esta funcionalidad aún no está implementada
-        showMessage("Transferencias");
+        showView("transferencias");
+        currentSectionLabel.setText("Mis Transferencias");
         highlightSelectedButton("transferencias");
     }
 
@@ -98,7 +100,7 @@ public class ContainerViewController implements Initializable {
 
     @FXML
     private void onDepositsButtonClicked(ActionEvent event) {
-        //Esta funcionalidad aún no está implementada
+        // Esta funcionalidad aún no está implementada
         showMessage("Depósitos");
         highlightSelectedButton("depósitos");
     }
@@ -125,6 +127,7 @@ public class ContainerViewController implements Initializable {
         // Ocultar todas las vistas primero
         gestionCuentasView.setVisible(false);
         gestionMovimientosView.setVisible(false);
+        gestionTransferenciasView.setVisible(false);
 
         // Mostrar la vista seleccionada
         switch (viewName) {
@@ -133,6 +136,9 @@ public class ContainerViewController implements Initializable {
                 break;
             case "movimientos":
                 gestionMovimientosView.setVisible(true);
+                break;
+            case "transferencias":
+                gestionTransferenciasView.setVisible(true);
                 break;
             default:
                 // Por defecto mostrar la vista de cuentas
@@ -150,7 +156,7 @@ public class ContainerViewController implements Initializable {
         // Ocultar todas las vistas
         gestionCuentasView.setVisible(false);
         gestionMovimientosView.setVisible(false);
-
+        gestionTransferenciasView.setVisible(false);
 
         // Mostrar mensaje en la etiqueta de sección
         currentSectionLabel.setText(sectionName + " (No implementado)");

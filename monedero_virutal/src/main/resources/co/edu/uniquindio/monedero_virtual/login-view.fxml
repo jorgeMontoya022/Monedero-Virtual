@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: linear-gradient(to bottom, #f5f7fa, #c3cfe2);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@styles.css" fx:controller="co.edu.uniquindio.monedero_virtual.view.LoginViewController">
+<AnchorPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: linear-gradient(to bottom, #f5f7fa, #c3cfe2);" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.monedero_virtual.view.LoginViewController">
     
     <!-- Contenedor principal anclado a los bordes de la ventana -->
     <StackPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
@@ -63,13 +63,13 @@
                 </Separator>
                 
                 <!-- Campo Email con mayor tamaño -->
-                <VBox spacing="10" maxWidth="400.0">
+                <VBox maxWidth="400.0" spacing="10">
                     <Label style="-fx-font-size: 16; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Correo electrónico" />
                     <TextField fx:id="emailField" promptText="Ingresa tu correo" style="-fx-padding: 14; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e1e1e1; -fx-font-size: 15;" />
                 </VBox>
                 
                 <!-- Campo Contraseña con mayor tamaño -->
-                <VBox spacing="10" maxWidth="400.0">
+                <VBox maxWidth="400.0" spacing="10">
                     <Label style="-fx-font-size: 16; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Contraseña" />
                     <PasswordField fx:id="passwordField" promptText="Ingresa tu contraseña" style="-fx-padding: 14; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e1e1e1; -fx-font-size: 15;" />
                 </VBox>
