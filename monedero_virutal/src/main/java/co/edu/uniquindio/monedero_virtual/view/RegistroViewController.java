@@ -107,7 +107,6 @@ public class RegistroViewController extends CoreViewController {
                 contrasenia,
                 dpFechaNacimiento.getValue(),
                 LocalDate.now(),
-                0,
                 txtDirección.getText(),
                 TipoRango.BRONCE,
                 id);

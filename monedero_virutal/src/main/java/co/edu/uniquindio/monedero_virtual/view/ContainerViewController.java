@@ -32,6 +32,13 @@ public class ContainerViewController implements Initializable {
     private Button toggleMenuButton;
 
     @FXML
+    private Button retirosButton;
+
+    @FXML
+    private Button depositsButton;
+
+
+    @FXML
     private Label currentSectionLabel;
 
     @FXML
@@ -76,10 +83,24 @@ public class ContainerViewController implements Initializable {
     }
 
     @FXML
+    private void onRetirosButtonClicked(ActionEvent event) {
+        // Esta funcionalidad aún no está implementada
+        showMessage("Retiros");
+        highlightSelectedButton("retiros");
+    }
+
+    @FXML
     private void onStatsButtonClicked(ActionEvent event) {
         // Esta funcionalidad aún no está implementada
         showMessage("Estadísticas");
         highlightSelectedButton("estadisticas");
+    }
+
+    @FXML
+    private void onDepositsButtonClicked(ActionEvent event) {
+        //Esta funcionalidad aún no está implementada
+        showMessage("Depósitos");
+        highlightSelectedButton("depósitos");
     }
 
     @FXML
@@ -104,7 +125,7 @@ public class ContainerViewController implements Initializable {
         // Ocultar todas las vistas primero
         gestionCuentasView.setVisible(false);
         gestionMovimientosView.setVisible(false);
-        
+
         // Mostrar la vista seleccionada
         switch (viewName) {
             case "cuentas":
@@ -119,7 +140,7 @@ public class ContainerViewController implements Initializable {
                 break;
         }
     }
-    
+
     /**
      * Muestra un mensaje para vistas no implementadas
      * 
@@ -129,13 +150,14 @@ public class ContainerViewController implements Initializable {
         // Ocultar todas las vistas
         gestionCuentasView.setVisible(false);
         gestionMovimientosView.setVisible(false);
-        
+
+
         // Mostrar mensaje en la etiqueta de sección
         currentSectionLabel.setText(sectionName + " (No implementado)");
-        
+
         System.out.println("Vista de " + sectionName + ": Funcionalidad no implementada");
     }
-    
+
     /**
      * Resalta el botón seleccionado en el menú
      * 
@@ -145,13 +167,15 @@ public class ContainerViewController implements Initializable {
         // Estilo por defecto para todos los botones
         String defaultStyle = "-fx-background-color: transparent;";
         String selectedStyle = "-fx-background-color: rgba(102, 126, 234, 0.1); -fx-text-fill: #667eea;";
-        
+
         // Restablecer todos los botones al estilo por defecto
         accountsButton.setStyle(defaultStyle);
         transactionsButton.setStyle(defaultStyle);
         transfersButton.setStyle(defaultStyle);
         statsButton.setStyle(defaultStyle);
-        
+        retirosButton.setStyle(defaultStyle);
+        depositsButton.setStyle(defaultStyle);
+
         // Aplicar estilo al botón seleccionado
         switch (section) {
             case "cuentas":
@@ -166,6 +190,13 @@ public class ContainerViewController implements Initializable {
             case "estadisticas":
                 statsButton.setStyle(selectedStyle);
                 break;
+            case "retiros":
+                retirosButton.setStyle(selectedStyle);
+                break;
+            case "depósitos":
+                depositsButton.setStyle(selectedStyle);
+                break;
+
         }
     }
 }

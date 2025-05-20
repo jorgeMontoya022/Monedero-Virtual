@@ -133,6 +133,7 @@ public abstract class CoreViewController {
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.setTitle(titleWindow);
+            stage.setMaximized(true);
             Image icon = new Image(getClass().getResourceAsStream("/co/edu/uniquindio/monedero_virtual/solvi.png.png"));
             stage.getIcons().add(icon);
             stage.show();

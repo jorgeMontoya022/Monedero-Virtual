@@ -20,44 +20,68 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="500.0" prefWidth="350.0" style="-fx-background-color: linear-gradient(to bottom, #f5f7fa, #c3cfe2);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"  stylesheets="@styles.css" fx:controller="co.edu.uniquindio.monedero_virtual.view.RegistroViewController">
+<AnchorPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: linear-gradient(to bottom, #f5f7fa, #c3cfe2);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@styles.css" fx:controller="co.edu.uniquindio.monedero_virtual.view.RegistroViewController">
     
     <!-- Contenedor principal anclado a los bordes de la ventana -->
-    <StackPane AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+    <StackPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
         
-        <!-- Tarjeta principal vertical que ocupa todo el espacio disponible -->
-        <VBox style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+        <!-- Tarjeta principal con diseño horizontal más apropiado para escritorio -->
+        <HBox style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
             
-            <!-- Sección superior/logo con gradiente (más compacta) -->
-            <VBox alignment="CENTER" prefWidth="309.0" spacing="8" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-padding: 15; -fx-background-radius: 15 15 0 0;">
-                <ImageView fitHeight="50.0" fitWidth="50.0">
+            <!-- Sección izquierda con gradiente -->
+            <VBox alignment="CENTER" prefWidth="350.0" spacing="20" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-padding: 30; -fx-background-radius: 15 0 0 15;">
+                <!-- Logo de la aplicación -->
+                <ImageView fitHeight="100.0" fitWidth="100.0">
                    <image>
                       <Image url="@solvi%20blanco.png" />
                    </image>
                 </ImageView>
                 
                 <!-- Texto descriptivo centrado -->
-                <VBox alignment="CENTER" spacing="3">
-                    <Label style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: white;" text="Crea tu cuenta" />
-                    <Label style="-fx-font-size: 13; -fx-text-fill: white; -fx-opacity: 0.9;" text="Comienza a gestionar tus finanzas" wrapText="true" />
+                <VBox alignment="CENTER" spacing="15">
+                    <Label style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: white;" text="Crea tu cuenta" />
+                    <Label style="-fx-font-size: 16; -fx-text-fill: white; -fx-opacity: 0.9;" text="Comienza a gestionar tus finanzas personales con una plataforma segura y fácil de usar" textAlignment="CENTER" wrapText="true" />
+                </VBox>
+                
+                <!-- Información adicional -->
+                <VBox alignment="CENTER" spacing="15">
+                    <padding>
+                        <Insets top="30.0" />
+                    </padding>
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label style="-fx-font-size: 16; -fx-text-fill: white; -fx-opacity: 0.9;" text="✓" />
+                        <Label style="-fx-font-size: 15; -fx-text-fill: white; -fx-opacity: 0.9;" text="Acceso desde cualquier dispositivo" wrapText="true" />
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label style="-fx-font-size: 16; -fx-text-fill: white; -fx-opacity: 0.9;" text="✓" />
+                        <Label style="-fx-font-size: 15; -fx-text-fill: white; -fx-opacity: 0.9;" text="Seguridad de datos avanzada" wrapText="true" />
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label style="-fx-font-size: 16; -fx-text-fill: white; -fx-opacity: 0.9;" text="✓" />
+                        <Label style="-fx-font-size: 15; -fx-text-fill: white; -fx-opacity: 0.9;" text="Interfaz intuitiva y fácil de usar" wrapText="true" />
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label style="-fx-font-size: 16; -fx-text-fill: white; -fx-opacity: 0.9;" text="✓" />
+                        <Label style="-fx-font-size: 15; -fx-text-fill: white; -fx-opacity: 0.9;" text="Soporte técnico 24/7" wrapText="true" />
+                    </HBox>
                 </VBox>
             </VBox>
             
-            <!-- Contenedor para los campos de registro -->
-            <VBox spacing="10" style="-fx-padding: 15;" VBox.vgrow="ALWAYS">
-                <!-- Título (consistente con la página de login pero más compacto) -->
-                <Label style="-fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Registro de usuario" />
+            <!-- Sección derecha con formulario de registro -->
+            <VBox spacing="20" style="-fx-padding: 30;" HBox.hgrow="ALWAYS">
+                <!-- Título -->
+                <Label style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Registro de usuario" />
                 <Separator>
                     <VBox.margin>
-                        <Insets bottom="5.0" top="3.0" />
+                        <Insets bottom="10.0" top="5.0" />
                     </VBox.margin>
                 </Separator>
                 
-                <!-- Estructura en grid para optimizar espacio con tamaños más compactos -->
-                <GridPane hgap="12" vgap="10" VBox.vgrow="ALWAYS">
+                <!-- Formulario estructurado con GridPane para mejor distribución -->
+                <GridPane hgap="20" vgap="15" VBox.vgrow="ALWAYS">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints vgrow="SOMETIMES" />
@@ -67,72 +91,79 @@
                     </rowConstraints>
                 
                     <!-- Nombre completo (Fila 0, Col 0) -->
-                    <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                        <Label style="-fx-font-size: 13; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Nombre completo:" />
-                        <TextField fx:id="txtNombreCompleto" promptText="Ingresa tu nombre" style="-fx-padding: 8; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1;" />
+                    <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <Label style="-fx-font-size: 15; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Nombre completo:" />
+                        <TextField fx:id="txtNombreCompleto" promptText="Ingresa tu nombre" style="-fx-padding: 12; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e1e1e1; -fx-font-size: 14;" />
                     </VBox>
                     
                     <!-- Número celular (Fila 0, Col 1) -->
-                    <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                        <Label style="-fx-font-size: 13; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Número celular:" />
-                        <TextField fx:id="txtCelular" promptText="Celular" style="-fx-padding: 8; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1;" />
+                    <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <Label style="-fx-font-size: 15; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Número celular:" />
+                        <TextField fx:id="txtCelular" promptText="Celular" style="-fx-padding: 12; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e1e1e1; -fx-font-size: 14;" />
                     </VBox>
                     
                     <!-- Número de ID (Fila 1, Col 0) -->
-                    <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                        <Label style="-fx-font-size: 13; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Número de ID:" />
-                        <TextField fx:id="txtId" promptText="Identificación" style="-fx-padding: 8; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1;" />
+                    <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <Label style="-fx-font-size: 15; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Número de ID:" />
+                        <TextField fx:id="txtId" promptText="Identificación" style="-fx-padding: 12; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e1e1e1; -fx-font-size: 14;" />
                     </VBox>
                     
                     <!-- Correo (Fila 1, Col 1) -->
-                    <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                        <Label style="-fx-font-size: 13; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Correo electrónico:" />
-                        <TextField fx:id="txtCorreo" promptText="Email" style="-fx-padding: 8; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1;" />
+                    <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label style="-fx-font-size: 15; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Correo electrónico:" />
+                        <TextField fx:id="txtCorreo" promptText="Email" style="-fx-padding: 12; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e1e1e1; -fx-font-size: 14;" />
                     </VBox>
                     
                     <!-- Fecha de Nacimiento (Fila 2, Col 0) -->
-                    <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                        <Label style="-fx-font-size: 13; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Fecha de nacimiento:" />
-                        <DatePicker fx:id="dpFechaNacimiento" maxWidth="Infinity" prefWidth="138.0" promptText="Fecha" style="-fx-padding: 8; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1;" />
+                    <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                        <Label style="-fx-font-size: 15; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Fecha de nacimiento:" />
+                        <DatePicker fx:id="dpFechaNacimiento" maxWidth="Infinity" promptText="Fecha" style="-fx-padding: 12; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e1e1e1; -fx-font-size: 14;" />
                     </VBox>
                     
                     <!-- Dirección (Fila 2, Col 1) -->
-                    <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                        <Label style="-fx-font-size: 13; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Dirección:" />
-                        <TextField fx:id="txtDirección" promptText="Dirección" style="-fx-padding: 8; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1;" />
+                    <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Label style="-fx-font-size: 15; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Dirección:" />
+                        <TextField fx:id="txtDirección" promptText="Dirección" style="-fx-padding: 12; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e1e1e1; -fx-font-size: 14;" />
                     </VBox>
                     
                     <!-- Contraseña (Fila 3, Col 0) -->
-                    <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="3">
-                        <Label style="-fx-font-size: 13; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Contraseña:" />
-                        <PasswordField fx:id="txtContraseña" promptText="Contraseña" style="-fx-padding: 8; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1;" />
+                    <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                        <Label style="-fx-font-size: 15; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Contraseña:" />
+                        <PasswordField fx:id="txtContraseña" promptText="Contraseña" style="-fx-padding: 12; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e1e1e1; -fx-font-size: 14;" />
                     </VBox>
                     
                     <!-- Confirmar Contraseña (Fila 3, Col 1) -->
-                    <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                        <Label style="-fx-font-size: 13; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Confirmar contraseña:" />
-                        <PasswordField fx:id="txtConfirmarContraseña" promptText="Confirmar" style="-fx-padding: 8; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1;" />
+                    <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <Label style="-fx-font-size: 15; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Confirmar contraseña:" />
+                        <PasswordField fx:id="txtConfirmarContraseña" promptText="Confirmar" style="-fx-padding: 12; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e1e1e1; -fx-font-size: 14;" />
                     </VBox>
                 </GridPane>
                 
-                <Region minHeight="10" VBox.vgrow="ALWAYS" />
+                <!-- Espacio flexible -->
+                <Region VBox.vgrow="ALWAYS" minHeight="20" />
                 
-                <!-- Botón de registro -->
-                <Button fx:id="registerButton" maxWidth="Infinity" onAction="#onRegistrarUsuario" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-text-fill: white; -fx-padding: 10; -fx-background-radius: 8; -fx-font-size: 14; -fx-font-weight: 500;" text="Crear cuenta">
-                    <effect>
-                        <DropShadow color="rgba(102, 126, 234, 0.4)" radius="4" spread="0.05" />
-                    </effect>
-                </Button>
+                <!-- Botones de acción -->
+                <HBox alignment="CENTER" spacing="20">
+                    <!-- Botón de registro -->
+                    <Button fx:id="registerButton" minWidth="250.0" onAction="#onRegistrarUsuario" prefHeight="45.0" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-text-fill: white; -fx-padding: 12; -fx-background-radius: 8; -fx-font-size: 15; -fx-font-weight: 500;" text="Crear cuenta">
+                        <effect>
+                            <DropShadow color="rgba(102, 126, 234, 0.4)" radius="5" spread="0.05" />
+                        </effect>
+                    </Button>
+                    
+                    <!-- Botón para limpiar formulario -->
+                    <Button minWidth="150.0" prefHeight="45.0" style="-fx-background-color: transparent; -fx-text-fill: #666666; -fx-padding: 12; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e1e1e1; -fx-font-size: 15;" text="Limpiar" />
+                </HBox>
                 
                 <!-- Enlace para volver al login -->
-                <HBox alignment="CENTER" spacing="3">
+                <HBox alignment="CENTER" spacing="5">
                     <padding>
-                        <Insets top="3.0" />
+                        <Insets top="10.0" />
                     </padding>
-                    <Label style="-fx-font-size: 12; -fx-text-fill: #666666;" text="¿Ya tienes una cuenta?" />
-                    <Hyperlink onAction="#onIniciarSesion" style="-fx-font-size: 12; -fx-text-fill: #667eea; -fx-font-weight: 500;" text="Inicia sesión" />
+                    <Label style="-fx-font-size: 14; -fx-text-fill: #666666;" text="¿Ya tienes una cuenta?" />
+                    <Hyperlink onAction="#onIniciarSesion" style="-fx-font-size: 14; -fx-text-fill: #667eea; -fx-font-weight: 500;" text="Inicia sesión" />
                 </HBox>
             </VBox>
-        </VBox>
+        </HBox>
     </StackPane>
 </AnchorPane>

@@ -13,8 +13,7 @@ public class App extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("bienvenida-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
-        stage.setWidth(450);
-        stage.setHeight(800);
+        stage.setMaximized(true);
         
         Image icon = new Image(getClass().getResourceAsStream("solvi.png.png"));
         stage.getIcons().add(icon);

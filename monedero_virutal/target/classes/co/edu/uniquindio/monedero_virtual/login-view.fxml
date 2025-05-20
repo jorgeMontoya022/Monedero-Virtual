@@ -17,65 +17,75 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="500.0" prefWidth="350.0" style="-fx-background-color: linear-gradient(to bottom, #f5f7fa, #c3cfe2);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"  stylesheets="@styles.css" fx:controller="co.edu.uniquindio.monedero_virtual.view.LoginViewController">
+<AnchorPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: linear-gradient(to bottom, #f5f7fa, #c3cfe2);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@styles.css" fx:controller="co.edu.uniquindio.monedero_virtual.view.LoginViewController">
     
     <!-- Contenedor principal anclado a los bordes de la ventana -->
-    <StackPane AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+    <StackPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
         
-        <!-- Tarjeta principal vertical que ocupa todo el espacio disponible -->
-        <VBox style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+        <!-- Tarjeta principal con diseño horizontal más apropiado para escritorio -->
+        <HBox style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
             
-            <!-- Sección superior/logo con gradiente -->
-            <VBox alignment="CENTER" prefHeight="163.0" prefWidth="319.0" spacing="10" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-padding: 25; -fx-background-radius: 15 15 0 0;">
-            <ImageView fitHeight="68.0" fitWidth="78.0">
-               <image>
-                  <Image url="@solvi%20blanco.png" />
-               </image>
-            </ImageView>
+            <!-- Sección izquierda con gradiente -->
+            <VBox alignment="CENTER" prefWidth="400.0" spacing="25" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-padding: 40; -fx-background-radius: 15 0 0 15;">
+                <!-- Logo de la aplicación -->
+                <ImageView fitHeight="140.0" fitWidth="140.0">
+                   <image>
+                      <Image url="@solvi%20blanco.png" />
+                   </image>
+                </ImageView>
                 
-                <!-- Icono y texto descriptivo -->
-                <HBox alignment="CENTER" spacing="15">
-                    <VBox alignment="CENTER_LEFT">
-                        <Label style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: white;" text="Gestiona tus finanzas" />
-                        <Label style="-fx-font-size: 14; -fx-text-fill: white; -fx-opacity: 0.9;" text="Tu monedero virtual seguro" wrapText="true" />
-                    </VBox>
-                </HBox>
+                <!-- Título y texto descriptivo -->
+                <VBox alignment="CENTER" spacing="15">
+                    <Label style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: white;" text="Gestiona tus finanzas" />
+                    <Label style="-fx-font-size: 18; -fx-text-fill: white; -fx-opacity: 0.9;" text="Tu monedero virtual seguro" wrapText="true" />
+                </VBox>
+                
+                <!-- Descripción adicional -->
+                <VBox alignment="CENTER" spacing="20">
+                    <padding>
+                        <Insets top="30.0" />
+                    </padding>
+                    <Label style="-fx-font-size: 16; -fx-text-fill: white; -fx-opacity: 0.8;" text="✓ Administra tus cuentas bancarias" />
+                    <Label style="-fx-font-size: 16; -fx-text-fill: white; -fx-opacity: 0.8;" text="✓ Realiza transferencias seguras" />
+                    <Label style="-fx-font-size: 16; -fx-text-fill: white; -fx-opacity: 0.8;" text="✓ Visualiza tus movimientos financieros" />
+                    <Label style="-fx-font-size: 16; -fx-text-fill: white; -fx-opacity: 0.8;" text="✓ Planifica tus presupuestos" />
+                </VBox>
             </VBox>
             
-            <!-- Contenedor flexible que ocupará el espacio restante -->
-            <VBox spacing="20" style="-fx-padding: 25;" VBox.vgrow="ALWAYS">
+            <!-- Sección derecha con formulario de login -->
+            <VBox alignment="CENTER" prefWidth="480.0" spacing="25" style="-fx-padding: 40;" HBox.hgrow="ALWAYS">
                 <!-- Título -->
-                <Label style="-fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Bienvenido de nuevo" />
+                <Label style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Bienvenido de nuevo" />
                 <Separator>
                     <VBox.margin>
-                        <Insets bottom="10.0" top="5.0" />
+                        <Insets bottom="20.0" top="10.0" />
                     </VBox.margin>
                 </Separator>
                 
-                <!-- Campo Email -->
-                <VBox spacing="8">
-                    <Label style="-fx-font-size: 14; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Correo electrónico" />
-                    <TextField fx:id="emailField" promptText="Ingresa tu correo" style="-fx-padding: 12; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e1e1e1;" />
+                <!-- Campo Email con mayor tamaño -->
+                <VBox spacing="10" maxWidth="400.0">
+                    <Label style="-fx-font-size: 16; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Correo electrónico" />
+                    <TextField fx:id="emailField" promptText="Ingresa tu correo" style="-fx-padding: 14; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e1e1e1; -fx-font-size: 15;" />
                 </VBox>
                 
-                <!-- Campo Contraseña -->
-                <VBox spacing="8">
-                    <Label style="-fx-font-size: 14; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Contraseña" />
-                    <PasswordField fx:id="passwordField" promptText="Ingresa tu contraseña" style="-fx-padding: 12; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e1e1e1;" />
+                <!-- Campo Contraseña con mayor tamaño -->
+                <VBox spacing="10" maxWidth="400.0">
+                    <Label style="-fx-font-size: 16; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Contraseña" />
+                    <PasswordField fx:id="passwordField" promptText="Ingresa tu contraseña" style="-fx-padding: 14; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e1e1e1; -fx-font-size: 15;" />
                 </VBox>
                 
-                <!-- Opciones -->
-                <HBox alignment="CENTER_LEFT" spacing="10">
-                    <CheckBox fx:id="rememberCheckbox" style="-fx-font-size: 14; -fx-text-fill: #555555;" text="Recordarme" />
+                <!-- Opciones de recordar y olvidar contraseña -->
+                <HBox alignment="CENTER_LEFT" maxWidth="400.0" spacing="10">
+                    <CheckBox fx:id="rememberCheckbox" style="-fx-font-size: 15; -fx-text-fill: #555555;" text="Recordarme" />
                     <Region HBox.hgrow="ALWAYS" />
-                    <Hyperlink style="-fx-font-size: 14; -fx-text-fill: #667eea;" text="¿Olvidaste tu contraseña?" />
+                    <Hyperlink style="-fx-font-size: 15; -fx-text-fill: #667eea;" text="¿Olvidaste tu contraseña?" />
                 </HBox>
                 
-                <!-- Espaciador flexible que empuja el botón y el enlace hacia abajo -->
+                <!-- Espaciador flexible -->
                 <Region VBox.vgrow="ALWAYS" />
                 
                 <!-- Botón de login -->
-                <Button fx:id="loginButton" maxWidth="Infinity" onAction="#onIniciarSesión" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-text-fill: white; -fx-padding: 12; -fx-background-radius: 8; -fx-font-size: 15; -fx-font-weight: 500;" text="Iniciar sesión">
+                <Button fx:id="loginButton" maxWidth="400.0" onAction="#onIniciarSesión" prefHeight="50.0" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-text-fill: white; -fx-padding: 14; -fx-background-radius: 8; -fx-font-size: 16; -fx-font-weight: 500;" text="Iniciar sesión">
                     <effect>
                         <DropShadow color="rgba(102, 126, 234, 0.4)" radius="5" spread="0.05" />
                     </effect>
@@ -84,12 +94,12 @@
                 <!-- Enlace de registro -->
                 <HBox alignment="CENTER" spacing="5">
                     <padding>
-                        <Insets top="5.0" />
+                        <Insets top="10.0" />
                     </padding>
-                    <Label style="-fx-font-size: 14; -fx-text-fill: #666666;" text="¿No tienes una cuenta?" />
-                    <Hyperlink onAction="#onIrRegistro" style="-fx-font-size: 14; -fx-text-fill: #667eea; -fx-font-weight: 500;" text="Regístrate aquí" />
+                    <Label style="-fx-font-size: 15; -fx-text-fill: #666666;" text="¿No tienes una cuenta?" />
+                    <Hyperlink onAction="#onIrRegistro" style="-fx-font-size: 15; -fx-text-fill: #667eea; -fx-font-weight: 500;" text="Regístrate aquí" />
                 </HBox>
             </VBox>
-        </VBox>
+        </HBox>
     </StackPane>
 </AnchorPane>

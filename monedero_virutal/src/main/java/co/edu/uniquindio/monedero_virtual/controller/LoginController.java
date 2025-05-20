@@ -17,5 +17,5 @@ public class LoginController {
 
     public void guardarSesion(Cliente clienteValidado) {
        Sesion.getInstance().setCliente(clienteValidado);
-    }
+    }  
 }

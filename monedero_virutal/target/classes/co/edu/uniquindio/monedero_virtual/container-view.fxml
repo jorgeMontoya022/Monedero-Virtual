@@ -85,7 +85,30 @@
                                         <Insets left="20.0" />
                                     </padding>
                                 </Button>
-                                
+
+
+                                 <!-- Depósitos -->
+                                <Button fx:id="depositsButton" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#onDepositsButtonClicked" prefHeight="45.0" prefWidth="220.0" styleClass="menu-button" text="Depósitos">
+                                    <graphic>
+                                        <Label style="-fx-font-size: 16;" text="🛅" />
+                                    </graphic>
+                                    <padding>
+                                        <Insets left="20.0" />
+                                    </padding>
+                                </Button>
+
+
+                                 <!-- Retiros -->
+                                <Button fx:id="retirosButton" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#onRetirosButtonClicked" prefHeight="45.0" prefWidth="220.0" styleClass="menu-button" text="Retiros">
+                                    <graphic>
+                                        <Label style="-fx-font-size: 16;" text="⏏️" />
+                                    </graphic>
+                                    <padding>
+                                        <Insets left="20.0" />
+                                    </padding>
+                                </Button>
+
+
                                 <!-- Estadísticas -->
                                 <Button fx:id="statsButton" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#onStatsButtonClicked" prefHeight="45.0" prefWidth="220.0" styleClass="menu-button" text="Estadísticas">
                                     <graphic>
@@ -95,6 +118,8 @@
                                         <Insets left="20.0" />
                                     </padding>
                                 </Button>
+
+                               
                                 
                                 <Region VBox.vgrow="ALWAYS" />
                                 
