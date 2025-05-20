@@ -6,7 +6,6 @@ import java.util.List;
 
 import co.edu.uniquindio.monedero_virtual.model.enums.TipoRango;
 import co.edu.uniquindio.monedero_virtual.ownStructures.ownLists.OwnCircularList;
-import co.edu.uniquindio.monedero_virtual.ownStructures.ownLists.OwnLinkedList;
 
 public class Cliente {
     private String nombreCompleto;
@@ -17,27 +16,25 @@ public class Cliente {
     private LocalDate fechaRegistro; 
     private int id;
     private String dirección;
-    private int puntos;
     private List<Cuenta> listaCuentas;
     private TipoRango tipoRango;
     private OwnCircularList<Notificacion> listaNotificacion;
-    private OwnLinkedList<PuntosCliente> puntosCliente;
+    private PuntosCliente puntos;
 
     public Cliente(String nombreCompleto, String celular, String email, int contraseña, LocalDate fechaNacimiento,
-            LocalDate fechaRegistro, int puntos,String direccion ,TipoRango tipoRango, int id) {
+            LocalDate fechaRegistro,String direccion ,TipoRango tipoRango, int id) {
         this.nombreCompleto = nombreCompleto;
         this.celular = celular;
         this.email = email;
         this.contraseña = contraseña; 
         this.fechaNacimiento = fechaNacimiento;
         this.fechaRegistro = fechaRegistro;
-        this.puntos = puntos;
         this.tipoRango = tipoRango;
         this.id = id;
         this.dirección = direccion;
         this.listaCuentas = new ArrayList<>();
         this.listaNotificacion = new OwnCircularList<>();
-        this.puntosCliente = new OwnLinkedList<>();
+        this.puntos = new PuntosCliente(this);
     }
 
     // Getters y Setters
@@ -67,14 +64,6 @@ public class Cliente {
 
     public LocalDate getFechaRegistro() {
         return fechaRegistro;
-    }
-
-    public int getPuntos() {
-        return puntos;
-    }
-
-    public void setPuntos(int puntos) {
-        this.puntos = puntos;
     }
 
     public List<Cuenta> getListaCuentas() {
@@ -137,12 +126,21 @@ public class Cliente {
         this.dirección = dirección;
     }
 
-    public OwnLinkedList<PuntosCliente> getPuntosCliente() {
-        return puntosCliente;
+    public PuntosCliente getPuntos() {
+        return puntos;
     }
 
-    public void setPuntosCliente(OwnLinkedList<PuntosCliente> puntosCliente) {
-        this.puntosCliente = puntosCliente;
+    public void setPuntos(PuntosCliente puntos) {
+        this.puntos = puntos;
     }
+
+    public void agregarPuntos(Transaccion transaccion){
+        puntos.añadirPuntos(transaccion);
+    }
+
+    public void retirarPuntos(Transaccion transaccion){
+        puntos.eliminarPuntos(transaccion);
+    }
+
 
 }

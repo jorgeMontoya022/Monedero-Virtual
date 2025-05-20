@@ -7,11 +7,11 @@ public class PuntosCliente {
 
 
     public PuntosCliente(Cliente cliente) {
-        this.puntosAcumulados = cliente.getPuntos();
+        this.puntosAcumulados = 0;
         this.cliente = cliente;
     }
 
-    public void calcularPuntosTransaccion(Transaccion transaccion) {
+    public int calcularPuntosTransaccion(Transaccion transaccion) {
         double monto = transaccion.getMonto();
         int puntos = 0;
 
@@ -23,7 +23,20 @@ public class PuntosCliente {
         }else if (transaccion instanceof Transferencia) {
             puntos = (int)(monto/100) *3;
         }
+
+        return puntos;
     }
+
+    public void añadirPuntos(Transaccion transaccion){
+        int puntos = calcularPuntosTransaccion(transaccion);
+        puntosAcumulados += puntos;
+    }
+
+    public void eliminarPuntos(Transaccion transaccion){
+        int puntos = calcularPuntosTransaccion(transaccion);
+        puntosAcumulados -= puntos;
+    }
+    
 
     
 }

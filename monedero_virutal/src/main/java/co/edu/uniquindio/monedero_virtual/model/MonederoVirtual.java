@@ -3,6 +3,9 @@ package co.edu.uniquindio.monedero_virtual.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+
+import co.edu.uniquindio.monedero_virtual.ownStructures.ownQueues.ownQueue.Node;
 
 public class MonederoVirtual {
     private List<Cliente> listaClientes;
@@ -66,66 +69,108 @@ public class MonederoVirtual {
     }
 
 
-    public void realizarDeposito(Monedero monederoCliente, double cantidadDepositar) throws Exception{
-        if(!verificarClienteExiste(monederoCliente.getCuenta().getClienteAsociado().getEmail())){
+    // METODOS PARA TRANSACCIONES
+    public void realizarDeposito(Deposito deposito) throws Exception{
+
+        double monto = deposito.getMonto();
+        Cuenta cuenta = deposito.getCuenta();
+        Monedero monedero = deposito.getMonedero();
+
+        if(!verificarClienteExiste(cuenta.getClienteAsociado().getEmail())){
             throw new Exception("No se puede realizar el deposito. El cliente no existe.");
         }
 
-        try{
-            monederoCliente.agregarDinero(cantidadDepositar);
-        }catch(Exception e){
-            System.out.println("No se pudo realizar el depósito.");
-        }
+        monedero.agregarDinero(monto);
+        cuenta.setMonto(cuenta.getMonto() + monto);
+        cuenta.getClienteAsociado().agregarPuntos(deposito);
 
-        // No sé cual sería el id aquí.
-        Deposito depositoHecho = new Deposito(0, LocalDate.now(), cantidadDepositar, ("Deposito de " + cantidadDepositar), monederoCliente.getCuenta(), monederoCliente);
-        
-        // Agregando la transaccion al registro de transacciones que maneja la cuenta del cliente. 
-        monederoCliente.getCuenta().agregarTransaccion(depositoHecho);
-        monederoCliente.getCuenta().agregarTransaccionReversible(depositoHecho);
+        cuenta.agregarTransaccion(deposito);
+        //cuenta.agregarTransaccionReversible(deposito);
 
     }
     
-    public void realizarRetiro(Monedero monederoCliente, double cantidadRetirar) throws Exception{
-        if(!verificarClienteExiste(monederoCliente.getCuenta().getClienteAsociado().getEmail())){
+    public void realizarRetiro(Retiro retiro) throws Exception{
+
+        double monto = retiro.getMonto();
+        Cuenta cuenta = retiro.getCuenta();
+        Monedero monedero = retiro.getMonedero();
+
+        if(!verificarClienteExiste(cuenta.getClienteAsociado().getEmail())){
             throw new Exception("No se puede realizar el retiro. El cliente no existe.");
         }
 
-        try{
-            monederoCliente.retirarDinero(cantidadRetirar);
-        }catch(Exception e){
+        try {
+            monedero.retirarDinero(monto);
+            cuenta.setMonto(cuenta.getMonto() - monto);
+            cuenta.getClienteAsociado().agregarPuntos(retiro);
+
+            cuenta.agregarTransaccion(retiro);
+            //cuenta.agregarTransaccionReversible(retiro);
+
+        } catch (Exception e) {
             System.out.println("No se pudo realizar el retiro.");
         }
 
-        // No sé cual sería el id aquí.
-        Retiro retiroHecho = new Retiro(0, LocalDate.now(), cantidadRetirar, ("Retiro de " + cantidadRetirar), monederoCliente.getCuenta(), monederoCliente.getMonto(), cantidadRetirar, monederoCliente);
-        
-        // Agregando la transaccion al registro de transacciones que maneja la cuenta del cliente. 
-        monederoCliente.getCuenta().agregarTransaccion(retiroHecho);
-        monederoCliente.getCuenta().agregarTransaccionReversible(retiroHecho);
-
     }
 
-    public void realizarTransferencia(Monedero monderoEmisor, Monedero monederoReceptor, double cantidad) throws Exception{
-        if(!verificarClienteExiste(monderoEmisor.getCuenta().getClienteAsociado().getEmail())){
-            throw new Exception("No se puede realizar la transferencia. El cliente emisor no existe.");
+    public void realizarTransferencia(Transferencia transferencia) throws Exception{
+
+        double monto = transferencia.getMonto();
+        Cuenta cuentaEmisora = transferencia.getCuenta();
+        Monedero monederoEmisor = transferencia.getMonedero();
+
+        Cuenta cuentaReceptora = transferencia.getCuentaRecibe();
+
+        if(!verificarClienteExiste(cuentaEmisora.getClienteAsociado().getEmail())){
+            throw new Exception("No se puede realizar la transferencia. El cliente no existe.");
         }
-        if(!verificarClienteExiste(monederoReceptor.getCuenta().getClienteAsociado().getEmail())){
-            throw new Exception("No se puede realizar la transferencia. El cliente receptor no existe.");
+        if(!verificarClienteExiste(cuentaReceptora.getClienteAsociado().getEmail())){
+            throw new Exception("No se puede realizar la transferencia. El cliente de destino no existe.");
         }
 
         try {
-            monderoEmisor.retirarDinero(cantidad);
-            monederoReceptor.agregarDinero(cantidad);
+            monederoEmisor.retirarDinero(monto);
+            cuentaEmisora.setMonto(cuentaEmisora.getMonto() - monto);
+            cuentaEmisora.getClienteAsociado().agregarPuntos(transferencia);
+
+            cuentaReceptora.setMonto(cuentaReceptora.getMonto() + monto);
+
+            cuentaEmisora.agregarTransaccion(transferencia);
+            cuentaEmisora.agregarTransaccionReversible(transferencia);
+
         } catch (Exception e) {
             System.out.println("No se pudo realizar la transferencia.");
         }
-        
-        // Aun falta agregar la transferencia a la lista de transacciones de la cuenta del cliente.
 
     }
 
 
+    // METODOS PARA REVERTIR TRANSACCIONES
+    public void revertirTransferencia(Transferencia transferencia) throws Exception{
+        double monto = transferencia.getMonto();
+        Cuenta cuentaEmisora = transferencia.getCuenta();
+        Monedero monederoEmisor = transferencia.getMonedero();
+
+        Cuenta cuentaReceptora = transferencia.getCuentaRecibe();
+
+        if(!verificarClienteExiste(cuentaEmisora.getClienteAsociado().getEmail())){
+            throw new Exception("No se puede realizar la transferencia. El cliente no existe.");
+        }
+        if(!verificarClienteExiste(cuentaReceptora.getClienteAsociado().getEmail())){
+            throw new Exception("No se puede realizar la transferencia. El cliente de destino no existe.");
+        }
+
+        try {
+            cuentaReceptora.setMonto(cuentaReceptora.getMonto() - monto);
+
+            monederoEmisor.agregarDinero(monto);
+            cuentaEmisora.setMonto(cuentaEmisora.getMonto() + monto);
+            cuentaEmisora.getClienteAsociado().retirarPuntos(transferencia);
+
+        } catch (Exception e) {
+            System.out.println("No se pudo revertir la transferencia.");
+        }
+    }
 
 
 }

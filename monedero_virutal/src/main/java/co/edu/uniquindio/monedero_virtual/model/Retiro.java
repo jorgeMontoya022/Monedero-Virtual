@@ -10,7 +10,7 @@ public class Retiro extends Transaccion{
     public Retiro(int idTransaccion, LocalDate fechaTransaccion, double monto, String descripcion, Cuenta cuenta, double limiteRetiro, double comision, Monedero monedero) {
         super(idTransaccion, fechaTransaccion, monto, descripcion, cuenta, monedero);
         this.comision = comision;
-        this.limiteRetiro = limiteRetiro;
+        this.limiteRetiro = monedero.getMonto();
     }
 
     public double getLimiteRetiro() {
