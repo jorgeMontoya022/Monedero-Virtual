@@ -11,6 +11,14 @@ public class PuntosCliente {
         this.cliente = cliente;
     }
 
+    public int getPuntosAcumulados() {
+        return puntosAcumulados;
+    }
+
+    public void setPuntosAcumulados(int puntosAcumulados) {
+        this.puntosAcumulados = puntosAcumulados;
+    }
+
     public int calcularPuntosTransaccion(Transaccion transaccion) {
         double monto = transaccion.getMonto();
         int puntos = 0;
@@ -36,6 +44,19 @@ public class PuntosCliente {
         int puntos = calcularPuntosTransaccion(transaccion);
         puntosAcumulados -= puntos;
     }
+
+    public boolean consumirPuntos (int puntos){
+        if (puntos > 0 && puntosAcumulados >= puntos){
+
+            this.puntosAcumulados -= puntos;
+            return true;
+            
+        }
+        return false;
+        
+    }
+
+
     
 
     

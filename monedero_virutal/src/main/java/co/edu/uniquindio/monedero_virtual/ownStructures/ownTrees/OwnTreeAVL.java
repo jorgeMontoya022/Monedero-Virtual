@@ -96,5 +96,53 @@ public class OwnTreeAVL<T extends Comparable<T>>{
 
         return y;
     }
+     public void eliminar(T dato) throws Exception {
+        raiz = eliminarRec(raiz, dato);
+    }
+    
+    private Nodo<T> eliminarRec(Nodo<T> nodo, T dato) throws Exception {
+        if (nodo == null) {
+            throw new Exception("Elemento no encontrado");
+        }
+    
+        int cmp = dato.compareTo(nodo.getDato());
+    
+        if (cmp < 0) {
+            nodo.setHijoIzquierdo(eliminarRec(nodo.getHijoIzquierdo(), dato));
+        } else if (cmp > 0) {
+            nodo.setHijoDerecho(eliminarRec(nodo.getHijoDerecho(), dato));
+        } else {
+            // Nodo encontrado
+    
+            // Caso 1: Sin hijos o un solo hijo
+            if (nodo.getHijoIzquierdo() == null) {
+                return nodo.getHijoDerecho();
+            } else if (nodo.getHijoDerecho() == null) {
+                return nodo.getHijoIzquierdo();
+            }
+    
+            // Caso 2: Dos hijos
+            // Encontrar el sucesor (mínimo del subárbol derecho)
+            Nodo<T> sucesor = minimoNodo(nodo.getHijoDerecho());
+    
+            // Copiar el dato del sucesor al nodo actual
+            nodo.setDato(sucesor.getDato());
+    
+            // Eliminar el sucesor en el subárbol derecho
+            nodo.setHijoDerecho(eliminarRec(nodo.getHijoDerecho(), sucesor.getDato()));
+        }
+    
+        // Actualizar altura y balancear
+        actualizarAltura(nodo);
+        return balancear(nodo);
+    }
+
+    private Nodo<T> minimoNodo(Nodo<T> nodo) {
+        Nodo<T> actual = nodo;
+        while (actual.getHijoIzquierdo() != null) {
+            actual = actual.getHijoIzquierdo();
+        }
+        return actual;
+    }
     
 }

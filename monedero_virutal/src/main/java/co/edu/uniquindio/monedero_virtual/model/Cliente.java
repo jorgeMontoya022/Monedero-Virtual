@@ -7,7 +7,7 @@ import java.util.List;
 import co.edu.uniquindio.monedero_virtual.model.enums.TipoRango;
 import co.edu.uniquindio.monedero_virtual.ownStructures.ownLists.OwnCircularList;
 
-public class Cliente {
+public class Cliente implements Comparable<Cliente> {
     private String nombreCompleto;
     private String celular;
     private String email;
@@ -142,5 +142,19 @@ public class Cliente {
         puntos.eliminarPuntos(transaccion);
     }
 
+    @Override
+    public int compareTo(Cliente otro) {
+        int comparacion = Integer.compare(otro.getPuntos().getPuntosAcumulados(), this.getPuntos().getPuntosAcumulados());
+        if (comparacion == 0){
+            return Integer.compare(this.getId(), otro.getId());
+        }
+        return comparacion;
+    }
+
+    private void setRangoCliente (){
+        this.tipoRango = TipoRango.obtenerRango(getPuntos().getPuntosAcumulados());
+    }
+
 
 }
+

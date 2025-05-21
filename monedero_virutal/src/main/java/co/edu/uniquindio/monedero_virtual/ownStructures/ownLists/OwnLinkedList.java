@@ -11,6 +11,10 @@ public class OwnLinkedList<T> {
         this.size = 0;    // Inicialmente, la lista está vacía
     }
 
+    public Node<T> getHead() {
+        return head;
+    }
+
     /**
      * Agrega un nuevo nodo con el valor especificado al final de la lista enlazada.
      */

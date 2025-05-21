@@ -5,18 +5,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
-import co.edu.uniquindio.monedero_virtual.ownStructures.ownQueues.ownQueue.Node;
+import co.edu.uniquindio.monedero_virtual.ownStructures.ownLists.OwnLinkedList;
+import co.edu.uniquindio.monedero_virtual.ownStructures.Node;
+import co.edu.uniquindio.monedero_virtual.ownStructures.ownTrees.OwnTreeAVL;
+
 
 public class MonederoVirtual {
-    private List<Cliente> listaClientes;
+    private OwnLinkedList<Cliente> listaClientes;
     private List<Cuenta> listaCuentas;
+    private OwnTreeAVL<Cliente> rankingClientes; 
 
     public MonederoVirtual(){
-        this.listaClientes = new ArrayList<>();
+        this.listaClientes = new OwnLinkedList<>();
         this.listaCuentas = new ArrayList<>();
     }
 
-    public List<Cliente> getListaClientes () {
+    public OwnLinkedList<Cliente> getListaClientes () {
         return listaClientes;
     }
 
@@ -31,42 +35,63 @@ public class MonederoVirtual {
             return false;
         } else {
             listaClientes.add(cliente);
+            try {
+                rankingClientes.insertar(cliente);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             return true;
         }
     }
 
+    public void actualizarRanking(Cliente cliente){
+        try{
+            rankingClientes.eliminar(cliente);
+            rankingClientes.insertar(cliente);
+        } catch (Exception e){
+
+        }
+    }
+
     private Cliente buscarCliente(int id) {
-        for(Cliente cliente : listaClientes) {
+        Node<Cliente> nodo = listaClientes.getHead();
+        while(nodo != null) {
+            Cliente cliente = nodo.getData();
             if(cliente.getId() == (id)) {
                 return cliente;
             }
+        nodo = nodo.getNextNode();
         }
         return null;
     }
 
     public Cliente validarAcceso(String correo, int contrasenia) throws Exception {
-        for (Cliente cliente : listaClientes) {
+        Node<Cliente> nodo = listaClientes.getHead();
+        while (nodo !=null) {
+            Cliente cliente = nodo.getData();
             if (verificarClienteExiste(correo)) {
                 if(cliente.getEmail().equals(correo) && cliente.getContraseña() == contrasenia) {
                     return cliente;
-
-                }
-            }else {
-                throw new Exception("No existe el cliente");
+                } nodo = nodo.getNextNode();
             }
-        }
-        throw new Exception("Validaciones incorrectas");
+            }throw new Exception ("");
       
     }
 
     private boolean verificarClienteExiste(String correo) {
-        for(Cliente cliente : listaClientes) {
-            if(cliente.getEmail().equals(correo)) {
+        Node<Cliente> nodo = listaClientes.getHead();
+        while (nodo !=null){
+            Cliente cliente = nodo.getData();
+            if (cliente.getEmail().equals(correo)){
                 return true;
             }
+            nodo = nodo.getNextNode();
         }
         return false;
-    }
+        
+        } 
+
 
 
     // METODOS PARA TRANSACCIONES
@@ -83,6 +108,7 @@ public class MonederoVirtual {
         monedero.agregarDinero(monto);
         cuenta.setMonto(cuenta.getMonto() + monto);
         cuenta.getClienteAsociado().agregarPuntos(deposito);
+        actualizarRanking(cuenta.getClienteAsociado());
 
         cuenta.agregarTransaccion(deposito);
         //cuenta.agregarTransaccionReversible(deposito);
@@ -103,6 +129,7 @@ public class MonederoVirtual {
             monedero.retirarDinero(monto);
             cuenta.setMonto(cuenta.getMonto() - monto);
             cuenta.getClienteAsociado().agregarPuntos(retiro);
+            actualizarRanking(cuenta.getClienteAsociado());
 
             cuenta.agregarTransaccion(retiro);
             //cuenta.agregarTransaccionReversible(retiro);
@@ -132,6 +159,7 @@ public class MonederoVirtual {
             monederoEmisor.retirarDinero(monto);
             cuentaEmisora.setMonto(cuentaEmisora.getMonto() - monto);
             cuentaEmisora.getClienteAsociado().agregarPuntos(transferencia);
+            actualizarRanking(cuentaEmisora.getClienteAsociado());
 
             cuentaReceptora.setMonto(cuentaReceptora.getMonto() + monto);
 
@@ -166,6 +194,7 @@ public class MonederoVirtual {
             monederoEmisor.agregarDinero(monto);
             cuentaEmisora.setMonto(cuentaEmisora.getMonto() + monto);
             cuentaEmisora.getClienteAsociado().retirarPuntos(transferencia);
+            actualizarRanking(cuentaEmisora.getClienteAsociado());
 
         } catch (Exception e) {
             System.out.println("No se pudo revertir la transferencia.");
