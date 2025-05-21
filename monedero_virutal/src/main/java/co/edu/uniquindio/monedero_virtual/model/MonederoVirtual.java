@@ -1,30 +1,28 @@
 package co.edu.uniquindio.monedero_virtual.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Queue;
 
 import co.edu.uniquindio.monedero_virtual.ownStructures.ownLists.OwnLinkedList;
-import co.edu.uniquindio.monedero_virtual.ownStructures.Node;
 import co.edu.uniquindio.monedero_virtual.ownStructures.ownTrees.OwnTreeAVL;
 
 
 public class MonederoVirtual {
     private OwnLinkedList<Cliente> listaClientes;
-    private List<Cuenta> listaCuentas;
+    private OwnLinkedList<Cuenta> listaCuentas;
     private OwnTreeAVL<Cliente> rankingClientes; 
 
     public MonederoVirtual(){
         this.listaClientes = new OwnLinkedList<>();
-        this.listaCuentas = new ArrayList<>();
+        this.listaCuentas = new OwnLinkedList<>();
     }
 
     public OwnLinkedList<Cliente> getListaClientes () {
         return listaClientes;
     }
 
-    public List<Cuenta> getListaCuentas() {
+    public OwnLinkedList<Cuenta> getListaCuentas() {
         return listaCuentas;
     }
 
@@ -55,38 +53,29 @@ public class MonederoVirtual {
     }
 
     private Cliente buscarCliente(int id) {
-        Node<Cliente> nodo = listaClientes.getHead();
-        while(nodo != null) {
-            Cliente cliente = nodo.getData();
+        for (Cliente cliente : listaClientes){
             if(cliente.getId() == (id)) {
                 return cliente;
             }
-        nodo = nodo.getNextNode();
         }
         return null;
     }
 
     public Cliente validarAcceso(String correo, int contrasenia) throws Exception {
-        Node<Cliente> nodo = listaClientes.getHead();
-        while (nodo !=null) {
-            Cliente cliente = nodo.getData();
-            if (verificarClienteExiste(correo)) {
-                if(cliente.getEmail().equals(correo) && cliente.getContraseña() == contrasenia) {
-                    return cliente;
-                } nodo = nodo.getNextNode();
-            }
-            }throw new Exception ("");
-      
+    for (Cliente cliente : listaClientes) {
+        if (cliente.getEmail().equals(correo) && cliente.getContraseña() == contrasenia) {
+            return cliente;
+        }
     }
+    throw new Exception("Credenciales incorrectas");
+}
+
 
     private boolean verificarClienteExiste(String correo) {
-        Node<Cliente> nodo = listaClientes.getHead();
-        while (nodo !=null){
-            Cliente cliente = nodo.getData();
+        for (Cliente cliente: listaClientes){
             if (cliente.getEmail().equals(correo)){
                 return true;
             }
-            nodo = nodo.getNextNode();
         }
         return false;
         

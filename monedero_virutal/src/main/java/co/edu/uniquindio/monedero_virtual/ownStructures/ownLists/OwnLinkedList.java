@@ -1,8 +1,12 @@
 package co.edu.uniquindio.monedero_virtual.ownStructures.ownLists;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+
 import co.edu.uniquindio.monedero_virtual.ownStructures.Node;
 
-public class OwnLinkedList<T> {
+public class OwnLinkedList<T> implements Iterable<T> {
     Node<T> head; // Apunta al primer nodo de la lista
     int size;     // Almacena el tamaño de la lista
 
@@ -174,4 +178,29 @@ public class OwnLinkedList<T> {
     public int getSize() {
         return size;
     }
+
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>(){
+            private Node<T> actual = head;
+             @Override
+            public boolean hasNext() {
+                return actual != null;
+            }
+
+            @Override
+            public T next() {
+                 if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                T dato = actual.getData();
+                actual = actual.getNextNode();
+                return dato;
+            }
+        };
+    }
+
 }
+        
+
