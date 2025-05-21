@@ -71,10 +71,10 @@
                         <Label style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Nueva transferencia" />
                         
                         <!-- GridPane para organizar los campos del formulario en dos columnas -->
-                        <GridPane hgap="15" vgap="12">
+                        <GridPane hgap="15" vgap="12" GridPane.fillWidth="true">
                             <columnConstraints>
-                                <ColumnConstraints hgrow="ALWAYS" minWidth="150.0" />
-                                <ColumnConstraints hgrow="ALWAYS" minWidth="150.0" />
+                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" minWidth="150.0" />
+                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" minWidth="150.0" />
                             </columnConstraints>
                             <rowConstraints>
                                 <RowConstraints />
@@ -82,34 +82,34 @@
                                 <RowConstraints />
                             </rowConstraints>
                             
-                            <!-- Campo Cuenta de Origen -->
-                            <VBox spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <!-- Campo Cuenta de Origen - CORREGIDO -->
+                            <VBox spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.fillWidth="true">
                                 <Label style="-fx-font-size: 12; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Cuenta de origen" />
-                                <ComboBox fx:id="originAccountComboBox" maxWidth="1.7976931348623157E308" promptText="Seleccione cuenta origen" style="-fx-padding: 6; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1; -fx-font-size: 12;" />
+                                <ComboBox fx:id="originAccountComboBox" maxWidth="1.7976931348623157E308" promptText="Seleccione la cuenta origen" style="-fx-padding: 6; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1; -fx-font-size: 12; -fx-pref-width: 100%;" HBox.hgrow="ALWAYS" />
                             </VBox>
 
                             <!-- Campo Cuenta Destino -->
-                            <VBox spacing="4" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <VBox spacing="4" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.fillWidth="true">
                                 <Label style="-fx-font-size: 12; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Cuenta destino" />
-                                <TextField fx:id="destinationAccountField" promptText="Ej: 9876543210" style="-fx-padding: 6; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1; -fx-font-size: 12;" />
+                                <TextField fx:id="destinationAccountField" maxWidth="1.7976931348623157E308" promptText="Ej: 9876543210" style="-fx-padding: 6; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1; -fx-font-size: 12;" />
                             </VBox>
 
-                            <!-- Campo Monedero -->
-                            <VBox spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <!-- Campo Monedero - CORREGIDO -->
+                            <VBox spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.fillWidth="true">
                                 <Label style="-fx-font-size: 12; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Monedero" />
-                                <ComboBox fx:id="walletComboBox" maxWidth="1.7976931348623157E308" prefWidth="312.0" promptText="Seleccione monedero" style="-fx-padding: 6; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1; -fx-font-size: 12;" />
+                                <ComboBox fx:id="walletComboBox" maxWidth="1.7976931348623157E308" promptText="Seleccione monedero" style="-fx-padding: 6; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1; -fx-font-size: 12; -fx-pref-width: 100%;" HBox.hgrow="ALWAYS" />
                             </VBox>
 
                             <!-- Campo Monto -->
-                            <VBox spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                            <VBox spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.fillWidth="true">
                                 <Label style="-fx-font-size: 12; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Monto a transferir" />
-                                <TextField fx:id="amountField" promptText="Ej: 500000" style="-fx-padding: 6; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1; -fx-font-size: 12;" />
+                                <TextField fx:id="amountField" maxWidth="1.7976931348623157E308" promptText="Ej: 500000" style="-fx-padding: 6; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1; -fx-font-size: 12;" />
                             </VBox>
 
                             <!-- Campo Descripción/Mensaje -->
-                            <VBox spacing="4" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="2">
+                            <VBox spacing="4" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="2" GridPane.fillWidth="true">
                                 <Label style="-fx-font-size: 12; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Descripción / Mensaje" />
-                                <TextField fx:id="descriptionField" alignment="TOP_LEFT" prefHeight="64.0" promptText="Escriba un mensaje para el destinatario" style="-fx-padding: 6; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1; -fx-font-size: 12;" />
+                                <TextField fx:id="descriptionField" maxWidth="1.7976931348623157E308" alignment="TOP_LEFT" prefHeight="64.0" promptText="Escriba un mensaje para el destinatario" style="-fx-padding: 6; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1; -fx-font-size: 12;" />
                             </VBox>
                         </GridPane>
                         
