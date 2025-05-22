@@ -85,7 +85,7 @@ public class DatosClienteViewController {
 
         String nombreCompleto = clienteLogueado.getNombreCompleto();
         String primerNombre = nombreCompleto.split(" ")[0]; // divide por espacios y toma el primero
-        userNameLabel.setText("Tus cuentas, " + primerNombre);
+        userNameLabel.setText("Tus datos, " + primerNombre);
     }
 
 }
