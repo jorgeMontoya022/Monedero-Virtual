@@ -1,6 +1,9 @@
 package co.edu.uniquindio.monedero_virtual.factory;
 
+import java.util.List;
+
 import co.edu.uniquindio.monedero_virtual.model.Cliente;
+import co.edu.uniquindio.monedero_virtual.model.Cuenta;
 import co.edu.uniquindio.monedero_virtual.model.MonederoVirtual;
 import co.edu.uniquindio.monedero_virtual.utils.MonederoVirtualUtils;
 
@@ -45,6 +48,20 @@ public class ModelFactory {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public List<Cuenta> getCuentasUsuario(int idCliente) {
+        return monederoVirtual.getCuentasUsuario(idCliente);
+    }
+
+    public boolean agregarCuenta(Cuenta cuenta) {
+        try{
+            return monederoVirtual.agregarCuenta(cuenta);
+
+        }catch(Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
     

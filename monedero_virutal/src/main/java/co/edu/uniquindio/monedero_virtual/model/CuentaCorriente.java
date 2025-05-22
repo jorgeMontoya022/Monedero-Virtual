@@ -4,9 +4,10 @@ public class CuentaCorriente extends Cuenta {
 
     private double limiteSobreGiro;
 
-    public CuentaCorriente(double monto, String banco, int numeroCuenta, Cliente clienteAsociado, double limiteSobreGiro) {
+    public CuentaCorriente(double monto, String banco, int numeroCuenta, Cliente clienteAsociado) {
         super(monto, banco, numeroCuenta, clienteAsociado);
-        this.limiteSobreGiro = limiteSobreGiro;
+        this.limiteSobreGiro = 400000;
+    
       
     }
 

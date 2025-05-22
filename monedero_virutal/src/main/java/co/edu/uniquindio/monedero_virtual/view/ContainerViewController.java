@@ -11,7 +11,12 @@ import javafx.scene.layout.StackPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import co.edu.uniquindio.monedero_virtual.model.Cliente;
+import co.edu.uniquindio.monedero_virtual.utils.Sesion;
+
 public class ContainerViewController implements Initializable {
+
+    Cliente clienteLogueado;
 
     @FXML
     private Button accountsButton;
@@ -58,9 +63,23 @@ public class ContainerViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // La vista de cuentas es visible por defecto según el FXML
         currentSectionLabel.setText("Mis Cuentas");
         highlightSelectedButton("cuentas");
+
+        clienteLogueado = (Cliente) Sesion.getInstance().getCliente();
+        
+        mostrarDatosCliente(clienteLogueado);
+
+    }
+
+    private void mostrarDatosCliente(Cliente clienteLogueado2) {
+        String nombreCompleto = clienteLogueado.getNombreCompleto();
+        String[] partes = nombreCompleto.trim().split("\\s+"); // Maneja múltiples espacios
+
+        String primerNombre = partes.length > 0 ? partes[0] : "";
+        String primerApellido = partes.length > 1 ? partes[1] : "";
+
+        userNameLabel.setText(primerNombre +" "+ primerApellido);
     }
 
     @FXML
