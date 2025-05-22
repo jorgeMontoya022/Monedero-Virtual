@@ -127,6 +127,8 @@ public class LoginViewController extends CoreViewController {
     @FXML
     void initialize() {
         loginController = new LoginController();
+        emailField.setText("jorgetoro708@gmail.com");
+        passwordField.setText(String.valueOf(1234));
 
     }
 

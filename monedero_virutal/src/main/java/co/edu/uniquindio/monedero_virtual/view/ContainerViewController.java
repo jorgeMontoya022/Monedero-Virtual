@@ -67,13 +67,16 @@ public class ContainerViewController implements Initializable {
     @FXML
     private Node datosClienteView;
 
+    @FXML
+    private Node gestionDepositosView;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         currentSectionLabel.setText("Mis Cuentas");
         highlightSelectedButton("cuentas");
 
         clienteLogueado = (Cliente) Sesion.getInstance().getCliente();
-        
+
         mostrarDatosCliente(clienteLogueado);
 
     }
@@ -85,9 +88,8 @@ public class ContainerViewController implements Initializable {
         String primerNombre = partes.length > 0 ? partes[0] : "";
         String primerApellido = partes.length > 1 ? partes[1] : "";
 
-        userNameLabel.setText(primerNombre +" "+ primerApellido);
+        userNameLabel.setText(primerNombre + " " + primerApellido);
     }
-
 
     @FXML
     private void onDataCustomerClicked(ActionEvent event) {
@@ -134,18 +136,19 @@ public class ContainerViewController implements Initializable {
     @FXML
     private void onDepositsButtonClicked(ActionEvent event) {
         // Esta funcionalidad aún no está implementada
-        showMessage("Depósitos");
+        showView("depósitos");
+        currentSectionLabel.setText("Mis depósitos");
         highlightSelectedButton("depósitos");
     }
 
     @FXML
     private void onLogoutButtonClicked(ActionEvent event) {
-        
+
     }
 
     @FXML
     private void onToggleMenuButtonClicked(ActionEvent event) {
-        
+
     }
 
     /**
@@ -159,6 +162,7 @@ public class ContainerViewController implements Initializable {
         gestionMovimientosView.setVisible(false);
         gestionTransferenciasView.setVisible(false);
         datosClienteView.setVisible(false);
+        gestionDepositosView.setVisible(false);
 
         // Mostrar la vista seleccionada
         switch (viewName) {
@@ -173,6 +177,9 @@ public class ContainerViewController implements Initializable {
                 break;
             case "transferencias":
                 gestionTransferenciasView.setVisible(true);
+                break;
+            case "depósitos":
+                gestionDepositosView.setVisible(true);
                 break;
             default:
                 // Por defecto mostrar la vista de cuentas
@@ -192,6 +199,7 @@ public class ContainerViewController implements Initializable {
         gestionMovimientosView.setVisible(false);
         gestionTransferenciasView.setVisible(false);
         datosClienteView.setVisible(false);
+        gestionDepositosView.setVisible(false);
 
         // Mostrar mensaje en la etiqueta de sección
         currentSectionLabel.setText(sectionName + " (No implementado)");
@@ -210,7 +218,7 @@ public class ContainerViewController implements Initializable {
         String selectedStyle = "-fx-background-color: rgba(102, 126, 234, 0.1); -fx-text-fill: #667eea;";
 
         // Restablecer todos los botones al estilo por defecto
-    
+
         accountsButton.setStyle(defaultStyle);
         transactionsButton.setStyle(defaultStyle);
         transfersButton.setStyle(defaultStyle);

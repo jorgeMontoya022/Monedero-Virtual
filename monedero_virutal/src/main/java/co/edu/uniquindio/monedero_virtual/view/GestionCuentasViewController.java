@@ -87,6 +87,9 @@ public class GestionCuentasViewController extends CoreViewController {
     private Label userNameLabel;
 
     @FXML
+    private Label labelTotalCuentas;
+
+    @FXML
     void onAddAccount(ActionEvent event) {
         agregarCuenta();
 
@@ -131,8 +134,10 @@ public class GestionCuentasViewController extends CoreViewController {
         accountsTable.setItems(listaCuentas);
         // listenerSelection();
         mostrarInformacion();
+        mostrarCantidadCuentas();
     }
 
+    
     private void initDataBinding() {
         bankNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBanco()));
         accountIdColumn.setCellValueFactory(
@@ -165,7 +170,14 @@ public class GestionCuentasViewController extends CoreViewController {
         String nombreCompleto = clienteLogueado.getNombreCompleto();
         String primerNombre = nombreCompleto.split(" ")[0]; // divide por espacios y toma el primero
         userNameLabel.setText("Tus cuentas, " + primerNombre);
+        
     }
+
+    private void mostrarCantidadCuentas() {
+        labelTotalCuentas.setText("Total " + String.valueOf(listaCuentas.size()));
+    
+    }
+
 
     private void agregarCuenta() {
         Cuenta cuenta = buildDataCuenta();
@@ -179,6 +191,7 @@ public class GestionCuentasViewController extends CoreViewController {
                 listaCuentas.add(cuenta);
                 mostrarMensaje("Notificación", "Cuenta agregada",
                         "La cuenta ha sido agregada con éxito", Alert.AlertType.INFORMATION);
+                mostrarCantidadCuentas();
                 limpiarCampos();
             } else {
                 mostrarMensaje("Error", "Cuenta no agregada",

@@ -91,43 +91,43 @@
                         <!-- Fila 1: Nombre completo -->
                         <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
                             <Label style="-fx-font-size: 14; -fx-text-fill: #667eea; -fx-font-weight: bold;" text="NOMBRE COMPLETO" />
-                            <TextField fx:id="txtNombreCompleto" opacity="0.22" style="-fx-border-color: linear-gradient(to right, #667eea, #764ba2); -fx-background-radius: 5; -fx-padding: 4;" />
+                            <TextField fx:id="txtNombreCompleto" editable="false" opacity="0.75" style="-fx-border-color: linear-gradient(to right, #667eea, #764ba2); -fx-background-radius: 5; -fx-padding: 4;" />
                         </VBox>
                         
                         <!-- Fila 1: Correo -->
                         <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
                             <Label style="-fx-font-size: 14; -fx-text-fill: #667eea; -fx-font-weight: bold;" text="CORREO ELECTRÓNICO" />
-                            <TextField fx:id="txtCorreo" opacity="0.22" style="-fx-border-color: linear-gradient(to right, #667eea, #764ba2); -fx-background-radius: 5; -fx-padding: 4;" />
+                            <TextField fx:id="txtCorreo" editable="false" opacity="0.75" style="-fx-border-color: linear-gradient(to right, #667eea, #764ba2); -fx-background-radius: 5; -fx-padding: 4;" />
                         </VBox>
                         
                         <!-- Fila 2: Fecha de nacimiento -->
                         <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="1">
                             <Label style="-fx-font-size: 14; -fx-text-fill: #667eea; -fx-font-weight: bold;" text="FECHA DE NACIMIENTO" />
-                            <DatePicker opacity="0.27" prefHeight="28.0" prefWidth="789.0" style="-fx-border-color: linear-gradient(to right, #667eea, #764ba2);" />
+                            <DatePicker fx:id="dpFechaNacimiento" editable="false" opacity="0.75" prefHeight="28.0" prefWidth="789.0" style="-fx-border-color: linear-gradient(to right, #667eea, #764ba2);" />
                         </VBox>
                         
                         <!-- Fila 2: Número de identificación -->
                         <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <Label prefWidth="199.0" style="-fx-font-size: 14; -fx-text-fill: #667eea; -fx-font-weight: bold;" text="NÚMERO DE IDENTIFICACIÓN" />
-                            <TextField fx:id="txtId" opacity="0.22" style="-fx-border-color: linear-gradient(to right, #667eea, #764ba2); -fx-background-radius: 5; -fx-padding: 4;" />
+                            <TextField fx:id="txtId" editable="false" opacity="0.75" style="-fx-border-color: linear-gradient(to right, #667eea, #764ba2); -fx-background-radius: 5; -fx-padding: 4;" />
                         </VBox>
                         
                         <!-- Fila 3: Dirección -->
                         <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
                             <Label style="-fx-font-size: 14; -fx-text-fill: #667eea; -fx-font-weight: bold;" text="DIRECCIÓN" />
-                            <TextField fx:id="txtDireccion" opacity="0.22" style="-fx-border-color: linear-gradient(to right, #667eea, #764ba2); -fx-background-radius: 5; -fx-padding: 4;" />
+                            <TextField fx:id="txtDireccion" editable="false" opacity="0.75" style="-fx-border-color: linear-gradient(to right, #667eea, #764ba2); -fx-background-radius: 5; -fx-padding: 4;" />
                         </VBox>
                         
                         <!-- Fila 3: Celular -->
                         <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
                             <Label style="-fx-font-size: 14; -fx-text-fill: #667eea; -fx-font-weight: bold;" text="CELULAR" />
-                            <TextField fx:id="txtCelular" opacity="0.22" style="-fx-border-color: linear-gradient(to right, #667eea, #764ba2); -fx-background-radius: 5; -fx-padding: 4;" />
+                            <TextField fx:id="txtCelular" editable="false" opacity="0.75" style="-fx-border-color: linear-gradient(to right, #667eea, #764ba2); -fx-background-radius: 5; -fx-padding: 4;" />
                         </VBox>
                         
                         <!-- Fila 4: Rango -->
                         <VBox spacing="5" GridPane.rowIndex="2">
                             <Label style="-fx-font-size: 14; -fx-text-fill: #667eea; -fx-font-weight: bold;" text="RANGO" />
-                            <TextField fx:id="txtRango" editable="false" opacity="0.22" style="-fx-border-color: linear-gradient(to right, #667eea, #764ba2); -fx-background-radius: 5; -fx-padding: 4;" />
+                            <TextField fx:id="txtRango" editable="false" opacity="0.75" style="-fx-border-color: linear-gradient(to right, #667eea, #764ba2); -fx-background-radius: 5; -fx-padding: 4;" />
                         </VBox>
                     </GridPane>
                     

@@ -12,12 +12,8 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
@@ -68,7 +64,7 @@
                 <HBox spacing="0" VBox.vgrow="ALWAYS">
                     
                     <!-- Panel izquierdo - Formulario para agregar cuentas -->
-                    <VBox spacing="15" style="-fx-padding: 25; -fx-background-color: #f8f9fb; -fx-background-radius: 0 0 0 15;" HBox.hgrow="NEVER" prefWidth="350">
+                    <VBox prefWidth="350" spacing="15" style="-fx-padding: 25; -fx-background-color: #f8f9fb; -fx-background-radius: 0 0 0 15;" HBox.hgrow="NEVER">
                         <Label style="-fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Nueva cuenta" />
                         
                         <!-- Campo Nombre del banco -->
@@ -86,7 +82,7 @@
                         <!-- Campo Tipo de cuenta -->
                         <VBox spacing="8">
                             <Label style="-fx-font-size: 14; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Tipo de cuenta" />
-                            <ComboBox fx:id="accountTypeComboBox" promptText="Seleccionar tipo" style="-fx-padding: 12; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e1e1e1; -fx-font-size: 14;" prefWidth="200.0" />
+                            <ComboBox fx:id="accountTypeComboBox" prefWidth="200.0" promptText="Seleccionar tipo" style="-fx-padding: 12; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e1e1e1; -fx-font-size: 14;" />
                         </VBox>
                         
                         <!-- Botones de acción -->
@@ -119,7 +115,7 @@
                         <HBox alignment="CENTER_LEFT">
                             <Label style="-fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Cuentas registradas" />
                             <Region HBox.hgrow="ALWAYS" />
-                            <Label fx:id="accountCountLabel" style="-fx-font-size: 14; -fx-text-fill: #667eea; -fx-font-weight: bold;" text="Total: 0" />
+                            <Label fx:id="labelTotalCuentas" style="-fx-font-size: 14; -fx-text-fill: #667eea; -fx-font-weight: bold;" text="Total: 0" />
                         </HBox>
                         
                         <!-- Barra de búsqueda -->
