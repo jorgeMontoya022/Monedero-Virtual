@@ -2,10 +2,12 @@ package co.edu.uniquindio.monedero_virtual.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import co.edu.uniquindio.monedero_virtual.model.enums.TipoRango;
 import co.edu.uniquindio.monedero_virtual.ownStructures.ownLists.OwnCircularList;
+import co.edu.uniquindio.monedero_virtual.ownStructures.ownLists.OwnLinkedList;
 
 public class Cliente implements Comparable<Cliente> {
     private String nombreCompleto;
@@ -153,6 +155,19 @@ public class Cliente implements Comparable<Cliente> {
 
     private void setRangoCliente (){
         this.tipoRango = TipoRango.obtenerRango(getPuntos().getPuntosAcumulados());
+    }
+
+    public List<Transaccion> getListaDepositos() {
+        List<Transaccion> depositos = new LinkedList<>();
+        for (Cuenta cuenta : listaCuentas) {
+            OwnLinkedList<Transaccion> transacciones = cuenta.getTransacciones();
+            for (Transaccion transaccion : transacciones) {
+                if (transaccion instanceof Deposito) {
+                    depositos.add(transaccion);
+                }
+            }
+        }
+        return depositos;
     }
 
 

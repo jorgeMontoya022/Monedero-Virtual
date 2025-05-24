@@ -2,6 +2,7 @@ package co.edu.uniquindio.monedero_virtual.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
@@ -217,6 +218,20 @@ public class MonederoVirtual {
             }
         }
         return null;
+    }
+
+    public List<Transaccion> getDepositosCliente(int idCliente) {
+        Cliente cliente = buscarCliente(idCliente);
+        return cliente.getListaDepositos();
+    }
+
+    public List<Monedero> getMonederosUsuario(int idCliente) {
+        List<Monedero> monederosCliente = new LinkedList<>();
+        Cliente cliente = buscarCliente(idCliente);
+        for (Cuenta cuenta : cliente.getListaCuentas()) {
+            monederosCliente.addAll(cuenta.getMonederos());
+        }
+        return monederosCliente;
     }
 
 }
