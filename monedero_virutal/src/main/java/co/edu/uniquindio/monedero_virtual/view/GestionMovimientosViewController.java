@@ -140,6 +140,7 @@ public class GestionMovimientosViewController extends CoreViewController {
         initDataBinding();
         getTransacciones();
         initializeDataCombobox();
+        actualizarTotalTransacciones(listaTransacciones.size());
         transactionsTable.getItems().clear();
         transactionsTable.setItems(listaTransacciones);
         // listenerSelection();
@@ -246,8 +247,7 @@ public class GestionMovimientosViewController extends CoreViewController {
         dpFechaFin.setValue(null);
 
         // Mostrar todas las transacciones nuevamente
-        transactionsTable.setItems(listaTransacciones);
-        actualizarTotalTransacciones(listaTransacciones.size());
+      
     }
 
     private void actualizarTotalTransacciones(int cantidad) {
