@@ -1,5 +1,6 @@
 package co.edu.uniquindio.monedero_virtual.view;
 
+import java.io.File;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
@@ -14,6 +15,7 @@ import co.edu.uniquindio.monedero_virtual.model.Deposito;
 import co.edu.uniquindio.monedero_virtual.model.Transaccion;
 import co.edu.uniquindio.monedero_virtual.model.Transferencia;
 import co.edu.uniquindio.monedero_virtual.utils.Sesion;
+import co.edu.uniquindio.monedero_virtual.utils.services.ExportsPdfService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,6 +28,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 
@@ -111,8 +114,111 @@ public class GestionMovimientosViewController extends CoreViewController {
 
     @FXML
     void onGenerateReport(ActionEvent event) {
+        // Validar que se hayan seleccionado los filtros necesarios
+        if (!validarDatosReporte()) {
+            return;
+        }
 
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Guardar reporte en PDF");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+
+        // Crear nombre del archivo con fechas
+        String nombreArchivo = String.format("movimientos_%s_%s_al_%s.pdf",
+                clienteLogueado.getNombreCompleto().replaceAll("\\s+", "_").toLowerCase(),
+                dpFechaInicio.getValue().toString().replace("-", ""),
+                dpFechaFin.getValue().toString().replace("-", ""));
+
+        fileChooser.setInitialFileName(nombreArchivo);
+
+        File file = fileChooser.showSaveDialog(reportButton.getScene().getWindow());
+
+        if (file != null) {
+            try {
+                // Obtener datos de los filtros
+                Cuenta cuentaSeleccionada = cbCuenta.getValue();
+                LocalDate fechaInicio = dpFechaInicio.getValue();
+                LocalDate fechaFin = dpFechaFin.getValue();
+
+                // Filtrar transacciones según los criterios seleccionados
+                List<Transaccion> transaccionesFiltradas = listaTransacciones.stream()
+                        .filter(transaccion -> transaccion.getCuenta().getNumeroCuenta() == cuentaSeleccionada
+                                .getNumeroCuenta())
+                        .filter(transaccion -> {
+                            LocalDate fechaTransaccion = transaccion.getFechaTransaccion();
+                            return (fechaTransaccion.isEqual(fechaInicio) || fechaTransaccion.isAfter(fechaInicio)) &&
+                                    (fechaTransaccion.isEqual(fechaFin) || fechaTransaccion.isBefore(fechaFin));
+                        })
+                        .collect(Collectors.toList());
+
+                // Verificar que hay transacciones para reportar
+                if (transaccionesFiltradas.isEmpty()) {
+                    mostrarMensaje("Reporte vacío", "Sin datos para reportar",
+                            "No se encontraron transacciones en el rango de fechas seleccionado para la cuenta especificada.",
+                            Alert.AlertType.WARNING);
+                    return;
+                }
+
+                // Generar el reporte con los datos filtrados
+                ExportsPdfService exportService = new ExportsPdfService();
+                exportService.exportarMovimientos(
+                        file.getAbsolutePath(),
+                        clienteLogueado,
+                        cuentaSeleccionada,
+                        transaccionesFiltradas,
+                        fechaInicio,
+                        fechaFin);
+
+                mostrarMensaje("Éxito", "Reporte generado exitosamente",
+                        String.format("El reporte se ha generado con %d transacciones para el período del %s al %s",
+                                transaccionesFiltradas.size(),
+                                fechaInicio.toString(),
+                                fechaFin.toString()),
+                        Alert.AlertType.INFORMATION);
+
+            } catch (Exception e) {
+                mostrarMensaje("ERROR", "Error en el reporte",
+                        "Error al generar el reporte: " + e.getMessage(),
+                        Alert.AlertType.ERROR);
+            }
+        }
     }
+
+    private boolean validarDatosReporte() {
+    String mensaje = "";
+
+    if (cbCuenta.getValue() == null) {
+        mensaje += "- Debe seleccionar una cuenta para generar el reporte.\n";
+    }
+
+    if (dpFechaInicio.getValue() == null) {
+        mensaje += "- Debe seleccionar la fecha de inicio del reporte.\n";
+    }
+
+    if (dpFechaFin.getValue() == null) {
+        mensaje += "- Debe seleccionar la fecha de fin del reporte.\n";
+    }
+
+    // Validar que la fecha de inicio no sea posterior a la fecha de fin
+    if (dpFechaInicio.getValue() != null && dpFechaFin.getValue() != null) {
+        if (dpFechaInicio.getValue().isAfter(dpFechaFin.getValue())) {
+            mensaje += "- La fecha de inicio no puede ser posterior a la fecha de fin.\n";
+        }
+        
+        // Validar que las fechas no sean futuras
+        LocalDate hoy = LocalDate.now();
+        if (dpFechaInicio.getValue().isAfter(hoy) || dpFechaFin.getValue().isAfter(hoy)) {
+            mensaje += "- Las fechas no pueden ser futuras.\n";
+        }
+    }
+
+    if (!mensaje.isEmpty()) {
+        mostrarMensaje("Validación de reporte", "Datos requeridos", mensaje, Alert.AlertType.WARNING);
+        return false;
+    }
+
+    return true;
+}
 
     @FXML
     void onSearchTransactions(ActionEvent event) {
@@ -247,7 +353,7 @@ public class GestionMovimientosViewController extends CoreViewController {
         dpFechaFin.setValue(null);
 
         // Mostrar todas las transacciones nuevamente
-      
+
     }
 
     private void actualizarTotalTransacciones(int cantidad) {
