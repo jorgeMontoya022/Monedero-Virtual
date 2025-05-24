@@ -11,6 +11,7 @@ public class Transaccion implements Comparable<Transaccion>{
     private Monedero monedero;
 
 
+
     public Transaccion(int idTransaccion, LocalDate fechaTransaccion, double monto, String descripcion, Cuenta cuenta, Monedero monedero) {
         this.idTransaccion = idTransaccion;
         this.fechaTransaccion = fechaTransaccion;
@@ -19,7 +20,6 @@ public class Transaccion implements Comparable<Transaccion>{
         this.cuenta = cuenta;
         this.monedero = monedero;
     }
-
 
     public int getIdTransaccion() {
         return idTransaccion;
@@ -83,8 +83,9 @@ public class Transaccion implements Comparable<Transaccion>{
 
    @Override
     public int compareTo(Transaccion otra) {
-        return this.fechaTransaccion.compareTo(otra.getFechaTransaccion());
+            return this.fechaTransaccion.compareTo(otra.getFechaTransaccion());
     }
+
 
 
 }

@@ -1,5 +1,7 @@
 package co.edu.uniquindio.monedero_virtual.model;
 
+import co.edu.uniquindio.monedero_virtual.model.enums.TipoRango;
+
 public class PuntosCliente {
 
     private Cliente cliente;
@@ -47,14 +49,16 @@ public class PuntosCliente {
 
     public boolean consumirPuntos (int puntos){
         if (puntos > 0 && puntosAcumulados >= puntos){
-
             this.puntosAcumulados -= puntos;
+            cliente.setTipoRango(TipoRango.obtenerRango(this.puntosAcumulados));
             return true;
+
             
         }
         return false;
         
     }
+    
 
 
     

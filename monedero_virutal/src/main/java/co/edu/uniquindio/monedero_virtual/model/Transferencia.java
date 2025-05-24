@@ -2,7 +2,7 @@ package co.edu.uniquindio.monedero_virtual.model;
 
 import java.time.LocalDate;
 
-public class Transferencia extends Transaccion {
+public class Transferencia  extends Transaccion  {
 
     private Cuenta cuentaRecibe;
 
@@ -18,5 +18,8 @@ public class Transferencia extends Transaccion {
     public void setCuentaRecibe(Cuenta cuentaRecibe) {
         this.cuentaRecibe = cuentaRecibe;
     }
+    
+
+    
 
 }

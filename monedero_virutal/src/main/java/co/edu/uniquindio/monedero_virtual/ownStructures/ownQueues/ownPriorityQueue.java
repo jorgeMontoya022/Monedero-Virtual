@@ -1,14 +1,16 @@
 package co.edu.uniquindio.monedero_virtual.ownStructures.ownQueues;
 
 import co.edu.uniquindio.monedero_virtual.ownStructures.Node;
+
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class ownPriorityQueue<T extends Comparable<T>> {
+public class OwnPriorityQueue<T extends Comparable<T>> implements Iterable<T> {
 
     private Node<T> front;  // Apunta al primer nodo de la cola (frente)
     private int size;       // Tamaño de la cola
 
-    public ownPriorityQueue() {
+    public OwnPriorityQueue() {
         this.front = null;
         this.size = 0;
     }
@@ -104,5 +106,25 @@ public class ownPriorityQueue<T extends Comparable<T>> {
     public void clear() {
         front = null;
         size = 0;
+    }
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>(){
+            private Node<T> actual = front;
+             @Override
+            public boolean hasNext() {
+                return actual != null;
+            }
+
+            @Override
+            public T next() {
+                 if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                T dato = actual.getData();
+                actual = actual.getNextNode();
+                return dato;
+            }
+        };
     }
 }

@@ -154,6 +154,7 @@ public class Cliente implements Comparable<Cliente> {
     private void setRangoCliente (){
         this.tipoRango = TipoRango.obtenerRango(getPuntos().getPuntosAcumulados());
     }
+    
 
 
 }

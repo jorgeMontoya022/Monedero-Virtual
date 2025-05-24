@@ -1,11 +1,11 @@
 package co.edu.uniquindio.monedero_virtual.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
+
 
 import co.edu.uniquindio.monedero_virtual.ownStructures.ownLists.OwnLinkedList;
+import co.edu.uniquindio.monedero_virtual.ownStructures.ownQueues.OwnPriorityQueue;
 import co.edu.uniquindio.monedero_virtual.ownStructures.ownTrees.OwnTreeAVL;
 
 public class MonederoVirtual {
@@ -16,6 +16,7 @@ public class MonederoVirtual {
     public MonederoVirtual() {
         this.listaClientes = new OwnLinkedList<>();
         this.listaCuentas = new OwnLinkedList<>();
+        this.rankingClientes = new OwnTreeAVL<>();
     }
 
     public OwnLinkedList<Cliente> getListaClientes() {
@@ -218,5 +219,24 @@ public class MonederoVirtual {
         }
         return null;
     }
+
+    private void procesarTransaccionesPendientes(Cuenta cuenta) throws Exception {
+        OwnPriorityQueue<Transaccion> listaTransacciones = cuenta.getTransaccionesProgramadas();
+        LocalDate hoy = LocalDate.now();
+        while (!listaTransacciones.isEmpty()){
+            Transaccion transaccion = listaTransacciones.dequeue();
+            if (transaccion.getFechaTransaccion() == hoy){
+                if(transaccion instanceof Transferencia){
+                    realizarTransferencia((Transferencia) transaccion);
+                }
+                else{
+                    throw new Exception("No se admiten otro tipo de transacciones programadas");
+                }
+            }
+        }
+        
+        
+}
+    
 
 }
