@@ -115,4 +115,9 @@ public class Cuenta {
     }
 
 
+    @Override
+    public String toString() {
+        return (banco + " - " + numeroCuenta);
+    }
+
 }

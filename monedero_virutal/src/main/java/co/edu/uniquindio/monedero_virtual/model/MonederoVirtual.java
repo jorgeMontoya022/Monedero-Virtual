@@ -2,6 +2,7 @@ package co.edu.uniquindio.monedero_virtual.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import co.edu.uniquindio.monedero_virtual.ownStructures.ownLists.OwnLinkedList;
@@ -218,7 +219,7 @@ public class MonederoVirtual {
 
     }
 
-    private Cuenta buscarCuenta(int numeroCuenta) {
+    public Cuenta buscarCuenta(int numeroCuenta) {
         for (Cuenta cuenta : listaCuentas) {
             if (cuenta.getNumeroCuenta() == numeroCuenta) {
                 return cuenta;
@@ -274,6 +275,25 @@ public class MonederoVirtual {
             }
         }
         return lista;
+    }
+
+    public List<Transaccion> getDepositosCliente(int idCliente) {
+        Cliente cliente = buscarCliente(idCliente);
+        return cliente.getListaDepositos();
+    }
+
+    public List<Transaccion> getTransferenciasCliente(int idCliente) {
+        Cliente cliente = buscarCliente(idCliente);
+        return cliente.getListaTransferencias();
+    }
+
+    public List<Monedero> getMonederosUsuario(int idCliente) {
+        List<Monedero> monederosCliente = new LinkedList<>();
+        Cliente cliente = buscarCliente(idCliente);
+        for (Cuenta cuenta : cliente.getListaCuentas()) {
+            monederosCliente.addAll(cuenta.getMonederos());
+        }
+        return monederosCliente;
     }
 
 }

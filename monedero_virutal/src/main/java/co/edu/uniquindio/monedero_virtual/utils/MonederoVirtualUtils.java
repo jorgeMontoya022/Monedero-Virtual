@@ -29,9 +29,9 @@ public class MonederoVirtualUtils {
         ahorroJorge.getMonederos().add(monederoComida);
 
         // Transacciones para Jorge
-        Transaccion deposito1 = new Deposito(9001, LocalDate.of(2024, 12, 20), 10_000, "Depósito para comida", ahorroJorge, monederoComida);
-        Transaccion retiro1 = new Retiro(9002, LocalDate.of(2025, 1, 10), 5_000, "Retiro efectivo", ahorroJorge, 10_000, 500, monederoComida);
-        Transaccion transferencia1 = new Transferencia(9003, LocalDate.of(2025, 3, 15), 3_000, "Transferencia a Andrea", ahorroJorge, null, monederoComida);
+        Transaccion deposito1 = new Deposito("9001", LocalDate.of(2024, 12, 20), 10_000, "Depósito para comida", ahorroJorge, monederoComida);
+        Transaccion retiro1 = new Retiro("9002", LocalDate.of(2025, 1, 10), 5_000, "Retiro efectivo", ahorroJorge, 10_000, 500, monederoComida);
+        Transaccion transferencia1 = new Transferencia("9003", LocalDate.of(2025, 3, 15), 3_000, "Transferencia a Andrea", ahorroJorge, null, monederoComida);
 
         ahorroJorge.agregarTransaccion(deposito1);
         ahorroJorge.agregarTransaccion(retiro1);
@@ -60,9 +60,9 @@ public class MonederoVirtualUtils {
         ahorroAndrea.getMonederos().add(monederoAhorro);
 
         // Transacciones para Andrea
-        Transaccion deposito2 = new Deposito(9004, LocalDate.of(2025, 2, 5), 20_000, "Ahorro para viaje", ahorroAndrea, monederoAhorro);
-        Transaccion retiro2 = new Retiro(9005, LocalDate.of(2025, 4, 12), 10_000, "Pago hotel", ahorroAndrea, 20_000, 800, monederoAhorro);
-        Transaccion transferencia2 = new Transferencia(9006, LocalDate.of(2025, 5, 1), 5_000, "Transferencia desde Jorge", ahorroAndrea, ahorroJorge, monederoAhorro);
+        Transaccion deposito2 = new Deposito("9004", LocalDate.of(2025, 2, 5), 20_000, "Ahorro para viaje", ahorroAndrea, monederoAhorro);
+        Transaccion retiro2 = new Retiro("9005", LocalDate.of(2025, 4, 12), 10_000, "Pago hotel", ahorroAndrea, 20_000, 800, monederoAhorro);
+        Transaccion transferencia2 = new Transferencia("9006", LocalDate.of(2025, 5, 1), 5_000, "Transferencia desde Jorge", ahorroAndrea, ahorroJorge, monederoAhorro);
 
         ahorroAndrea.agregarTransaccion(deposito2);
         ahorroAndrea.agregarTransaccion(retiro2);

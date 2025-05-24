@@ -4,8 +4,11 @@ import java.util.List;
 
 import co.edu.uniquindio.monedero_virtual.model.Cliente;
 import co.edu.uniquindio.monedero_virtual.model.Cuenta;
+import co.edu.uniquindio.monedero_virtual.model.Deposito;
+import co.edu.uniquindio.monedero_virtual.model.Monedero;
 import co.edu.uniquindio.monedero_virtual.model.MonederoVirtual;
 import co.edu.uniquindio.monedero_virtual.model.Transaccion;
+import co.edu.uniquindio.monedero_virtual.model.Transferencia;
 import co.edu.uniquindio.monedero_virtual.utils.MonederoVirtualUtils;
 
 public class ModelFactory {
@@ -77,6 +80,42 @@ public class ModelFactory {
 
     public List<Transaccion> getTrasaccionesCliente(int idCliente) {
         return monederoVirtual.getTrasaccionesCliente(idCliente);
+    }
+
+    public List<Transaccion> getDepositosCliente(int idCliente) {
+        return monederoVirtual.getDepositosCliente(idCliente);
+    }
+
+    public List<Transaccion> getTransferenciasCliente(int idCliente) {
+        return monederoVirtual.getTransferenciasCliente(idCliente);
+    }
+
+    public List<Monedero> getMonederosCliente(int idCliente) {
+        return monederoVirtual.getMonederosUsuario(idCliente);
+    }
+
+    public boolean realizarDeposito(Deposito deposito){
+        try {
+            monederoVirtual.realizarDeposito(deposito);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean realizarTransferencia(Transferencia transferencia){
+        try {
+            monederoVirtual.realizarTransferencia(transferencia);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public Cuenta buscarCuenta(int idCuenta) {
+        return monederoVirtual.buscarCuenta(idCuenta);
     }
     
 }
