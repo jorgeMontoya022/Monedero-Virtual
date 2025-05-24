@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import co.edu.uniquindio.monedero_virtual.ownStructures.ownLists.OwnLinkedList;
-import co.edu.uniquindio.monedero_virtual.ownStructures.ownQueues.OwnPriorityQueue;
+import co.edu.uniquindio.monedero_virtual.ownStructures.ownQueues.ownPriorityQueue;
 import co.edu.uniquindio.monedero_virtual.ownStructures.ownStack.ownStack;
 
 
@@ -15,7 +15,7 @@ public class Cuenta {
     private Cliente clienteAsociado;
     private Set<Monedero> monederos;
     private ownStack<Transaccion> transaccionesReversibles;
-    private OwnPriorityQueue<Transaccion> transaccionesProgramadas;
+    private ownPriorityQueue<Transaccion> transaccionesProgramadas;
     private OwnLinkedList<Transaccion> transacciones;
     
     public Cuenta(double monto, String banco, int numeroCuenta, Cliente clienteAsociado) {
@@ -25,7 +25,7 @@ public class Cuenta {
         this.clienteAsociado = clienteAsociado;
         this.monederos = new HashSet<>();
         this.transaccionesReversibles = new ownStack<>();
-        this.transaccionesProgramadas = new OwnPriorityQueue<>();
+        this.transaccionesProgramadas = new ownPriorityQueue<>();
         this.transacciones = new OwnLinkedList<>();
     }
 
@@ -87,12 +87,12 @@ public class Cuenta {
     }
 
 
-    public OwnPriorityQueue<Transaccion> getTransaccionesProgramadas() {
+    public ownPriorityQueue<Transaccion> getTransaccionesProgramadas() {
         return transaccionesProgramadas;
     }
 
 
-    public void setTransaccionesProgramadas(OwnPriorityQueue<Transaccion> transaccionesProgramadas) {
+    public void setTransaccionesProgramadas(ownPriorityQueue<Transaccion> transaccionesProgramadas) {
         this.transaccionesProgramadas = transaccionesProgramadas;
     }
 

@@ -227,7 +227,7 @@ public class MonederoVirtual {
         return null;
     }
 
-    private void procesarTransaccionesPendientes(Cuenta cuenta) throws Exception {
+    public void procesarTransaccionesPendientes(Cuenta cuenta) throws Exception {
         ownPriorityQueue<Transaccion> listaTransacciones = cuenta.getTransaccionesProgramadas();
         LocalDate hoy = LocalDate.now();
         while (!listaTransacciones.isEmpty()) {
