@@ -1,22 +1,28 @@
 package co.edu.uniquindio.monedero_virtual.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
-
 import co.edu.uniquindio.monedero_virtual.ownStructures.ownLists.OwnLinkedList;
-import co.edu.uniquindio.monedero_virtual.ownStructures.ownQueues.OwnPriorityQueue;
+//import co.edu.uniquindio.monedero_virtual.ownStructures.ownQueues.OwnPriorityQueue;
+import co.edu.uniquindio.monedero_virtual.ownStructures.ownQueues.ownPriorityQueue;
 import co.edu.uniquindio.monedero_virtual.ownStructures.ownTrees.OwnTreeAVL;
 
 public class MonederoVirtual {
     private OwnLinkedList<Cliente> listaClientes;
     private OwnLinkedList<Cuenta> listaCuentas;
     private OwnTreeAVL<Cliente> rankingClientes;
+    private OwnLinkedList<Transaccion> listaTransacciones;
 
     public MonederoVirtual() {
         this.listaClientes = new OwnLinkedList<>();
         this.listaCuentas = new OwnLinkedList<>();
+
         this.rankingClientes = new OwnTreeAVL<>();
+
+        this.listaTransacciones = new OwnLinkedList<>();
+
     }
 
     public OwnLinkedList<Cliente> getListaClientes() {
@@ -25,6 +31,10 @@ public class MonederoVirtual {
 
     public OwnLinkedList<Cuenta> getListaCuentas() {
         return listaCuentas;
+    }
+
+    public OwnLinkedList<Transaccion> getListaTransacciones() {
+        return listaTransacciones;
     }
 
     public boolean agregarCliente(Cliente cliente) {
@@ -191,9 +201,6 @@ public class MonederoVirtual {
         return cliente.getListaCuentas();
     }
 
-
-    
-
     public boolean agregarCuenta(Cuenta cuenta) {
 
         Cuenta cuentaEncontrada = buscarCuenta(cuenta.getNumeroCuenta());
@@ -212,8 +219,8 @@ public class MonederoVirtual {
     }
 
     private Cuenta buscarCuenta(int numeroCuenta) {
-        for(Cuenta cuenta : listaCuentas) {
-            if(cuenta.getNumeroCuenta() == numeroCuenta) {
+        for (Cuenta cuenta : listaCuentas) {
+            if (cuenta.getNumeroCuenta() == numeroCuenta) {
                 return cuenta;
             }
         }
@@ -221,22 +228,52 @@ public class MonederoVirtual {
     }
 
     private void procesarTransaccionesPendientes(Cuenta cuenta) throws Exception {
-        OwnPriorityQueue<Transaccion> listaTransacciones = cuenta.getTransaccionesProgramadas();
+        ownPriorityQueue<Transaccion> listaTransacciones = cuenta.getTransaccionesProgramadas();
         LocalDate hoy = LocalDate.now();
-        while (!listaTransacciones.isEmpty()){
+        while (!listaTransacciones.isEmpty()) {
             Transaccion transaccion = listaTransacciones.dequeue();
-            if (transaccion.getFechaTransaccion() == hoy){
-                if(transaccion instanceof Transferencia){
+            if (transaccion.getFechaTransaccion() == hoy) {
+                if (transaccion instanceof Transferencia) {
                     realizarTransferencia((Transferencia) transaccion);
-                }
-                else{
+                } else {
                     throw new Exception("No se admiten otro tipo de transacciones programadas");
                 }
             }
         }
-        
-        
-}
-    
+
+    }
+
+    public boolean eliminarCuenta(Cuenta cuentaSeleccionada) {
+        Cuenta cuentaEncontrada = buscarCuenta(cuentaSeleccionada.getNumeroCuenta());
+        if (cuentaEncontrada != null) {
+            listaCuentas.remove(cuentaSeleccionada);
+            eliminarCuentaDeCliente(cuentaSeleccionada.getNumeroCuenta());
+            return true;
+
+        }
+        return false;
+    }
+
+    private void eliminarCuentaDeCliente(int numeroCuenta) {
+        for (Cliente cliente : listaClientes) {
+            for (Cuenta cuenta : cliente.getListaCuentas()) {
+                if (cuenta.getNumeroCuenta() == numeroCuenta) {
+                    cliente.getListaCuentas().remove(cuenta);
+                    break;
+                }
+            }
+
+        }
+    }
+
+    public List<Transaccion> getTrasaccionesCliente(int idCliente) {
+        List<Transaccion> lista = new ArrayList<>();
+        for (Transaccion transaccion : listaTransacciones) {
+            if (transaccion.getCuenta().getClienteAsociado().getId() == idCliente) {
+                lista.add(transaccion);
+            }
+        }
+        return lista;
+    }
 
 }

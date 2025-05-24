@@ -204,6 +204,10 @@ public class RegistroViewController extends CoreViewController {
             mensaje += "- La cedula no es valida";
         }
 
+        if (!esAdulto(cliente.getFechaNacimiento())) {
+            mensaje += " - Debes ser mayor de edad.\n";
+        }
+
         if (!mensaje.isEmpty()) {
             mostrarMensaje("Notificación de validación", "Datos no validos", mensaje, Alert.AlertType.WARNING);
             return false;
@@ -211,6 +215,10 @@ public class RegistroViewController extends CoreViewController {
 
         return true;
 
+    }
+
+    private boolean esAdulto(LocalDate fechaNacimiento) {
+        return fechaNacimiento != null && fechaNacimiento.plusYears(18).isBefore(LocalDate.now());
     }
 
     private boolean validarId(int id) {

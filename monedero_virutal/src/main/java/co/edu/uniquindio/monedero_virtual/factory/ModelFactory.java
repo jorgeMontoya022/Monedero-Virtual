@@ -5,6 +5,7 @@ import java.util.List;
 import co.edu.uniquindio.monedero_virtual.model.Cliente;
 import co.edu.uniquindio.monedero_virtual.model.Cuenta;
 import co.edu.uniquindio.monedero_virtual.model.MonederoVirtual;
+import co.edu.uniquindio.monedero_virtual.model.Transaccion;
 import co.edu.uniquindio.monedero_virtual.utils.MonederoVirtualUtils;
 
 public class ModelFactory {
@@ -63,6 +64,19 @@ public class ModelFactory {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean eliminarCuenta(Cuenta cuentaSeleccionada) {
+        try {
+            return monederoVirtual.eliminarCuenta(cuentaSeleccionada);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<Transaccion> getTrasaccionesCliente(int idCliente) {
+        return monederoVirtual.getTrasaccionesCliente(idCliente);
     }
     
 }
