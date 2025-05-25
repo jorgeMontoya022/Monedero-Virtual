@@ -113,7 +113,7 @@ public class MonederoVirtual {
 
     }
 
-    public void realizarRetiro(Retiro retiro) throws Exception {
+    public boolean realizarRetiro(Retiro retiro) throws Exception {
 
         double monto = retiro.getMonto();
         Cuenta cuenta = retiro.getCuenta();
@@ -131,111 +131,95 @@ public class MonederoVirtual {
 
             cuenta.agregarTransaccion(retiro);
             // cuenta.agregarTransaccionReversible(retiro);
+            listaTransacciones.add(retiro);
+            return true;
 
         } catch (Exception e) {
             System.out.println("No se pudo realizar el retiro.");
+            return false;
         }
 
     }
 
+    public boolean realizarTransferencia(Transferencia transferencia) {
+    double monto = transferencia.getMonto();
+    Cuenta cuentaEmisora = transferencia.getCuenta();
+    Monedero monederoEmisor = transferencia.getMonedero();
+    Cuenta cuentaReceptora = transferencia.getCuentaRecibe();
 
-   public boolean realizarTransferencia(Transferencia transferencia) {
+    // Validación de existencia de clientes
+    if (!verificarClienteExiste(cuentaEmisora.getClienteAsociado().getEmail())) {
+        System.out.println("Error: El cliente emisor no existe.");
+        return false;
+    }
+
+    if (!verificarClienteExiste(cuentaReceptora.getClienteAsociado().getEmail())) {
+        System.out.println("Error: El cliente receptor no existe.");
+        return false;
+    }
+
+    // Validación de fondos suficientes
+    if (monederoEmisor.getMonto() < monto) {
+        System.out.println("Error: Fondos insuficientes en el monedero.");
+        return false;
+    }
+
+    if (cuentaEmisora.getMonto() < monto) {
+        System.out.println("Error: Fondos insuficientes en la cuenta.");
+        return false;
+    }
+
     try {
+        // Aplicar beneficios si existen
+        PuntosCliente puntosCliente = cuentaEmisora.getClienteAsociado().getPuntos();
+        Beneficio beneficioActivo = puntosCliente.getBeneficioActivo();
 
-        double monto = transferencia.getMonto();
-        Cuenta cuentaEmisora = transferencia.getCuenta();
-        Monedero monederoEmisor = transferencia.getMonedero();
-        Cuenta cuentaReceptora = transferencia.getCuentaRecibe();
+        if (beneficioActivo != null) {
+            switch (beneficioActivo) {
+                case BONO_SALDO:
+                    monederoEmisor.agregarDinero(50);
+                    System.out.println("Beneficio BONO_SALDO aplicado: se agregaron $50 al monedero.");
+                    break;
 
-        // Validaciones previas
-        if (!verificarClienteExiste(cuentaEmisora.getClienteAsociado().getEmail())) {
-            System.out.println("Error: El cliente emisor no existe.");
-            return false;
-        }
-        
-        if (!verificarClienteExiste(cuentaReceptora.getClienteAsociado().getEmail())) {
-            System.out.println("Error: El cliente receptor no existe.");
-            return false;
-        }
+                case REDUCCION_COMISION:
+                    // Ya no hay comisión, solo se limpia el estado
+                    System.out.println("Beneficio REDUCCION_COMISION omitido (no hay comisión).");
+                    break;
 
-
-        try {
-            double comision = monto * 0.05;
-            PuntosCliente puntosCliente = cuentaEmisora.getClienteAsociado().getPuntos();
-            Beneficio beneficioActivo = puntosCliente.getBeneficioActivo();
-
-            if (beneficioActivo != null) {
-                switch (beneficioActivo) {
-                    case REDUCCION_COMISION:
-                        comision = comision * 0.90;
-                        puntosCliente.setBeneficioActivo(null);
-                        puntosCliente.setFechaDeActivacion(null);
-                        break;
-                    case BONO_SALDO:
-                        monederoEmisor.agregarDinero(50);
-                        puntosCliente.setBeneficioActivo(null);
-                        puntosCliente.setFechaDeActivacion(null);
-                        break;
-    
-                    default:
-                        break;
-                }
+                default:
+                    break;
             }
-            monederoEmisor.retirarDinero(monto + comision);
-            cuentaEmisora.setMonto(cuentaEmisora.getMonto() - (monto + comision));
-            cuentaEmisora.getClienteAsociado().agregarPuntos(transferencia);
-            actualizarRanking(cuentaEmisora.getClienteAsociado());
 
-            cuentaReceptora.setMonto(cuentaReceptora.getMonto() + monto);
-
-
-            cuentaEmisora.agregarTransaccion(transferencia);
-            cuentaEmisora.agregarTransaccionReversible(transferencia);
-
-        } catch (Exception e) {
-            System.out.println("No se pudo realizar la transferencia.");
+            // Desactivar beneficio después de aplicarlo
+            puntosCliente.setBeneficioActivo(null);
+            puntosCliente.setFechaDeActivacion(null);
         }
 
-        // Verificar que el monedero tenga fondos suficientes
-        if (monederoEmisor.getMonto() < monto) {
-            System.out.println("Error: Fondos insuficientes en el monedero.");
-            return false;
-        }
-
-        // Verificar que la cuenta tenga fondos suficientes
-        if (cuentaEmisora.getMonto() < monto) {
-            System.out.println("Error: Fondos insuficientes en la cuenta.");
-            return false;
-        }
-
-        // Realizar la transferencia
+        // Realizar transferencia
         monederoEmisor.retirarDinero(monto);
         cuentaEmisora.setMonto(cuentaEmisora.getMonto() - monto);
         cuentaReceptora.setMonto(cuentaReceptora.getMonto() + monto);
-        
-        // Agregar puntos y actualizar ranking
+
+        // Agregar puntos al cliente emisor y actualizar su ranking
         cuentaEmisora.getClienteAsociado().agregarPuntos(transferencia);
         actualizarRanking(cuentaEmisora.getClienteAsociado());
 
         // Registrar la transacción
         cuentaEmisora.agregarTransaccion(transferencia);
         cuentaEmisora.agregarTransaccionReversible(transferencia);
-        listaTransacciones.add(transferencia); 
-
-        
+        cuentaReceptora.agregarTransaccion(transferencia);
+        listaTransacciones.add(transferencia);
 
         System.out.println("Transferencia realizada exitosamente.");
         return true;
 
     } catch (Exception e) {
         System.out.println("Error al realizar la transferencia: " + e.getMessage());
-        e.printStackTrace(); // Para debug
+        e.printStackTrace(); // Para depuración
         return false;
-
     }
 }
 
-    
 
     // METODOS PARA REVERTIR TRANSACCIONES
     public void revertirTransferencia(Transferencia transferencia) throws Exception {
@@ -301,22 +285,22 @@ public class MonederoVirtual {
         LocalDate hoy = LocalDate.now();
         ownPriorityQueue<Transaccion> transaccionesNoProcesadas = new ownPriorityQueue<>();
 
-        while (!listaTransacciones.isEmpty()){
+        while (!listaTransacciones.isEmpty()) {
             Transaccion transaccion = listaTransacciones.dequeue();
-            if (transaccion.getFechaTransaccion().equals(hoy)){
-                if (transaccion instanceof Transferencia){
-                realizarTransferencia((Transferencia) transaccion);
+            if (transaccion.getFechaTransaccion().equals(hoy)) {
+                if (transaccion instanceof Transferencia) {
+                    realizarTransferencia((Transferencia) transaccion);
                 } else {
                     throw new Exception("No se admiten otro tipo de transacciones programadas");
                 }
-         } else {
+            } else {
                 transaccionesNoProcesadas.enqueue(transaccion);
-         }
+            }
         }
-        while (!transaccionesNoProcesadas.isEmpty()){
+        while (!transaccionesNoProcesadas.isEmpty()) {
             listaTransacciones.enqueue(transaccionesNoProcesadas.dequeue());
+        }
     }
-}
 
     public boolean eliminarCuenta(Cuenta cuentaSeleccionada) {
         Cuenta cuentaEncontrada = buscarCuenta(cuentaSeleccionada.getNumeroCuenta());
@@ -370,5 +354,3 @@ public class MonederoVirtual {
         return monederosCliente;
     }
 }
-
-
