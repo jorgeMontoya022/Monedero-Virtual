@@ -6,7 +6,7 @@ public class Transferencia  extends Transaccion  {
 
     private Cuenta cuentaRecibe;
 
-    public Transferencia(int idTransaccion, LocalDate fechaTransaccion, double monto, String descripcion, Cuenta cuenta, Cuenta cuentaRecibe, Monedero monedero) {
+    public Transferencia(String idTransaccion, LocalDate fechaTransaccion, double monto, String descripcion, Cuenta cuenta, Cuenta cuentaRecibe, Monedero monedero) {
         super(idTransaccion, fechaTransaccion, monto, descripcion, cuenta, monedero);
         this.cuentaRecibe = cuentaRecibe;
     }

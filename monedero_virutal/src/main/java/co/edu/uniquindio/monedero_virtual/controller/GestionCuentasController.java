@@ -19,4 +19,8 @@ public class GestionCuentasController {
     public boolean agregarCuenta(Cuenta cuenta) {
         return modelFactory.agregarCuenta(cuenta);
     }
+
+    public boolean eliminarCuenta(Cuenta cuentaSeleccionada) {
+        return modelFactory.eliminarCuenta(cuentaSeleccionada);
+    }
 }
