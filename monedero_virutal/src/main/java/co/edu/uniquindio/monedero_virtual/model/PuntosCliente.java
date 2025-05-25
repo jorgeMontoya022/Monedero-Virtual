@@ -1,11 +1,16 @@
 package co.edu.uniquindio.monedero_virtual.model;
 
+import java.time.LocalDate;
+
+import co.edu.uniquindio.monedero_virtual.model.enums.Beneficio;
 import co.edu.uniquindio.monedero_virtual.model.enums.TipoRango;
 
 public class PuntosCliente {
 
     private Cliente cliente;
     private int puntosAcumulados;
+    private Beneficio beneficioActivo;
+    private LocalDate fechaDeActivacion;
 
 
     public PuntosCliente(Cliente cliente) {
@@ -52,12 +57,48 @@ public class PuntosCliente {
             this.puntosAcumulados -= puntos;
             cliente.setTipoRango(TipoRango.obtenerRango(this.puntosAcumulados));
             return true;
-
-            
         }
         return false;
         
     }
+
+    public Beneficio getBeneficioActivo() {
+        return beneficioActivo;
+    }
+
+    public void setBeneficioActivo(Beneficio beneficioActivo) {
+        this.beneficioActivo = beneficioActivo;
+    }
+
+    public boolean canjearPuntos (Beneficio beneficio){
+        int puntosRequeridos;
+
+        switch (beneficio) {
+            case REDUCCION_COMISION:
+                puntosRequeridos = 100;
+                break;
+            case MES_LIBRE_RETIROS:
+                puntosRequeridos = 500;
+                break;
+            case BONO_SALDO:
+                puntosRequeridos = 1000;
+                break;
+            default:
+                return false;
+        }
+        if (consumirPuntos(puntosRequeridos)){
+            beneficioActivo = beneficio;
+            fechaDeActivacion = LocalDate.now();
+            return true;
+        }
+        return false;
+    }
+
+    public void setFechaDeActivacion(LocalDate fechaDeActivacion) {
+        this.fechaDeActivacion = fechaDeActivacion;
+    }
+
+
     
 
 

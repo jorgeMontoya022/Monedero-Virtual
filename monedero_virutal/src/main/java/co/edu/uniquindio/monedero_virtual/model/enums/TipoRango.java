@@ -14,7 +14,7 @@ public enum TipoRango {
         this.puntosMinimos = puntosMinimos;
     }
 
-    public int getPuntosMinimos(){
+    public int getPuntosMinimos(){  
         return puntosMinimos;
     }
     
