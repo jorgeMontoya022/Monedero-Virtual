@@ -5,7 +5,7 @@ import java.util.List;
 
 import co.edu.uniquindio.monedero_virtual.model.enums.Beneficio;
 import co.edu.uniquindio.monedero_virtual.ownStructures.ownLists.OwnLinkedList;
-import co.edu.uniquindio.monedero_virtual.ownStructures.ownQueues.OwnPriorityQueue;
+import co.edu.uniquindio.monedero_virtual.ownStructures.ownQueues.ownPriorityQueue;
 import co.edu.uniquindio.monedero_virtual.ownStructures.ownTrees.OwnTreeAVL;
 
 public class MonederoVirtual {
@@ -127,55 +127,55 @@ public class MonederoVirtual {
     }
     public void realizarTransferencia(Transferencia transferencia) throws Exception {
 
-    double monto = transferencia.getMonto();
-    Cuenta cuentaEmisora = transferencia.getCuenta();
-    Monedero monederoEmisor = transferencia.getMonedero();
-    Cuenta cuentaReceptora = transferencia.getCuentaRecibe();
+        double monto = transferencia.getMonto();
+        Cuenta cuentaEmisora = transferencia.getCuenta();
+        Monedero monederoEmisor = transferencia.getMonedero();
+        Cuenta cuentaReceptora = transferencia.getCuentaRecibe();
 
-    if (!verificarClienteExiste(cuentaEmisora.getClienteAsociado().getEmail())) {
-        throw new Exception("No se puede realizar la transferencia. El cliente no existe.");
-    }
-    if (!verificarClienteExiste(cuentaReceptora.getClienteAsociado().getEmail())) {
-        throw new Exception("No se puede realizar la transferencia. El cliente de destino no existe.");
-    }
-
-    try {
-        double comision = monto * 0.05;
-        PuntosCliente puntosCliente = cuentaEmisora.getClienteAsociado().getPuntos();
-        Beneficio beneficioActivo = puntosCliente.getBeneficioActivo();
-
-        if (beneficioActivo != null) {
-            switch (beneficioActivo) {
-                case REDUCCION_COMISION:
-                    comision = comision * 0.90;
-                    puntosCliente.setBeneficioActivo(null);
-                    puntosCliente.setFechaDeActivacion(null);
-                    break;
-                case BONO_SALDO:
-                    monederoEmisor.agregarDinero(50);
-                    puntosCliente.setBeneficioActivo(null);
-                    puntosCliente.setFechaDeActivacion(null);
-                    break;
-    
-                default:
-                    break;
-            }
+        if (!verificarClienteExiste(cuentaEmisora.getClienteAsociado().getEmail())) {
+            throw new Exception("No se puede realizar la transferencia. El cliente no existe.");
         }
-        monederoEmisor.retirarDinero(monto + comision);
-        cuentaEmisora.setMonto(cuentaEmisora.getMonto() - (monto + comision));
-        cuentaEmisora.getClienteAsociado().agregarPuntos(transferencia);
-        actualizarRanking(cuentaEmisora.getClienteAsociado());
+        if (!verificarClienteExiste(cuentaReceptora.getClienteAsociado().getEmail())) {
+            throw new Exception("No se puede realizar la transferencia. El cliente de destino no existe.");
+        }
 
-        cuentaReceptora.setMonto(cuentaReceptora.getMonto() + monto);
+        try {
+            double comision = monto * 0.05;
+            PuntosCliente puntosCliente = cuentaEmisora.getClienteAsociado().getPuntos();
+            Beneficio beneficioActivo = puntosCliente.getBeneficioActivo();
+
+            if (beneficioActivo != null) {
+                switch (beneficioActivo) {
+                    case REDUCCION_COMISION:
+                        comision = comision * 0.90;
+                        puntosCliente.setBeneficioActivo(null);
+                        puntosCliente.setFechaDeActivacion(null);
+                        break;
+                    case BONO_SALDO:
+                        monederoEmisor.agregarDinero(50);
+                        puntosCliente.setBeneficioActivo(null);
+                        puntosCliente.setFechaDeActivacion(null);
+                        break;
+    
+                    default:
+                        break;
+                }
+            }
+            monederoEmisor.retirarDinero(monto + comision);
+            cuentaEmisora.setMonto(cuentaEmisora.getMonto() - (monto + comision));
+            cuentaEmisora.getClienteAsociado().agregarPuntos(transferencia);
+            actualizarRanking(cuentaEmisora.getClienteAsociado());
+
+            cuentaReceptora.setMonto(cuentaReceptora.getMonto() + monto);
 
 
-        cuentaEmisora.agregarTransaccion(transferencia);
-        cuentaEmisora.agregarTransaccionReversible(transferencia);
+            cuentaEmisora.agregarTransaccion(transferencia);
+            cuentaEmisora.agregarTransaccionReversible(transferencia);
 
-    } catch (Exception e) {
-        System.out.println("No se pudo realizar la transferencia.");
+        } catch (Exception e) {
+            System.out.println("No se pudo realizar la transferencia.");
+        }
     }
-}
 
     
 
@@ -242,26 +242,26 @@ public class MonederoVirtual {
     }
 
     private void procesarTransaccionesPendientes(Cuenta cuenta) throws Exception {
-    OwnPriorityQueue<Transaccion> listaTransacciones = cuenta.getTransaccionesProgramadas();
-    LocalDate hoy = LocalDate.now();
-    OwnPriorityQueue<Transaccion> transaccionesNoProcesadas = new OwnPriorityQueue<>();
+        ownPriorityQueue<Transaccion> listaTransacciones = cuenta.getTransaccionesProgramadas();
+        LocalDate hoy = LocalDate.now();
+        ownPriorityQueue<Transaccion> transaccionesNoProcesadas = new ownPriorityQueue<>();
 
-    while (!listaTransacciones.isEmpty()){
-        Transaccion transaccion = listaTransacciones.dequeue();
-        if (transaccion.getFechaTransaccion().equals(hoy)){
-            if (transaccion instanceof Transferencia){
-                realizarTransferencia((Transferencia) transaccion);
+        while (!listaTransacciones.isEmpty()){
+            Transaccion transaccion = listaTransacciones.dequeue();
+            if (transaccion.getFechaTransaccion().equals(hoy)){
+                if (transaccion instanceof Transferencia){
+                    realizarTransferencia((Transferencia) transaccion);
+                } else {
+                    throw new Exception("No se admiten otro tipo de transacciones programadas");
+                }
             } else {
-                throw new Exception("No se admiten otro tipo de transacciones programadas");
+                transaccionesNoProcesadas.enqueue(transaccion);
             }
-        } else {
-            transaccionesNoProcesadas.enqueue(transaccion);
         }
+        while (!transaccionesNoProcesadas.isEmpty()){
+            listaTransacciones.enqueue(transaccionesNoProcesadas.dequeue());
+     }
     }
-    while (!transaccionesNoProcesadas.isEmpty()){
-        listaTransacciones.enqueue(transaccionesNoProcesadas.dequeue());
-    }
-}
         
         
 }
