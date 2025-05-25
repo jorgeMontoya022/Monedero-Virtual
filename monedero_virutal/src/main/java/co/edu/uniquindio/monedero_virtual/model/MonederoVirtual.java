@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-
+import co.edu.uniquindio.monedero_virtual.model.enums.Beneficio;
 import co.edu.uniquindio.monedero_virtual.ownStructures.ownLists.OwnLinkedList;
-import co.edu.uniquindio.monedero_virtual.ownStructures.ownQueues.OwnPriorityQueue;
+import co.edu.uniquindio.monedero_virtual.ownStructures.ownQueues.ownPriorityQueue;
 import co.edu.uniquindio.monedero_virtual.ownStructures.ownTrees.OwnTreeAVL;
 
 public class MonederoVirtual {
@@ -250,26 +250,26 @@ public class MonederoVirtual {
     }
 
     private void procesarTransaccionesPendientes(Cuenta cuenta) throws Exception {
-        OwnPriorityQueue<Transaccion> listaTransacciones = cuenta.getTransaccionesProgramadas();
+        ownPriorityQueue<Transaccion> listaTransacciones = cuenta.getTransaccionesProgramadas();
         LocalDate hoy = LocalDate.now();
+        ownPriorityQueue<Transaccion> transaccionesNoProcesadas = new ownPriorityQueue<>();
+
         while (!listaTransacciones.isEmpty()){
             Transaccion transaccion = listaTransacciones.dequeue();
-            if (transaccion.getFechaTransaccion() == hoy){
-                if(transaccion instanceof Transferencia){
-                    realizarTransferencia((Transferencia) transaccion);
+            if (transaccion.getFechaTransaccion().equals(hoy)){
+                if (transaccion instanceof Transferencia){
+                realizarTransferencia((Transferencia) transaccion);
                 } else {
                     throw new Exception("No se admiten otro tipo de transacciones programadas");
                 }
-            } else {
+         } else {
                 transaccionesNoProcesadas.enqueue(transaccion);
-            }
+         }
         }
         while (!transaccionesNoProcesadas.isEmpty()){
             listaTransacciones.enqueue(transaccionesNoProcesadas.dequeue());
-     }
     }
-
-    }
+}
 
     public boolean eliminarCuenta(Cuenta cuentaSeleccionada) {
         Cuenta cuentaEncontrada = buscarCuenta(cuentaSeleccionada.getNumeroCuenta());
@@ -322,5 +322,6 @@ public class MonederoVirtual {
         }
         return monederosCliente;
     }
+}
 
 
