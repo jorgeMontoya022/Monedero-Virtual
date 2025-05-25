@@ -19,23 +19,22 @@ public class MonederoVirtualUtils {
                 LocalDate.now(),
                 "Quimbaya, Quindío",
                 TipoRango.BRONCE,
-                1097032932
-        );
+                1097032932);
 
         Cuenta ahorroJorge = new CuentaAhorrro(1_000_000, "Davivienda", 109989022, jorge);
         Cuenta corrienteJorge = new CuentaCorriente(1_500_000, "Banco de Bogotá", 1022938292, jorge);
 
-        Monedero monederoComida = new Monedero(0, 0, "Comida", corrienteJorge);
+        Monedero monederoComida = new Monedero(1029, 20000, "Comida", corrienteJorge);
         ahorroJorge.getMonederos().add(monederoComida);
 
         // Transacciones para Jorge
-        Transaccion deposito1 = new Deposito("9001", LocalDate.of(2024, 12, 20), 10_000, "Depósito para comida", ahorroJorge, monederoComida);
-        Transaccion retiro1 = new Retiro("9002", LocalDate.of(2025, 1, 10), 5_000, "Retiro efectivo", ahorroJorge, 10_000, 500, monederoComida);
-        Transaccion transferencia1 = new Transferencia("9003", LocalDate.of(2025, 3, 15), 3_000, "Transferencia a Andrea", ahorroJorge, null, monederoComida);
+        Transaccion deposito1 = new Deposito("9001", LocalDate.of(2024, 12, 20), 10_000, "Depósito para comida",
+                ahorroJorge, monederoComida);
+        Transaccion retiro1 = new Retiro("9002", LocalDate.of(2025, 1, 10), 5_000, "Retiro efectivo", ahorroJorge,
+                10_000, 500, monederoComida);
 
         ahorroJorge.agregarTransaccion(deposito1);
         ahorroJorge.agregarTransaccion(retiro1);
-        ahorroJorge.agregarTransaccion(transferencia1);
 
         jorge.getListaCuentas().add(corrienteJorge);
         jorge.getListaCuentas().add(ahorroJorge);
@@ -50,19 +49,21 @@ public class MonederoVirtualUtils {
                 LocalDate.now(),
                 "Armenia, Quindío",
                 TipoRango.PLATA,
-                1001122334
-        );
+                1001122334);
 
         Cuenta ahorroAndrea = new CuentaAhorrro(500_000, "Bancolombia", 204455667, andrea);
         Cuenta corrienteAndrea = new CuentaCorriente(800_000, "Nequi", 889977445, andrea);
 
-        Monedero monederoAhorro = new Monedero(0, 0, "Ahorro Viaje", corrienteAndrea);
+        Monedero monederoAhorro = new Monedero(2932, 30000, "Ahorro Viaje", corrienteAndrea);
         ahorroAndrea.getMonederos().add(monederoAhorro);
 
         // Transacciones para Andrea
-        Transaccion deposito2 = new Deposito("9004", LocalDate.of(2025, 2, 5), 20_000, "Ahorro para viaje", ahorroAndrea, monederoAhorro);
-        Transaccion retiro2 = new Retiro("9005", LocalDate.of(2025, 4, 12), 10_000, "Pago hotel", ahorroAndrea, 20_000, 800, monederoAhorro);
-        Transaccion transferencia2 = new Transferencia("9006", LocalDate.of(2025, 5, 1), 5_000, "Transferencia desde Jorge", ahorroAndrea, ahorroJorge, monederoAhorro);
+        Transaccion deposito2 = new Deposito("9004", LocalDate.of(2025, 2, 5), 20_000, "Ahorro para viaje",
+                ahorroAndrea, monederoAhorro);
+        Transaccion retiro2 = new Retiro("9005", LocalDate.of(2025, 4, 12), 10_000, "Pago hotel", ahorroAndrea, 20_000,
+                800, monederoAhorro);
+        Transaccion transferencia2 = new Transferencia("9006", LocalDate.of(2025, 5, 1), 5_000,
+                "Transferencia desde Jorge", ahorroAndrea, ahorroJorge, monederoAhorro);
 
         ahorroAndrea.agregarTransaccion(deposito2);
         ahorroAndrea.agregarTransaccion(retiro2);
@@ -70,6 +71,13 @@ public class MonederoVirtualUtils {
 
         andrea.getListaCuentas().add(corrienteAndrea);
         andrea.getListaCuentas().add(ahorroAndrea);
+
+
+        //Transferencia de Jorge a Andrea
+
+        Transaccion transferencia1 = new Transferencia("9003", LocalDate.of(2025, 3, 15), 3_000,
+                "Transferencia a Andrea", ahorroJorge, ahorroAndrea, monederoComida);
+        ahorroJorge.agregarTransaccion(transferencia1);
 
         // ------------------- Construcción del sistema -------------------
         MonederoVirtual sistema = new MonederoVirtual();

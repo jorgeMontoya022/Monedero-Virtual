@@ -12,6 +12,9 @@ import co.edu.uniquindio.monedero_virtual.model.Monedero;
 import co.edu.uniquindio.monedero_virtual.model.Transaccion;
 import co.edu.uniquindio.monedero_virtual.model.Transferencia;
 import co.edu.uniquindio.monedero_virtual.utils.Sesion;
+import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverManagement;
+import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverView;
+import co.edu.uniquindio.monedero_virtual.view.obeserver.TipoEvento;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,11 +28,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
-public class GestionTransferenciasViewController extends CoreViewController{
+public class GestionTransferenciasViewController extends CoreViewController implements ObserverView {
 
     GestionTransferenciasController transferenciasController;
     Cliente clienteLogueado;
-    ObservableList<Transaccion>  listaTransferencias = FXCollections.observableArrayList();
+    Transferencia transferenciaSeleccionada;
+    ObservableList<Transaccion> listaTransferencias = FXCollections.observableArrayList();
 
     @FXML
     private ResourceBundle resources;
@@ -102,88 +106,16 @@ public class GestionTransferenciasViewController extends CoreViewController{
     void initialize() {
         transferenciasController = new GestionTransferenciasController();
         clienteLogueado = (Cliente) Sesion.getInstance().getCliente();
+        ObserverManagement.getInstance().addObserver(TipoEvento.CUENTA, this);
+        ObserverManagement.getInstance().addObserver(TipoEvento.MONEDERO, this);
+
         initView();
+
     }
 
     @FXML
     void onTransfer(ActionEvent event) {
-        Transferencia transferencia = transferenciaBuilder();
-        if(transferenciasController.realizarTransferencia(transferencia)){
-            mostrarMensaje("", "Transferencia exitosa!",
-                        "Se ha realizado una transferencia de " + transferencia.getMonto(), Alert.AlertType.CONFIRMATION);
-        }else{
-            mostrarMensaje("Error", "Se ha producido un error",
-                        "No se realizó la transferencia", Alert.AlertType.ERROR);
-        }
-    }
-
-    private Transferencia transferenciaBuilder() {
-        String idTransaccion;
-        SecureRandom random = new SecureRandom();
-        idTransaccion = String.format("%09d", random.nextInt(100_000_000));
-
-        String montoText = amountField.getText();
-        double monto;
-        try {
-            monto = Double.parseDouble(montoText);
-            if (monto <= 0) {
-                mostrarMensaje("Error", "El monto debe ser mayor a cero",
-                        "Por favor, ingrese un monto válido", Alert.AlertType.ERROR);
-                return null;
-            }
-        } catch (NumberFormatException e) {
-            mostrarMensaje("Error", "El monto debe ser un número",
-                    "Por favor, ingrese un monto válido", Alert.AlertType.ERROR);
-            return null;
-        }
-
-        String idCuentaDestinoText = destinationAccountField.getText();
-        int idCuentaDestino;
-        try {
-            idCuentaDestino = Integer.parseInt(idCuentaDestinoText);
-        } catch (NumberFormatException e) {
-            mostrarMensaje("Advertencia", "Debe enviarse a una cuenta",
-                    "Por favor, ingrese el número de la cuenta destinataria", Alert.AlertType.WARNING);
-            return null;
-        }
-
-        if(descriptionField.getText() == null){
-            mostrarMensaje("Advertencia", "Debe tener una descripción",
-                    "Por favor, ingrese una descripción", Alert.AlertType.WARNING);
-            return null;
-        }
-
-        if(originAccountComboBox.getValue() == null){
-            mostrarMensaje("Advertencia", "Debe seleccionar una cuenta",
-                    "Por favor, seleccione una cuenta", Alert.AlertType.WARNING);
-            return null;
-        }
-
-        if(walletComboBox.getValue() == null){
-            mostrarMensaje("Advertencia", "Debe seleccionar un monedero",
-                    "Por favor, seleccione un monedero", Alert.AlertType.WARNING);
-            return null;
-        }
-
-        Cuenta cuentaDestino;
-        cuentaDestino = transferenciasController.buscarCuenta(idCuentaDestino);
-        if(cuentaDestino == null){
-            mostrarMensaje("Error", "No se encontró la cuenta destinataria",
-                    "Por favor, ingrese el número de una cuenta existente", Alert.AlertType.ERROR);
-            return null;
-        }
-
-        Transferencia transferencia = new Transferencia(
-                idTransaccion,
-                LocalDate.now(),
-                monto,
-                descriptionField.getText(),
-                originAccountComboBox.getValue(),
-                cuentaDestino,
-                walletComboBox.getValue()
-        );
-
-        return transferencia;
+        realizarTransferencia();
     }
 
     private void initView() {
@@ -192,6 +124,7 @@ public class GestionTransferenciasViewController extends CoreViewController{
         initializeDataCombobox();
         transfersTable.getItems().clear();
         transfersTable.setItems(listaTransferencias);
+        listenerSelection();
         mostrarInformacion();
     }
 
@@ -202,11 +135,14 @@ public class GestionTransferenciasViewController extends CoreViewController{
                 cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getCuentaRecibe())));
         amountColumn.setCellValueFactory(
                 cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getMonto())));
-        transferIdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIdTransaccion()));
+        transferIdColumn
+                .setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIdTransaccion()));
         walletColumn.setCellValueFactory(
                 cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getMonedero())));
-        dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getFechaTransaccion())));
-        descriptionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescripcion()));
+        dateColumn.setCellValueFactory(
+                cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getFechaTransaccion())));
+        descriptionColumn
+                .setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescripcion()));
     }
 
     private void getTransferencias() {
@@ -217,6 +153,8 @@ public class GestionTransferenciasViewController extends CoreViewController{
 
     private void initializeDataCombobox() {
         int idCliente = clienteLogueado.getId();
+        originAccountComboBox.getItems().clear();
+        walletComboBox.getItems().clear();
         originAccountComboBox.getItems().addAll(transferenciasController.getCuentasUsuario(idCliente));
         walletComboBox.getItems().addAll(transferenciasController.getMonederosCliente(idCliente));
     }
@@ -229,11 +167,174 @@ public class GestionTransferenciasViewController extends CoreViewController{
         descriptionField.clear();
     }
 
+    private void listenerSelection() {
+        transfersTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            transferenciaSeleccionada = (Transferencia) newSelection;
+            mostrarInformacionCampos(transferenciaSeleccionada);
+
+        });
+    }
+
+    private void mostrarInformacionCampos(Transferencia transferenciaSeleccionada) {
+        if (transferenciaSeleccionada != null) {
+            amountField.setText(String.valueOf(transferenciaSeleccionada.getMonto()));
+            destinationAccountField
+                    .setText(String.valueOf(transferenciaSeleccionada.getCuentaRecibe().getNumeroCuenta()));
+            descriptionField.setText(transferenciaSeleccionada.getDescripcion());
+            originAccountComboBox.setValue(transferenciaSeleccionada.getCuenta());
+            walletComboBox.setValue(transferenciaSeleccionada.getMonedero());
+        }
+    }
+
     private void mostrarInformacion() {
         String nombreCompleto = clienteLogueado.getNombreCompleto();
         String primerNombre = nombreCompleto.split(" ")[0]; // divide por espacios y toma el primero
         userNameLabel.setText("Tus transferencias, " + primerNombre);
     }
 
+    private void realizarTransferencia() {
+        Transferencia transferencia = buildTransferencia();
+        if (transferencia == null) {
+            mostrarMensaje("Error", "Datos no válidos", "Error al construir la transferencia", Alert.AlertType.ERROR);
+            return;
+        }
+
+        if (validarDatos(transferencia)) {
+            if (mostrarMensajeConfirmacion("Desea realizar la transferencia")) {
+                if (transferenciasController.realizarTransferencia(transferencia)) {
+                    listaTransferencias.add(transferencia);
+                    ObserverManagement.getInstance().notifyObservers(TipoEvento.TRANSFERENCIA);
+                    limpiarCampos();
+                } else {
+                    mostrarMensaje("Error", "Transferencia no realizada", "No se pudo realizar la transferencia",
+                            Alert.AlertType.ERROR);
+                }
+            } else {
+                mostrarMensaje("Operación cancelada", "Transferencia no realizada", "Ha cancelado la transferencia.",
+                        Alert.AlertType.WARNING);
+            }
+        }
+    }
+
+    private Transferencia buildTransferencia() {
+        String idTransaccion;
+        SecureRandom random = new SecureRandom();
+        idTransaccion = String.format("%09d", random.nextInt(100_000_000));
+
+        // Parsear monto - solo verificar formato, no validar reglas de negocio
+        double monto = 0;
+        String montoText = amountField.getText();
+        if (montoText != null && !montoText.trim().isEmpty()) {
+            try {
+                monto = Double.parseDouble(montoText);
+            } catch (NumberFormatException e) {
+                // No hacer nada, se validará en validarDatos()
+            }
+        }
+
+        // Parsear número de cuenta destino - solo verificar formato
+        int idCuentaDestino = 0;
+        String idCuentaDestinoText = destinationAccountField.getText();
+        if (idCuentaDestinoText != null && !idCuentaDestinoText.trim().isEmpty()) {
+            try {
+                idCuentaDestino = Integer.parseInt(idCuentaDestinoText);
+            } catch (NumberFormatException e) {
+                // No hacer nada, se validará en validarDatos()
+            }
+        }
+
+        // Buscar cuenta destino (puede ser null si no existe)
+        Cuenta cuentaDestino = null;
+        if (idCuentaDestino > 0) {
+            cuentaDestino = transferenciasController.buscarCuenta(idCuentaDestino);
+        }
+
+        // Construir transferencia siempre (incluso con valores por defecto)
+        Transferencia transferencia = new Transferencia(
+                idTransaccion,
+                LocalDate.now(),
+                monto,
+                descriptionField.getText() != null ? descriptionField.getText() : "",
+                originAccountComboBox.getValue(),
+                cuentaDestino,
+                walletComboBox.getValue());
+
+        return transferencia;
+    }
+
+    private boolean validarDatos(Transferencia transferencia) {
+        String mensaje = "";
+
+        if (transferencia.getCuenta() == null) {
+            mensaje += "- La cuenta de origen es requerida.\n";
+        }
+
+        if (transferencia.getCuentaRecibe() == null) {
+            // Verificar si el campo está vacío o el número no es válido
+            String cuentaDestinoText = destinationAccountField.getText();
+            if (cuentaDestinoText == null || cuentaDestinoText.trim().isEmpty()) {
+                mensaje += "- La cuenta de destino es requerida.\n";
+            } else {
+                try {
+                    int numeroCuenta = Integer.parseInt(cuentaDestinoText.trim());
+                    if (numeroCuenta <= 0) {
+                        mensaje += "- El número de cuenta de destino debe ser mayor a cero.\n";
+                    } else {
+                        mensaje += "- La cuenta de destino no existe o no es válida.\n";
+                    }
+                } catch (NumberFormatException e) {
+                    mensaje += "- El número de cuenta de destino debe ser un número válido.\n";
+                }
+            }
+        }
+
+        // Validar monto
+        String montoText = amountField.getText();
+        if (montoText == null || montoText.trim().isEmpty()) {
+            mensaje += "- El monto es requerido.\n";
+        } else {
+            try {
+                double monto = Double.parseDouble(montoText.trim());
+                if (monto <= 0) {
+                    mensaje += "- El monto debe ser mayor a cero.\n";
+                }
+            } catch (NumberFormatException e) {
+                mensaje += "- El monto debe ser un número válido.\n";
+            }
+        }
+
+        if (transferencia.getDescripcion() == null || transferencia.getDescripcion().trim().isEmpty()) {
+            mensaje += "- La descripción es requerida.\n";
+        }
+
+        if (transferencia.getMonedero() == null) {
+            mensaje += "- El monedero es requerido.\n";
+        }
+
+        if (!mensaje.isEmpty()) {
+            mostrarMensaje("Notificación de validación", "Datos no válidos", mensaje, Alert.AlertType.WARNING);
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void updateView(TipoEvento event) {
+        switch (event) {
+            case MONEDERO:
+            
+                initializeDataCombobox();
+                break;
+
+            case CUENTA:
+                initializeDataCombobox();
+                break;
+
+            default:
+                break;
+        }
+
+    }
 
 }

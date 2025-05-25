@@ -11,11 +11,15 @@ import co.edu.uniquindio.monedero_virtual.model.Cuenta;
 import co.edu.uniquindio.monedero_virtual.model.CuentaAhorrro;
 import co.edu.uniquindio.monedero_virtual.model.CuentaCorriente;
 import co.edu.uniquindio.monedero_virtual.utils.Sesion;
+import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverManagement;
+import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverView;
+import co.edu.uniquindio.monedero_virtual.view.obeserver.TipoEvento;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -27,7 +31,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class GestionCuentasViewController extends CoreViewController {
+public class GestionCuentasViewController extends CoreViewController implements ObserverView {
 
     GestionCuentasController gestionCuentasController;
 
@@ -127,6 +131,10 @@ public class GestionCuentasViewController extends CoreViewController {
         gestionCuentasController = new GestionCuentasController();
         clienteLogueado = (Cliente) Sesion.getInstance().getCliente();
         initView();
+
+        ObserverManagement.getInstance().addObserver(TipoEvento.DEPOSITO, this);
+        ObserverManagement.getInstance().addObserver(TipoEvento.TRANSFERENCIA, this);
+        ObserverManagement.getInstance().addObserver(TipoEvento.RETIRO, this);
         setupFilter();
 
     }
@@ -233,6 +241,7 @@ public class GestionCuentasViewController extends CoreViewController {
         if (validarDatos(cuenta)) {
             if (gestionCuentasController.agregarCuenta(cuenta)) {
                 listaCuentas.add(cuenta);
+                ObserverManagement.getInstance().notifyObservers(TipoEvento.CUENTA);
                 mostrarMensaje("Notificación", "Cuenta agregada",
                         "La cuenta ha sido agregada con éxito", Alert.AlertType.INFORMATION);
                 mostrarCantidadCuentas();
@@ -330,6 +339,28 @@ public class GestionCuentasViewController extends CoreViewController {
         }
 
         return true;
+    }
+
+    @Override
+    public void updateView(TipoEvento event) {
+        switch (event) {
+            case TRANSFERENCIA:
+                getCuentas();
+                accountsTable.refresh();
+                break;
+            case DEPOSITO:
+                getCuentas();
+                accountsTable.refresh();
+                break;
+
+            case RETIRO:
+                getCuentas();
+                accountsTable.refresh();
+                break;
+
+            default:
+                break;
+        }
     }
 
 }

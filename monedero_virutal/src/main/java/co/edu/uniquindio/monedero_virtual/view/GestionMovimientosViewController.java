@@ -16,6 +16,9 @@ import co.edu.uniquindio.monedero_virtual.model.Transaccion;
 import co.edu.uniquindio.monedero_virtual.model.Transferencia;
 import co.edu.uniquindio.monedero_virtual.utils.Sesion;
 import co.edu.uniquindio.monedero_virtual.utils.services.ExportsPdfService;
+import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverManagement;
+import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverView;
+import co.edu.uniquindio.monedero_virtual.view.obeserver.TipoEvento;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,7 +35,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 
-public class GestionMovimientosViewController extends CoreViewController {
+public class GestionMovimientosViewController extends CoreViewController implements ObserverView {
 
     GestionMovimientosController gestionMovimientosController;
 
@@ -185,40 +188,40 @@ public class GestionMovimientosViewController extends CoreViewController {
     }
 
     private boolean validarDatosReporte() {
-    String mensaje = "";
+        String mensaje = "";
 
-    if (cbCuenta.getValue() == null) {
-        mensaje += "- Debe seleccionar una cuenta para generar el reporte.\n";
-    }
-
-    if (dpFechaInicio.getValue() == null) {
-        mensaje += "- Debe seleccionar la fecha de inicio del reporte.\n";
-    }
-
-    if (dpFechaFin.getValue() == null) {
-        mensaje += "- Debe seleccionar la fecha de fin del reporte.\n";
-    }
-
-    // Validar que la fecha de inicio no sea posterior a la fecha de fin
-    if (dpFechaInicio.getValue() != null && dpFechaFin.getValue() != null) {
-        if (dpFechaInicio.getValue().isAfter(dpFechaFin.getValue())) {
-            mensaje += "- La fecha de inicio no puede ser posterior a la fecha de fin.\n";
+        if (cbCuenta.getValue() == null) {
+            mensaje += "- Debe seleccionar una cuenta para generar el reporte.\n";
         }
-        
-        // Validar que las fechas no sean futuras
-        LocalDate hoy = LocalDate.now();
-        if (dpFechaInicio.getValue().isAfter(hoy) || dpFechaFin.getValue().isAfter(hoy)) {
-            mensaje += "- Las fechas no pueden ser futuras.\n";
+
+        if (dpFechaInicio.getValue() == null) {
+            mensaje += "- Debe seleccionar la fecha de inicio del reporte.\n";
         }
-    }
 
-    if (!mensaje.isEmpty()) {
-        mostrarMensaje("Validación de reporte", "Datos requeridos", mensaje, Alert.AlertType.WARNING);
-        return false;
-    }
+        if (dpFechaFin.getValue() == null) {
+            mensaje += "- Debe seleccionar la fecha de fin del reporte.\n";
+        }
 
-    return true;
-}
+        // Validar que la fecha de inicio no sea posterior a la fecha de fin
+        if (dpFechaInicio.getValue() != null && dpFechaFin.getValue() != null) {
+            if (dpFechaInicio.getValue().isAfter(dpFechaFin.getValue())) {
+                mensaje += "- La fecha de inicio no puede ser posterior a la fecha de fin.\n";
+            }
+
+            // Validar que las fechas no sean futuras
+            LocalDate hoy = LocalDate.now();
+            if (dpFechaInicio.getValue().isAfter(hoy) || dpFechaFin.getValue().isAfter(hoy)) {
+                mensaje += "- Las fechas no pueden ser futuras.\n";
+            }
+        }
+
+        if (!mensaje.isEmpty()) {
+            mostrarMensaje("Validación de reporte", "Datos requeridos", mensaje, Alert.AlertType.WARNING);
+            return false;
+        }
+
+        return true;
+    }
 
     @FXML
     void onSearchTransactions(ActionEvent event) {
@@ -231,6 +234,10 @@ public class GestionMovimientosViewController extends CoreViewController {
         gestionMovimientosController = new GestionMovimientosController();
         clienteLogueado = (Cliente) Sesion.getInstance().getCliente();
         mostrarInformacion(clienteLogueado);
+        ObserverManagement.getInstance().addObserver(TipoEvento.DEPOSITO, this);
+        ObserverManagement.getInstance().addObserver(TipoEvento.RETIRO, this);
+        ObserverManagement.getInstance().addObserver(TipoEvento.TRANSFERENCIA, this);
+        ObserverManagement.getInstance().addObserver(TipoEvento.CUENTA, this);
         initView();
 
     }
@@ -361,7 +368,8 @@ public class GestionMovimientosViewController extends CoreViewController {
     }
 
     private void initializeDataCombobox() {
-        // Reutilizar el controller de cuentas para obtener las cuentas del cliente
+        cbCuenta.getItems().clear();
+        
         GestionCuentasController gestionCuentasController = new GestionCuentasController();
         ObservableList<Cuenta> cuentasCliente = FXCollections.observableArrayList(
                 gestionCuentasController.getCuentasUsuario(clienteLogueado.getId()));
@@ -369,5 +377,30 @@ public class GestionMovimientosViewController extends CoreViewController {
         initializeComboBox(cbCuenta, cuentasCliente,
                 cuenta -> cuenta.getBanco() + " - " + cuenta.getNumeroCuenta());
     }
+
+   @Override
+public void updateView(TipoEvento event) {
+    switch (event) {
+        case TRANSFERENCIA:
+        case RETIRO:
+        case DEPOSITO:
+            getTransacciones();
+            transactionsTable.setItems(listaTransacciones);
+            actualizarTotalTransacciones(listaTransacciones.size());
+            break;
+        
+        case CUENTA:
+            // Cuando se crea/modifica una cuenta, actualizar el ComboBox
+            initializeDataCombobox();
+            // También actualizar transacciones por si hay nuevas
+            getTransacciones();
+            transactionsTable.setItems(listaTransacciones);
+            actualizarTotalTransacciones(listaTransacciones.size());
+            break;
+
+        default:
+            break;
+    }
+}
 
 }

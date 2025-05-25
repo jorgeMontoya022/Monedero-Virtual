@@ -96,22 +96,22 @@ public class ModelFactory {
 
     public boolean realizarDeposito(Deposito deposito){
         try {
-            monederoVirtual.realizarDeposito(deposito);
+           return monederoVirtual.realizarDeposito(deposito);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        return true;
+        
     }
 
     public boolean realizarTransferencia(Transferencia transferencia){
         try {
-            monederoVirtual.realizarTransferencia(transferencia);
+           return monederoVirtual.realizarTransferencia(transferencia);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        return true;
+       
     }
 
     public Cuenta buscarCuenta(int idCuenta) {

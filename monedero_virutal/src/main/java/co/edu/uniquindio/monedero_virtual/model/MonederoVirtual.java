@@ -92,7 +92,7 @@ public class MonederoVirtual {
     }
 
     // METODOS PARA TRANSACCIONES
-    public void realizarDeposito(Deposito deposito) throws Exception {
+    public boolean realizarDeposito(Deposito deposito) throws Exception {
 
         double monto = deposito.getMonto();
         Cuenta cuenta = deposito.getCuenta();
@@ -109,6 +109,7 @@ public class MonederoVirtual {
 
         cuenta.agregarTransaccion(deposito);
         // cuenta.agregarTransaccionReversible(deposito);
+        return true;
 
     }
 
@@ -136,19 +137,27 @@ public class MonederoVirtual {
         }
 
     }
-    public void realizarTransferencia(Transferencia transferencia) throws Exception {
+
+
+   public boolean realizarTransferencia(Transferencia transferencia) {
+    try {
 
         double monto = transferencia.getMonto();
         Cuenta cuentaEmisora = transferencia.getCuenta();
         Monedero monederoEmisor = transferencia.getMonedero();
         Cuenta cuentaReceptora = transferencia.getCuentaRecibe();
 
+        // Validaciones previas
         if (!verificarClienteExiste(cuentaEmisora.getClienteAsociado().getEmail())) {
-            throw new Exception("No se puede realizar la transferencia. El cliente no existe.");
+            System.out.println("Error: El cliente emisor no existe.");
+            return false;
         }
+        
         if (!verificarClienteExiste(cuentaReceptora.getClienteAsociado().getEmail())) {
-            throw new Exception("No se puede realizar la transferencia. El cliente de destino no existe.");
+            System.out.println("Error: El cliente receptor no existe.");
+            return false;
         }
+
 
         try {
             double comision = monto * 0.05;
@@ -186,7 +195,45 @@ public class MonederoVirtual {
         } catch (Exception e) {
             System.out.println("No se pudo realizar la transferencia.");
         }
+
+        // Verificar que el monedero tenga fondos suficientes
+        if (monederoEmisor.getMonto() < monto) {
+            System.out.println("Error: Fondos insuficientes en el monedero.");
+            return false;
+        }
+
+        // Verificar que la cuenta tenga fondos suficientes
+        if (cuentaEmisora.getMonto() < monto) {
+            System.out.println("Error: Fondos insuficientes en la cuenta.");
+            return false;
+        }
+
+        // Realizar la transferencia
+        monederoEmisor.retirarDinero(monto);
+        cuentaEmisora.setMonto(cuentaEmisora.getMonto() - monto);
+        cuentaReceptora.setMonto(cuentaReceptora.getMonto() + monto);
+        
+        // Agregar puntos y actualizar ranking
+        cuentaEmisora.getClienteAsociado().agregarPuntos(transferencia);
+        actualizarRanking(cuentaEmisora.getClienteAsociado());
+
+        // Registrar la transacción
+        cuentaEmisora.agregarTransaccion(transferencia);
+        cuentaEmisora.agregarTransaccionReversible(transferencia);
+        listaTransacciones.add(transferencia); 
+
+        
+
+        System.out.println("Transferencia realizada exitosamente.");
+        return true;
+
+    } catch (Exception e) {
+        System.out.println("Error al realizar la transferencia: " + e.getMessage());
+        e.printStackTrace(); // Para debug
+        return false;
+
     }
+}
 
     
 
