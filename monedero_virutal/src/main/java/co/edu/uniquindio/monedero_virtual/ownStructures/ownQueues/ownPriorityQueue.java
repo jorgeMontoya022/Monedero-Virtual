@@ -5,12 +5,12 @@ import co.edu.uniquindio.monedero_virtual.ownStructures.Node;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class OwnPriorityQueue<T extends Comparable<T>> implements Iterable<T> {
+public class ownPriorityQueue<T extends Comparable<T>> implements Iterable<T> {
 
     private Node<T> front;  // Apunta al primer nodo de la cola (frente)
     private int size;       // Tamaño de la cola
 
-    public OwnPriorityQueue() {
+    public ownPriorityQueue() {
         this.front = null;
         this.size = 0;
     }

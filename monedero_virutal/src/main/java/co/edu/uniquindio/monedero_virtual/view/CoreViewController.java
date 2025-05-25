@@ -1,7 +1,9 @@
 package co.edu.uniquindio.monedero_virtual.view;
 
 import java.util.Optional;
+import java.util.function.Function;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,7 +11,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DialogPane;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -171,6 +175,26 @@ public abstract class CoreViewController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    protected  <T> void initializeComboBox(ComboBox<T> comboBox,
+                                        ObservableList<T> items,
+                                        Function<T, String> displayFunction) {
+        comboBox.setItems(items);
+        comboBox.setCellFactory(lv -> new ListCell<T>() {
+            @Override
+            protected void updateItem(T item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "" : displayFunction.apply(item));
+            }
+        });
+        comboBox.setButtonCell(new ListCell<T>() {
+            @Override
+            protected void updateItem(T item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "" : displayFunction.apply(item));
+            }
+        });
     }
 
 }

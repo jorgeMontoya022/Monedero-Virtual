@@ -65,4 +65,11 @@ public class Monedero {
         monto -= cantidadRetirar;
     }
 
+
+    @Override
+    public String toString() {
+        return nombreMonedero;
+    }
+
+    
 }

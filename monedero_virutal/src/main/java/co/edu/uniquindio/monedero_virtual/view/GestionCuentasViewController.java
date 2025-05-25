@@ -1,6 +1,8 @@
 package co.edu.uniquindio.monedero_virtual.view;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import co.edu.uniquindio.monedero_virtual.controller.GestionCuentasController;
@@ -98,16 +100,18 @@ public class GestionCuentasViewController extends CoreViewController {
     @FXML
     void onClearFields(ActionEvent event) {
         limpiarCampos();
+        quitarSeleccion();
 
+    }
+
+    private void quitarSeleccion() {
+        accountsTable.getSelectionModel().clearSelection();
+        cuentaSeleccionada = null;
     }
 
     @FXML
     void onDeleteAccount(ActionEvent event) {
-
-    }
-
-    @FXML
-    void onSearchAccount(ActionEvent event) {
+        eliminarCuenta();
 
     }
 
@@ -123,6 +127,7 @@ public class GestionCuentasViewController extends CoreViewController {
         gestionCuentasController = new GestionCuentasController();
         clienteLogueado = (Cliente) Sesion.getInstance().getCliente();
         initView();
+        setupFilter();
 
     }
 
@@ -132,12 +137,11 @@ public class GestionCuentasViewController extends CoreViewController {
         initializeDataCombobox();
         accountsTable.getItems().clear();
         accountsTable.setItems(listaCuentas);
-        // listenerSelection();
+        listenerSelection();
         mostrarInformacion();
         mostrarCantidadCuentas();
     }
 
-    
     private void initDataBinding() {
         bankNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBanco()));
         accountIdColumn.setCellValueFactory(
@@ -145,6 +149,22 @@ public class GestionCuentasViewController extends CoreViewController {
         accountTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(getTipoCuenta(cellData.getValue())));
         amountColumn.setCellValueFactory(
                 cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getMonto())));
+
+    }
+
+    private void listenerSelection() {
+        accountsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            cuentaSeleccionada = newSelection;
+            mostrarInformacionCampos(cuentaSeleccionada);
+        });
+    }
+
+    private void mostrarInformacionCampos(Cuenta cuentaSeleccionada) {
+        if (cuentaSeleccionada != null) {
+            accountIdField.setText(String.valueOf(cuentaSeleccionada.getNumeroCuenta()));
+            bankNameField.setText(cuentaSeleccionada.getBanco());
+            accountTypeComboBox.setValue(getTipoCuenta(cuentaSeleccionada));
+        }
 
     }
 
@@ -170,14 +190,38 @@ public class GestionCuentasViewController extends CoreViewController {
         String nombreCompleto = clienteLogueado.getNombreCompleto();
         String primerNombre = nombreCompleto.split(" ")[0]; // divide por espacios y toma el primero
         userNameLabel.setText("Tus cuentas, " + primerNombre);
-        
+
     }
 
     private void mostrarCantidadCuentas() {
         labelTotalCuentas.setText("Total " + String.valueOf(listaCuentas.size()));
-    
+
     }
 
+    private void setupFilter() {
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            List<Cuenta> originalList = gestionCuentasController.getCuentasUsuario(clienteLogueado.getId());
+            ObservableList<Cuenta> filteredList = filtrarLista(originalList, newValue);
+            accountsTable.setItems(filteredList);
+
+        });
+    }
+
+    private ObservableList<Cuenta> filtrarLista(List<Cuenta> originalList, String newValue) {
+        List<Cuenta> filteredList = new ArrayList<>();
+        for (Cuenta cuenta : originalList) {
+            if (buscarCuenta(cuenta, newValue))
+                filteredList.add(cuenta);
+
+        }
+        return FXCollections.observableList(filteredList);
+    }
+
+    private boolean buscarCuenta(Cuenta cuenta, String newValue) {
+        return (String.valueOf(cuenta.getNumeroCuenta()).contains(newValue.toLowerCase()) ||
+                cuenta.getBanco().toLowerCase().contains(newValue.toLowerCase()));
+
+    }
 
     private void agregarCuenta() {
         Cuenta cuenta = buildDataCuenta();
@@ -200,10 +244,27 @@ public class GestionCuentasViewController extends CoreViewController {
         }
     }
 
+    private void eliminarCuenta() {
+        if (cuentaSeleccionada != null) {
+            if (mostrarMensajeConfirmacion("¿Está seguro de eliminar la cuenta seleccionada?")) {
+                if (gestionCuentasController.eliminarCuenta(cuentaSeleccionada)) {
+                    listaCuentas.remove(cuentaSeleccionada);
+                    mostrarCantidadCuentas();
+                    limpiarCampos();
+                    mostrarMensaje("Notificación", "Cuenta Eliminada",
+                            "La cuenta ha sido eliminada con éxito", Alert.AlertType.INFORMATION);
+                }
+            }
+        } else {
+            mostrarMensaje("Error", "Cuenta no seleccionada",
+                    "seleccione una cuenta para eliminar", Alert.AlertType.ERROR);
+        }
+    }
+
     private void limpiarCampos() {
-       bankNameField.clear();
-       accountIdField.clear();
-       accountTypeComboBox.setValue(null);
+        bankNameField.clear();
+        accountIdField.clear();
+        accountTypeComboBox.getSelectionModel().clearSelection();
     }
 
     private Cuenta buildDataCuenta() {
