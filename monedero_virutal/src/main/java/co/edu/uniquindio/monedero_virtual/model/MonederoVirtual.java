@@ -39,10 +39,16 @@ public class MonederoVirtual {
     }
 
     public boolean agregarCliente(Cliente cliente) {
+        //Busca en la lista de Clientes, si hay otro 
         Cliente clienteEncontrado = buscarCliente(cliente.getId());
+        /** Si el clienteEncontrado no es nulo, significa que un cliente
+         * con la misma ID ya está registrado, por lo cuál no se puede registrar
+         */
         if (clienteEncontrado != null) {
             return false;
         } else {
+        /** Se añade el cliente a la lista de clientes del sistema
+         * y se inserta al ranking de puntos ya que sus puntos se inicializan en 0*/
             listaClientes.add(cliente);
             try {
                 rankingClientes.insertar(cliente);
@@ -62,7 +68,8 @@ public class MonederoVirtual {
 
         }
     }
-
+    //Recorre la lista mediante un for (ya que ownLinkedList es Iterable)
+    //buscando un cliente dada una ID
     public Cliente buscarCliente(int id) {
         for (Cliente cliente : listaClientes) {
             if (cliente.getId() == (id)) {
@@ -400,29 +407,24 @@ public class MonederoVirtual {
         return monederosCliente;
     }
 
-    public boolean actualizarCliente(int id, Cliente clienteData) throws Exception {
-        Cliente clienteAcutal = buscarCliente(id);
-        if (clienteAcutal == null) {
-            throw new Exception("El cliente a actualizar no existe");
+  public boolean actualizarCliente(int id, Cliente clienteData) throws Exception {
+    Cliente clienteAcutal = buscarCliente(id);
+    if (clienteAcutal == null) {
+        throw new Exception("El cliente a actualizar no existe");
 
-        } else {
-            clienteAcutal.setNombreCompleto(clienteData.getNombreCompleto());
-            clienteAcutal.setCelular(clienteData.getCelular());
-            clienteAcutal.setEmail(clienteData.getEmail());
-            clienteAcutal.setFechaNacimiento(clienteData.getFechaNacimiento());
-            clienteAcutal.setDirección(clienteData.getDirección());
-            clienteAcutal.setFechaRegistro(clienteData.getFechaRegistro());
+    } else {
+        clienteAcutal.setNombreCompleto(clienteData.getNombreCompleto());
+        clienteAcutal.setCelular(clienteData.getCelular());
+        clienteAcutal.setEmail(clienteData.getEmail());
+        clienteAcutal.setFechaNacimiento(clienteData.getFechaNacimiento());
+        clienteAcutal.setDirección(clienteData.getDirección());
+        clienteAcutal.setFechaRegistro(clienteData.getFechaRegistro());
 
-            if (clienteData.getListaCuentas() != null) {
-                clienteAcutal.getListaCuentas().addAll(clienteData.getListaCuentas());
-            }
-
-            if (clienteData.getListaNotificacion() != null) {
-                clienteAcutal.getListaNotificacion().addAll((clienteData.getListaNotificacion()));
-            }
-
-            return true;
-
-        }
+        // ELIMINADO: Lógica que causaba duplicación de cuentas
+        // if (clienteData.getListaCuentas() != null) {
+        //     clienteAcutal.getListaCuentas().addAll(clienteData.getListaCuentas());
+        // }
+        return true;
     }
+}
 }

@@ -131,12 +131,12 @@ public class GestionCuentasViewController extends CoreViewController implements 
         gestionCuentasController = new GestionCuentasController();
         clienteLogueado = (Cliente) Sesion.getInstance().getCliente();
         initView();
+        setupFilter();
 
         ObserverManagement.getInstance().addObserver(TipoEvento.DEPOSITO, this);
         ObserverManagement.getInstance().addObserver(TipoEvento.TRANSFERENCIA, this);
         ObserverManagement.getInstance().addObserver(TipoEvento.RETIRO, this);
         ObserverManagement.getInstance().addObserver(TipoEvento.CLIENTE, this);
-        setupFilter();
 
     }
 
@@ -259,10 +259,12 @@ public class GestionCuentasViewController extends CoreViewController implements 
             if (mostrarMensajeConfirmacion("¿Está seguro de eliminar la cuenta seleccionada?")) {
                 if (gestionCuentasController.eliminarCuenta(cuentaSeleccionada)) {
                     listaCuentas.remove(cuentaSeleccionada);
-                    mostrarCantidadCuentas();
-                    limpiarCampos();
+                    ObserverManagement.getInstance().notifyObservers(TipoEvento.CUENTA);
                     mostrarMensaje("Notificación", "Cuenta Eliminada",
                             "La cuenta ha sido eliminada con éxito", Alert.AlertType.INFORMATION);
+                    mostrarCantidadCuentas();
+                    limpiarCampos();
+
                 }
             }
         } else {
