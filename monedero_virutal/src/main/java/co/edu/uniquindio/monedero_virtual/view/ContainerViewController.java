@@ -79,6 +79,12 @@ public class ContainerViewController extends CoreViewController implements Initi
     @FXML
     private Node gestionDepositosView;
 
+    @FXML
+    private Node gestionMonederosView;
+
+    @FXML
+    private Node gestionPuntosView;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         currentSectionLabel.setText("Mis Cuentas");
@@ -136,17 +142,19 @@ public class ContainerViewController extends CoreViewController implements Initi
         showMessage("Retiros");
         highlightSelectedButton("retiros");
     }
-    
+
     @FXML
     private void onMonederosButtonClicked(ActionEvent event) {
-        showMessage("Monederos");
+        showView("Monederos");
+        currentSectionLabel.setText("Mis monederos");
         highlightSelectedButton("monederos");
 
     }
 
     @FXML
     private void onPuntosButtonClicked(ActionEvent event) {
-        showMessage("Puntos");
+        showView("Puntos");
+        currentSectionLabel.setText("Mis Puntos");
         highlightSelectedButton("puntos");
     }
 
@@ -191,6 +199,8 @@ public class ContainerViewController extends CoreViewController implements Initi
         gestionTransferenciasView.setVisible(false);
         datosClienteView.setVisible(false);
         gestionDepositosView.setVisible(false);
+        gestionMonederosView.setVisible(false);
+        gestionPuntosView.setVisible(false);
 
         // Mostrar la vista seleccionada
         switch (viewName) {
@@ -208,6 +218,12 @@ public class ContainerViewController extends CoreViewController implements Initi
                 break;
             case "depósitos":
                 gestionDepositosView.setVisible(true);
+                break;
+            case "Monederos":
+                gestionMonederosView.setVisible(true);
+                break;
+            case "Puntos":
+                gestionPuntosView.setVisible(true);
                 break;
             default:
                 // Por defecto mostrar la vista de cuentas
@@ -228,6 +244,8 @@ public class ContainerViewController extends CoreViewController implements Initi
         gestionTransferenciasView.setVisible(false);
         datosClienteView.setVisible(false);
         gestionDepositosView.setVisible(false);
+        gestionMonederosView.setVisible(false);
+        gestionPuntosView.setVisible(false);
 
         // Mostrar mensaje en la etiqueta de sección
         currentSectionLabel.setText(sectionName + " (No implementado)");

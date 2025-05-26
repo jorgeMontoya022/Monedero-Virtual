@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<AnchorPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: linear-gradient(to bottom, #f5f7fa, #c3cfe2);" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.monedero_virtual.view.GestionPuntosViewController">
+    
+    <!-- Contenedor principal anclado a los bordes de la ventana para asegurar responsive design -->
+    <BorderPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+        <center>
+            <!-- Tarjeta principal que ocupa todo el espacio disponible -->
+            <VBox style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                
+                <!-- Sección superior con gradiente -->
+                <VBox spacing="8" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-padding: 15; -fx-background-radius: 15 15 0 0;">
+                    
+                    <!-- Header con saludo y botón de notificación -->
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+                        <Label fx:id="userNameLabel" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: white;" text="Tus puntos, Carlos" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        
+                        <!-- Botón de notificaciones -->
+                        <StackPane>
+                            <Button fx:id="notificationButton" onAction="#onAbrirNotificaciones" style="-fx-background-color: transparent; -fx-padding: 8;">
+                                <graphic>
+                                    <StackPane>
+                                        <Circle radius="18" style="-fx-fill: white; -fx-opacity: 0.85;" />
+                                        <Label style="-fx-font-size: 18; -fx-text-fill: #764ba2;" text="🔔" />
+                                    </StackPane>
+                                </graphic>
+                                <tooltip>
+                                    <Tooltip text="Notificaciones" />
+                                </tooltip>
+                            </Button>
+                            <!-- Indicador de notificaciones nuevas -->
+                            <Circle radius="6" style="-fx-fill: #ff4757;" StackPane.alignment="TOP_RIGHT">
+                                <StackPane.margin>
+                                    <Insets right="-3.0" top="-1.0" />
+                                </StackPane.margin>
+                            </Circle>
+                        </StackPane>
+                    </HBox>
+                    
+                    <!-- Título de la sección -->
+                    <Label style="-fx-font-size: 16; -fx-text-fill: white; -fx-opacity: 0.9;" text="Sistema de recompensas y beneficios" />
+                </VBox>
+                
+                <!-- Contenedor principal -->
+                <VBox alignment="CENTER" spacing="25" style="-fx-padding: 30;" VBox.vgrow="ALWAYS">
+                    
+                    <!-- Grid con la información de puntos -->
+                    <GridPane alignment="CENTER" hgap="30" vgap="20">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="ALWAYS" />
+                            <ColumnConstraints hgrow="ALWAYS" />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+                        
+                        <!-- Tarjeta de Puntos del Cliente -->
+                        <VBox alignment="CENTER" spacing="10" style="-fx-background-color: #f8f9fb; -fx-background-radius: 15; -fx-padding: 30; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 3); -fx-min-width: 280; -fx-min-height: 160;" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <Label style="-fx-font-size: 18; -fx-text-fill: #666666; -fx-font-weight: 500;" text="Puntos del Cliente" />
+                            <Label fx:id="puntosClienteLabel" style="-fx-font-size: 48; -fx-font-weight: bold; -fx-text-fill: #667eea;" text="2540" />
+                            <Label style="-fx-font-size: 14; -fx-text-fill: #888888;" text="puntos acumulados" />
+                        </VBox>
+                        
+                        <!-- Tarjeta de Tipo de Rango -->
+                        <VBox alignment="CENTER" spacing="10" style="-fx-background-color: #f8f9fb; -fx-background-radius: 15; -fx-padding: 30; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 3); -fx-min-width: 280; -fx-min-height: 160;" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <Label style="-fx-font-size: 18; -fx-text-fill: #666666; -fx-font-weight: 500;" text="Tipo de Rango" />
+                            <Label fx:id="tipoRangoLabel" style="-fx-font-size: 36; -fx-font-weight: bold; -fx-text-fill: #764ba2;" text="ORO" />
+                            <Label style="-fx-font-size: 14; -fx-text-fill: #888888;" text="nivel actual" />
+                        </VBox>
+                        
+                        <!-- Tarjeta de Beneficio -->
+                        <VBox alignment="CENTER" spacing="10" style="-fx-background-color: #f8f9fb; -fx-background-radius: 15; -fx-padding: 30; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 3); -fx-min-width: 280; -fx-min-height: 160;" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <Label style="-fx-font-size: 18; -fx-text-fill: #666666; -fx-font-weight: 500;" text="Beneficio" />
+                            <Label fx:id="beneficioLabel" style="-fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: #667eea; -fx-text-alignment: center;" text="BONO DE SALDO" />
+                            <Label style="-fx-font-size: 14; -fx-text-fill: #888888;" text="beneficio principal" />
+                        </VBox>
+                        
+                        <!-- Tarjeta de Fecha de Activación -->
+                        <VBox alignment="CENTER" spacing="10" style="-fx-background-color: #f8f9fb; -fx-background-radius: 15; -fx-padding: 30; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 3); -fx-min-width: 280; -fx-min-height: 160;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Label style="-fx-font-size: 18; -fx-text-fill: #666666; -fx-font-weight: 500;" text="Fecha de Activación" />
+                            <Label fx:id="fechaActivacionLabel" style="-fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #764ba2;" text="15/03/2024" />
+                            <Label style="-fx-font-size: 14; -fx-text-fill: #888888;" text="inicio del programa" />
+                        </VBox>
+                    </GridPane>
+                    
+                    <!-- Botón para actualizar información -->
+                    <Button fx:id="actualizarButton" onAction="#onActualizarPuntos" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-text-fill: white; -fx-padding: 12 24; -fx-background-radius: 8; -fx-font-size: 14; -fx-font-weight: 600;" text="Actualizar información">
+                        <effect>
+                            <DropShadow color="rgba(102, 126, 234, 0.5)" radius="6" spread="0.03" />
+                        </effect>
+                    </Button>
+                </VBox>
+            </VBox>
+        </center>
+    </BorderPane>
+</AnchorPane>
