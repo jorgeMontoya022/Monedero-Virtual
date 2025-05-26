@@ -29,22 +29,20 @@ public class ModelFactory {
 
     public static ModelFactory getINSTANCE() {
         if (modelFactory == null) {
-            
+
             modelFactory = new ModelFactory();
         }
         return modelFactory;
     }
 
     public boolean registrarUsuario(Cliente cliente) {
-        try{
-           return monederoVirtual.agregarCliente(cliente);
-        }catch(Exception e) {
+        try {
+            return monederoVirtual.agregarCliente(cliente);
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
-
-    
 
     public Cliente validarAcceso(String correo, int contrasenia) {
         try {
@@ -60,10 +58,10 @@ public class ModelFactory {
     }
 
     public boolean agregarCuenta(Cuenta cuenta) {
-        try{
+        try {
             return monederoVirtual.agregarCuenta(cuenta);
 
-        }catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -94,28 +92,42 @@ public class ModelFactory {
         return monederoVirtual.getMonederosUsuario(idCliente);
     }
 
-    public boolean realizarDeposito(Deposito deposito){
+    public boolean realizarDeposito(Deposito deposito) {
         try {
-           return monederoVirtual.realizarDeposito(deposito);
+            return monederoVirtual.realizarDeposito(deposito);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        
+
     }
 
-    public boolean realizarTransferencia(Transferencia transferencia){
+    public boolean realizarTransferencia(Transferencia transferencia) {
         try {
-           return monederoVirtual.realizarTransferencia(transferencia);
+            return monederoVirtual.realizarTransferencia(transferencia);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-       
+
     }
 
     public Cuenta buscarCuenta(int idCuenta) {
         return monederoVirtual.buscarCuenta(idCuenta);
     }
-    
+
+    public boolean actualizarCliente(Cliente clienteLogueado, Cliente clienteData) {
+        try {
+            return monederoVirtual.actualizarCliente(clienteLogueado.getId(), clienteData);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Cliente getClienteById(int id) {
+        return monederoVirtual.buscarCliente(id);
+    }
+
 }

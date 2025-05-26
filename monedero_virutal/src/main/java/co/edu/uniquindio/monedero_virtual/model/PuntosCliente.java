@@ -45,11 +45,13 @@ public class PuntosCliente {
     public void añadirPuntos(Transaccion transaccion){
         int puntos = calcularPuntosTransaccion(transaccion);
         puntosAcumulados += puntos;
+        cliente.setTipoRango(TipoRango.obtenerRango(this.puntosAcumulados));
     }
 
     public void eliminarPuntos(Transaccion transaccion){
         int puntos = calcularPuntosTransaccion(transaccion);
         puntosAcumulados -= puntos;
+        cliente.setTipoRango(TipoRango.obtenerRango(this.puntosAcumulados));
     }
 
     public boolean consumirPuntos (int puntos){
@@ -96,6 +98,10 @@ public class PuntosCliente {
 
     public void setFechaDeActivacion(LocalDate fechaDeActivacion) {
         this.fechaDeActivacion = fechaDeActivacion;
+    }
+
+    public LocalDate getFechaActivacion(){
+        return fechaDeActivacion;
     }
 
 

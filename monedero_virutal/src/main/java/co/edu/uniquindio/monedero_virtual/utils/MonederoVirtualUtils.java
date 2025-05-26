@@ -24,7 +24,7 @@ public class MonederoVirtualUtils {
         Cuenta ahorroJorge = new CuentaAhorrro(1_000_000, "Davivienda", 109989022, jorge);
         Cuenta corrienteJorge = new CuentaCorriente(1_500_000, "Banco de Bogotá", 1022938292, jorge);
 
-        Monedero monederoComida = new Monedero(1029, 20000, "Comida", corrienteJorge);
+        Monedero monederoComida = new Monedero(1029, 500000, "Comida", corrienteJorge);
         ahorroJorge.getMonederos().add(monederoComida);
 
         // Transacciones para Jorge
@@ -54,7 +54,7 @@ public class MonederoVirtualUtils {
         Cuenta ahorroAndrea = new CuentaAhorrro(500_000, "Bancolombia", 204455667, andrea);
         Cuenta corrienteAndrea = new CuentaCorriente(800_000, "Nequi", 889977445, andrea);
 
-        Monedero monederoAhorro = new Monedero(2932, 30000, "Ahorro Viaje", corrienteAndrea);
+        Monedero monederoAhorro = new Monedero(2932, 500000, "Ahorro Viaje", corrienteAndrea);
         ahorroAndrea.getMonederos().add(monederoAhorro);
 
         // Transacciones para Andrea

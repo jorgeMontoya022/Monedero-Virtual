@@ -238,6 +238,7 @@ public class GestionMovimientosViewController extends CoreViewController impleme
         ObserverManagement.getInstance().addObserver(TipoEvento.RETIRO, this);
         ObserverManagement.getInstance().addObserver(TipoEvento.TRANSFERENCIA, this);
         ObserverManagement.getInstance().addObserver(TipoEvento.CUENTA, this);
+        ObserverManagement.getInstance().addObserver(TipoEvento.CLIENTE, this);
         initView();
 
     }
@@ -369,7 +370,7 @@ public class GestionMovimientosViewController extends CoreViewController impleme
 
     private void initializeDataCombobox() {
         cbCuenta.getItems().clear();
-        
+
         GestionCuentasController gestionCuentasController = new GestionCuentasController();
         ObservableList<Cuenta> cuentasCliente = FXCollections.observableArrayList(
                 gestionCuentasController.getCuentasUsuario(clienteLogueado.getId()));
@@ -378,29 +379,33 @@ public class GestionMovimientosViewController extends CoreViewController impleme
                 cuenta -> cuenta.getBanco() + " - " + cuenta.getNumeroCuenta());
     }
 
-   @Override
-public void updateView(TipoEvento event) {
-    switch (event) {
-        case TRANSFERENCIA:
-        case RETIRO:
-        case DEPOSITO:
-            getTransacciones();
-            transactionsTable.setItems(listaTransacciones);
-            actualizarTotalTransacciones(listaTransacciones.size());
-            break;
-        
-        case CUENTA:
-            // Cuando se crea/modifica una cuenta, actualizar el ComboBox
-            initializeDataCombobox();
-            // También actualizar transacciones por si hay nuevas
-            getTransacciones();
-            transactionsTable.setItems(listaTransacciones);
-            actualizarTotalTransacciones(listaTransacciones.size());
-            break;
+    @Override
+    public void updateView(TipoEvento event) {
+        switch (event) {
+            case TRANSFERENCIA:
+            case RETIRO:
+            case DEPOSITO:
+                getTransacciones();
+                transactionsTable.setItems(listaTransacciones);
+                actualizarTotalTransacciones(listaTransacciones.size());
+                break;
 
-        default:
-            break;
+            case CUENTA:
+                // Cuando se crea/modifica una cuenta, actualizar el ComboBox
+                initializeDataCombobox();
+                // También actualizar transacciones por si hay nuevas
+                getTransacciones();
+                transactionsTable.setItems(listaTransacciones);
+                actualizarTotalTransacciones(listaTransacciones.size());
+                break;
+
+            case CLIENTE:
+                mostrarInformacion(clienteLogueado);
+                break;
+
+            default:
+                break;
+        }
     }
-}
 
 }

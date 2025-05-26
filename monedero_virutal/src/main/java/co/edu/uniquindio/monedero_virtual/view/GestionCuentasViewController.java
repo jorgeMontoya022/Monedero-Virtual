@@ -135,6 +135,7 @@ public class GestionCuentasViewController extends CoreViewController implements 
         ObserverManagement.getInstance().addObserver(TipoEvento.DEPOSITO, this);
         ObserverManagement.getInstance().addObserver(TipoEvento.TRANSFERENCIA, this);
         ObserverManagement.getInstance().addObserver(TipoEvento.RETIRO, this);
+        ObserverManagement.getInstance().addObserver(TipoEvento.CLIENTE, this);
         setupFilter();
 
     }
@@ -356,6 +357,10 @@ public class GestionCuentasViewController extends CoreViewController implements 
             case RETIRO:
                 getCuentas();
                 accountsTable.refresh();
+                break;
+
+            case CLIENTE:
+                mostrarInformacion();
                 break;
 
             default:

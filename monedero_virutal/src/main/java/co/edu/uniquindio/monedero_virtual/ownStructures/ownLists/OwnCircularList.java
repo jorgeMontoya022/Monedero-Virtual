@@ -3,12 +3,15 @@ package co.edu.uniquindio.monedero_virtual.ownStructures.ownLists;
 import java.util.NoSuchElementException;
 
 import co.edu.uniquindio.monedero_virtual.ownStructures.Node;
+import java.util.Iterator;
 
-public class OwnCircularList<T> {
+public class OwnCircularList<T> implements Iterable<T> {
 
     private Node<T> head;  // Apunta al primer nodo de la lista circular
     private Node<T> tail;  // Apunta al último nodo de la lista circular
-    private int size;      // Almacena el tamaño de la lista circular
+    private int size;  
+    private boolean firstIteration = true;
+        // Almacena el tamaño de la lista circular
 
     public OwnCircularList() {
         this.head = null;   // La lista empieza vacía
@@ -295,4 +298,42 @@ public class OwnCircularList<T> {
 
         return false;
     }
+    
+    public void addAll(OwnCircularList<T> otherList) {
+        if (otherList == null || otherList.isEmpty()) {
+            return;
+        }
+
+        for (T data : otherList) {
+            this.add(data);
+        }
+    }
+
+     @Override
+    public Iterator<T> iterator() {
+        return new CircularListIterator();
+    }
+
+    private class CircularListIterator implements Iterator<T> {
+        private Node<T> current = head;
+        private boolean firstIteration = true;
+
+        @Override
+        public boolean hasNext() {
+            return current != null && (firstIteration || current != head);
+        }
+
+        @Override
+        public T next() {
+            if (!hasNext()) throw new NoSuchElementException();
+            T data = current.getData();
+            current = current.getNextNode();
+            firstIteration = false;
+            return data;
+        }
+    }
 }
+        
+
+  
+

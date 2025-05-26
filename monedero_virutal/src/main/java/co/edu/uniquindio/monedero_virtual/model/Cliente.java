@@ -39,6 +39,10 @@ public class Cliente implements Comparable<Cliente> {
         this.puntos = new PuntosCliente(this);
     }
 
+    public Cliente() {
+        
+    }
+
     // Getters y Setters
     public String getNombreCompleto() {
         return nombreCompleto;

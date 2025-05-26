@@ -200,7 +200,17 @@ public class OwnLinkedList<T> implements Iterable<T> {
             }
         };
     }
+    public void addAll(OwnLinkedList<T> otherList) {
+    if (otherList == null || otherList.isEmpty()) {
+        return;
+    }
+
+    for (T data : otherList) {
+        this.add(data);
+    }
+}
 
 }
+
         
 

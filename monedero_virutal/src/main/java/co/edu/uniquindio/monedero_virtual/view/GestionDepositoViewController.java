@@ -12,6 +12,9 @@ import co.edu.uniquindio.monedero_virtual.model.Deposito;
 import co.edu.uniquindio.monedero_virtual.model.Monedero;
 import co.edu.uniquindio.monedero_virtual.model.Transaccion;
 import co.edu.uniquindio.monedero_virtual.utils.Sesion;
+import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverManagement;
+import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverView;
+import co.edu.uniquindio.monedero_virtual.view.obeserver.TipoEvento;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,11 +28,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
-public class GestionDepositoViewController extends CoreViewController {
+public class GestionDepositoViewController extends CoreViewController implements ObserverView {
 
     GestionDepositosController depositosController;
     Cliente clienteLogueado;
-    ObservableList<Transaccion>  listaDepositos = FXCollections.observableArrayList();
+    ObservableList<Transaccion> listaDepositos = FXCollections.observableArrayList();
 
     @FXML
     private ResourceBundle resources;
@@ -96,70 +99,15 @@ public class GestionDepositoViewController extends CoreViewController {
     void initialize() {
         depositosController = new GestionDepositosController();
         clienteLogueado = (Cliente) Sesion.getInstance().getCliente();
+        ObserverManagement.getInstance().addObserver(TipoEvento.CUENTA, this);
+        ObserverManagement.getInstance().addObserver(TipoEvento.MONEDERO, this);
+        ObserverManagement.getInstance().addObserver(TipoEvento.CLIENTE, this);
         initView();
     }
 
     @FXML
     private void onDeposit(ActionEvent event) {
-        Deposito deposito = depositoBuilder();
-        if(depositosController.realizarDeposito(deposito)){
-            mostrarMensaje("", "Depósito exitoso!",
-                        "Se ha realizado un depósito de " + deposito.getMonto(), Alert.AlertType.CONFIRMATION);
-        }else{
-            mostrarMensaje("Error", "Se ha producido un error",
-                        "No se realizó el depósito", Alert.AlertType.ERROR);
-        }
-    }
-
-    private Deposito depositoBuilder() {
-        String idTransaccion;
-        SecureRandom random = new SecureRandom();
-        idTransaccion = String.format("%09d", random.nextInt(100_000_000));
-
-        String montoText = montoField.getText();
-        double monto;
-        try {
-            monto = Double.parseDouble(montoText);
-            if (monto <= 0) {
-                mostrarMensaje("Error", "El monto debe ser mayor a cero",
-                        "Por favor, ingrese un monto válido", Alert.AlertType.ERROR);
-                return null;
-            }
-        } catch (NumberFormatException e) {
-            mostrarMensaje("Error", "El monto debe ser un número",
-                    "Por favor, ingrese un monto válido", Alert.AlertType.ERROR);
-            return null;
-        }
-
-        if(descripcionField.getText() == null){
-            mostrarMensaje("Advertencia", "Debe tener una descripción",
-                    "Por favor, ingrese una descripción", Alert.AlertType.WARNING);
-            return null;
-        }
-
-        if(cuentaComboBox.getValue() == null){
-            mostrarMensaje("Advertencia", "Debe seleccionar una cuenta",
-                    "Por favor, seleccione una cuenta", Alert.AlertType.WARNING);
-            return null;
-        }
-
-        if(monederoComboBox.getValue() == null){
-            mostrarMensaje("Advertencia", "Debe seleccionar un monedero",
-                    "Por favor, seleccione un monedero", Alert.AlertType.WARNING);
-            return null;
-        }
-    
-
-        Deposito deposito = new Deposito(
-                idTransaccion,
-                LocalDate.now(),
-                monto,
-                descripcionField.getText(),
-                cuentaComboBox.getValue(),
-                monederoComboBox.getValue()
-        );
-
-        return deposito;
+        realizarDeposito();
     }
 
     private void limpiarCampos() {
@@ -179,15 +127,18 @@ public class GestionDepositoViewController extends CoreViewController {
     }
 
     private void initDataBinding() {
-        idTransaccionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIdTransaccion()));
-        fechaColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getFechaTransaccion())));
+        idTransaccionColumn
+                .setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIdTransaccion()));
+        fechaColumn.setCellValueFactory(
+                cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getFechaTransaccion())));
         montoColumn.setCellValueFactory(
                 cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getMonto())));
         cuentaColumn.setCellValueFactory(
                 cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getCuenta())));
         monederoColumn.setCellValueFactory(
                 cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getMonedero())));
-        descripcionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescripcion()));
+        descripcionColumn
+                .setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescripcion()));
     }
 
     private void getDepositos() {
@@ -197,6 +148,8 @@ public class GestionDepositoViewController extends CoreViewController {
     }
 
     private void initializeDataCombobox() {
+        cuentaComboBox.getItems().clear();
+        monederoComboBox.getItems().clear();
         int idCliente = clienteLogueado.getId();
         cuentaComboBox.getItems().addAll(depositosController.getCuentasUsuario(idCliente));
         monederoComboBox.getItems().addAll(depositosController.getMonederosCliente(idCliente));
@@ -206,6 +159,122 @@ public class GestionDepositoViewController extends CoreViewController {
         String nombreCompleto = clienteLogueado.getNombreCompleto();
         String primerNombre = nombreCompleto.split(" ")[0]; // divide por espacios y toma el primero
         userNameLabel.setText("Tus depósitos, " + primerNombre);
+    }
+
+    private void realizarDeposito() {
+        Deposito deposito = buildDeposito();
+        if (deposito == null) {
+            mostrarMensaje("Error", "Datos no validos", "Error al construir el depósito", Alert.AlertType.ERROR);
+            return;
+        }
+
+        if (validarDatos(deposito)) {
+            if (mostrarMensajeConfirmacion("Desea realizar el depósitov")) {
+                if (depositosController.realizarDeposito(deposito)) {
+                    listaDepositos.add(deposito);
+                    ObserverManagement.getInstance().notifyObservers(TipoEvento.DEPOSITO);
+                    limpiarCampos();
+                } else {
+                    mostrarMensaje("Error", "Depósito no realizado", "No se pudo realizar el depósito",
+                            Alert.AlertType.ERROR);
+                }
+            } else {
+                mostrarMensaje("Operación cancelada", "Depósito no realizado", "Ha cancelado le depósito",
+                        Alert.AlertType.WARNING);
+            }
+        }
+
+    }
+
+    private Deposito buildDeposito() {
+        String idTransaccion;
+        SecureRandom random = new SecureRandom();
+        idTransaccion = String.format("%09d", random.nextInt(100_000_000));
+
+        double monto = 0;
+        String montoText = montoField.getText();
+        if (montoText != null && !montoText.trim().isEmpty()) {
+            try {
+                monto = Double.parseDouble(montoText);
+
+                if (monto <= 0) {
+                    mostrarMensaje("Error", "El monto debe ser mayor a cero",
+                            "Por favor, ingrese un monto valido", Alert.AlertType.ERROR);
+                    return null;
+                }
+            } catch (NumberFormatException e) {
+                mostrarMensaje("Error", "El monto debe ser un número",
+                        "Por favor, ingrese un monto válido", Alert.AlertType.ERROR);
+                return null;
+            }
+        } else {
+            mostrarMensaje("Error", "Monto requerido",
+                    "Por favor, ingrese un monto válido", Alert.AlertType.ERROR);
+            return null;
+        }
+
+        return new Deposito(
+                idTransaccion,
+                LocalDate.now(),
+                monto,
+                descripcionField.getText(),
+                cuentaComboBox.getValue(),
+                monederoComboBox.getValue());
+    }
+
+    private boolean validarDatos(Deposito deposito) {
+        String mensaje = "";
+
+        if (deposito.getDescripcion().isEmpty()) {
+            mensaje += "-La descripción es requerida.\n";
+
+        }
+        if (deposito.getMonedero() == null) {
+            mensaje += "-El monedero es requerido.\n";
+        }
+
+        if (deposito.getCuenta() == null) {
+            mensaje += "-La cuenta es requerida.\n";
+        }
+
+        String montoText = montoField.getText();
+        if (montoText == null || montoText.trim().isEmpty()) {
+            mensaje += "-El monto es requerido.\n";
+        } else {
+            try {
+                double monto = Double.parseDouble(montoText.trim());
+                if (monto <= 0) {
+                    mensaje += "- El monto debe ser mayor a cero.\n";
+                }
+            } catch (NumberFormatException e) {
+                mensaje += "-El monto debe ser un número válido.\n";
+            }
+        }
+
+        if (!mensaje.isEmpty()) {
+            mostrarMensaje("Notificación de validación", "Datos no válidos", mensaje, Alert.AlertType.WARNING);
+            return false;
+        }
+        return true;
+
+    }
+
+    @Override
+    public void updateView(TipoEvento event) {
+        switch (event) {
+            case CUENTA:
+                initializeDataCombobox();
+                break;
+            case MONEDERO:
+                initializeDataCombobox();
+            case CLIENTE:
+                mostrarInformacion();
+                break;
+
+            default:
+                break;
+        }
+
     }
 
 }

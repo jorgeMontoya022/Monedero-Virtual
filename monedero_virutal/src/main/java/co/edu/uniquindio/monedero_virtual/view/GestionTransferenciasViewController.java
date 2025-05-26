@@ -108,6 +108,7 @@ public class GestionTransferenciasViewController extends CoreViewController impl
         clienteLogueado = (Cliente) Sesion.getInstance().getCliente();
         ObserverManagement.getInstance().addObserver(TipoEvento.CUENTA, this);
         ObserverManagement.getInstance().addObserver(TipoEvento.MONEDERO, this);
+        ObserverManagement.getInstance().addObserver(TipoEvento.CLIENTE, this);
 
         initView();
 
@@ -323,12 +324,15 @@ public class GestionTransferenciasViewController extends CoreViewController impl
     public void updateView(TipoEvento event) {
         switch (event) {
             case MONEDERO:
-            
+
                 initializeDataCombobox();
                 break;
 
             case CUENTA:
                 initializeDataCombobox();
+                break;
+            case CLIENTE:
+                mostrarInformacion();
                 break;
 
             default:

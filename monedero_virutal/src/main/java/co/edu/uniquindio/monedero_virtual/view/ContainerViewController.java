@@ -13,8 +13,11 @@ import java.util.ResourceBundle;
 
 import co.edu.uniquindio.monedero_virtual.model.Cliente;
 import co.edu.uniquindio.monedero_virtual.utils.Sesion;
+import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverManagement;
+import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverView;
+import co.edu.uniquindio.monedero_virtual.view.obeserver.TipoEvento;
 
-public class ContainerViewController implements Initializable {
+public class ContainerViewController extends CoreViewController implements Initializable, ObserverView {
 
     Cliente clienteLogueado;
 
@@ -44,6 +47,12 @@ public class ContainerViewController implements Initializable {
 
     @FXML
     private Button customerDataButton;
+
+    @FXML
+    private Button puntosButton;
+
+    @FXML
+    private Button monederosButton;
 
     @FXML
     private Label currentSectionLabel;
@@ -76,6 +85,8 @@ public class ContainerViewController implements Initializable {
         highlightSelectedButton("cuentas");
 
         clienteLogueado = (Cliente) Sesion.getInstance().getCliente();
+
+        ObserverManagement.getInstance().addObserver(TipoEvento.CLIENTE, this);
 
         mostrarDatosCliente(clienteLogueado);
 
@@ -125,6 +136,19 @@ public class ContainerViewController implements Initializable {
         showMessage("Retiros");
         highlightSelectedButton("retiros");
     }
+    
+    @FXML
+    private void onMonederosButtonClicked(ActionEvent event) {
+        showMessage("Monederos");
+        highlightSelectedButton("monederos");
+
+    }
+
+    @FXML
+    private void onPuntosButtonClicked(ActionEvent event) {
+        showMessage("Puntos");
+        highlightSelectedButton("puntos");
+    }
 
     @FXML
     private void onStatsButtonClicked(ActionEvent event) {
@@ -143,6 +167,10 @@ public class ContainerViewController implements Initializable {
 
     @FXML
     private void onLogoutButtonClicked(ActionEvent event) {
+        if (mostrarMensajeConfirmacion("¿Deseas cerrar sesión?")) {
+            Sesion.getInstance().closeSesion();
+            browseWindow("/co/edu/uniquindio/monedero_virtual/bienvenida-view.fxml", "Solvi - Bienvenido/a", event);
+        }
 
     }
 
@@ -224,6 +252,8 @@ public class ContainerViewController implements Initializable {
         transfersButton.setStyle(defaultStyle);
         statsButton.setStyle(defaultStyle);
         retirosButton.setStyle(defaultStyle);
+        monederosButton.setStyle(defaultStyle);
+        puntosButton.setStyle(defaultStyle);
         depositsButton.setStyle(defaultStyle);
         customerDataButton.setStyle(defaultStyle);
 
@@ -251,7 +281,25 @@ public class ContainerViewController implements Initializable {
             case "depósitos":
                 depositsButton.setStyle(selectedStyle);
                 break;
+            case "monederos":
+                monederosButton.setStyle(selectedStyle);
+                break;
+            case "puntos":
+                puntosButton.setStyle(selectedStyle);
+                break;
 
+        }
+    }
+
+    @Override
+    public void updateView(TipoEvento event) {
+        switch (event) {
+            case CLIENTE:
+                mostrarDatosCliente(clienteLogueado);
+                break;
+
+            default:
+                break;
         }
     }
 }

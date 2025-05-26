@@ -120,4 +120,10 @@ public class Cuenta {
         return (banco + " - " + numeroCuenta);
     }
 
+    public void agregarTransaccionProgramada (Transaccion transaccion){
+        
+    }
+
+
+
 }

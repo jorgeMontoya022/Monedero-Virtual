@@ -63,7 +63,7 @@ public class MonederoVirtual {
         }
     }
 
-    private Cliente buscarCliente(int id) {
+    public Cliente buscarCliente(int id) {
         for (Cliente cliente : listaClientes) {
             if (cliente.getId() == (id)) {
                 return cliente;
@@ -108,13 +108,14 @@ public class MonederoVirtual {
         actualizarRanking(cuenta.getClienteAsociado());
 
         cuenta.agregarTransaccion(deposito);
+        listaTransacciones.add(deposito);
         // cuenta.agregarTransaccionReversible(deposito);
         return true;
 
     }
 
     public boolean realizarRetiro(Retiro retiro) throws Exception {
-
+        double comision = retiro.getComision();
         double monto = retiro.getMonto();
         Cuenta cuenta = retiro.getCuenta();
         Monedero monedero = retiro.getMonedero();
@@ -124,8 +125,43 @@ public class MonederoVirtual {
         }
 
         try {
+            PuntosCliente puntosCliente = cuenta.getClienteAsociado().getPuntos();
+            Beneficio beneficioActivo = puntosCliente.getBeneficioActivo();
+
+            if (beneficioActivo != null) {
+                switch (beneficioActivo) {
+                    case BONO_SALDO:
+                        monedero.agregarDinero(50);
+                        System.out.println("Beneficio BONO_SALDO aplicado: se agregaron $50 al monedero.");
+                        puntosCliente.setBeneficioActivo(null);
+                        puntosCliente.setFechaDeActivacion(null);
+                        break;
+                    case MES_LIBRE_RETIROS:
+                        LocalDate hoy = LocalDate.now();
+                        LocalDate fechaActivacion = puntosCliente.getFechaActivacion();
+                        LocalDate finBeneficio = fechaActivacion.plusMonths(1);
+                        if (hoy.isAfter(finBeneficio)) {
+                            System.out.println("El beneficio ha expirado");
+                            puntosCliente.setBeneficioActivo(null);
+                            puntosCliente.setFechaDeActivacion(null);
+                        } else {
+                            retiro.setComision(0);
+                            System.out.println("Beneficio MES_LIBRE_RETIROS aplicado, no se cobrará comisión");
+                        }
+                        break;
+                    case REDUCCION_COMISION:
+                        retiro.setComision(comision * 0.50);
+                        System.out.println("Beneficio REDUCCION_COMISION aplicado, se redujo el costo de la comisión");
+                        puntosCliente.setBeneficioActivo(null);
+                        puntosCliente.setFechaDeActivacion(null);
+                    default: 
+                        break;
+
+                }
+            }
+
             monedero.retirarDinero(monto);
-            cuenta.setMonto(cuenta.getMonto() - monto);
+            cuenta.setMonto(cuenta.getMonto() - monto - comision);
             cuenta.getClienteAsociado().agregarPuntos(retiro);
             actualizarRanking(cuenta.getClienteAsociado());
 
@@ -142,84 +178,85 @@ public class MonederoVirtual {
     }
 
     public boolean realizarTransferencia(Transferencia transferencia) {
-    double monto = transferencia.getMonto();
-    Cuenta cuentaEmisora = transferencia.getCuenta();
-    Monedero monederoEmisor = transferencia.getMonedero();
-    Cuenta cuentaReceptora = transferencia.getCuentaRecibe();
+        double monto = transferencia.getMonto();
+        Cuenta cuentaEmisora = transferencia.getCuenta();
+        Monedero monederoEmisor = transferencia.getMonedero();
+        Cuenta cuentaReceptora = transferencia.getCuentaRecibe();
 
-    // Validación de existencia de clientes
-    if (!verificarClienteExiste(cuentaEmisora.getClienteAsociado().getEmail())) {
-        System.out.println("Error: El cliente emisor no existe.");
-        return false;
-    }
-
-    if (!verificarClienteExiste(cuentaReceptora.getClienteAsociado().getEmail())) {
-        System.out.println("Error: El cliente receptor no existe.");
-        return false;
-    }
-
-    // Validación de fondos suficientes
-    if (monederoEmisor.getMonto() < monto) {
-        System.out.println("Error: Fondos insuficientes en el monedero.");
-        return false;
-    }
-
-    if (cuentaEmisora.getMonto() < monto) {
-        System.out.println("Error: Fondos insuficientes en la cuenta.");
-        return false;
-    }
-
-    try {
-        // Aplicar beneficios si existen
-        PuntosCliente puntosCliente = cuentaEmisora.getClienteAsociado().getPuntos();
-        Beneficio beneficioActivo = puntosCliente.getBeneficioActivo();
-
-        if (beneficioActivo != null) {
-            switch (beneficioActivo) {
-                case BONO_SALDO:
-                    monederoEmisor.agregarDinero(50);
-                    System.out.println("Beneficio BONO_SALDO aplicado: se agregaron $50 al monedero.");
-                    break;
-
-                case REDUCCION_COMISION:
-                    // Ya no hay comisión, solo se limpia el estado
-                    System.out.println("Beneficio REDUCCION_COMISION omitido (no hay comisión).");
-                    break;
-
-                default:
-                    break;
-            }
-
-            // Desactivar beneficio después de aplicarlo
-            puntosCliente.setBeneficioActivo(null);
-            puntosCliente.setFechaDeActivacion(null);
+        // Validación de existencia de clientes
+        if (!verificarClienteExiste(cuentaEmisora.getClienteAsociado().getEmail())) {
+            System.out.println("Error: El cliente emisor no existe.");
+            return false;
         }
 
-        // Realizar transferencia
-        monederoEmisor.retirarDinero(monto);
-        cuentaEmisora.setMonto(cuentaEmisora.getMonto() - monto);
-        cuentaReceptora.setMonto(cuentaReceptora.getMonto() + monto);
+        if (!verificarClienteExiste(cuentaReceptora.getClienteAsociado().getEmail())) {
+            System.out.println("Error: El cliente receptor no existe.");
+            return false;
+        }
 
-        // Agregar puntos al cliente emisor y actualizar su ranking
-        cuentaEmisora.getClienteAsociado().agregarPuntos(transferencia);
-        actualizarRanking(cuentaEmisora.getClienteAsociado());
+        // Validación de fondos suficientes
+        if (monederoEmisor.getMonto() < monto) {
+            System.out.println("Error: Fondos insuficientes en el monedero.");
+            return false;
+        }
 
-        // Registrar la transacción
-        cuentaEmisora.agregarTransaccion(transferencia);
-        cuentaEmisora.agregarTransaccionReversible(transferencia);
-        cuentaReceptora.agregarTransaccion(transferencia);
-        listaTransacciones.add(transferencia);
+        if (cuentaEmisora.getMonto() < monto) {
+            System.out.println("Error: Fondos insuficientes en la cuenta.");
+            return false;
+        }
 
-        System.out.println("Transferencia realizada exitosamente.");
-        return true;
+        try {
+            // Aplicar beneficios si existen
+            PuntosCliente puntosCliente = cuentaEmisora.getClienteAsociado().getPuntos();
+            Beneficio beneficioActivo = puntosCliente.getBeneficioActivo();
 
-    } catch (Exception e) {
-        System.out.println("Error al realizar la transferencia: " + e.getMessage());
-        e.printStackTrace(); // Para depuración
-        return false;
+            if (beneficioActivo != null) {
+                switch (beneficioActivo) {
+                    case BONO_SALDO:
+                        monederoEmisor.agregarDinero(50);
+                        System.out.println("Beneficio BONO_SALDO aplicado: se agregaron $50 al monedero.");
+                        puntosCliente.setBeneficioActivo(null);
+                        puntosCliente.setFechaDeActivacion(null);
+                        break;
+
+                    case REDUCCION_COMISION:
+                        // Ya no hay comisión, solo se limpia el estado
+                        System.out.println("Beneficio REDUCCION_COMISION omitido (no hay comisión).");
+                        break;
+                    case MES_LIBRE_RETIROS:
+                        System.out.println("Beneficio MES_LIBRE_RETIROS no aplica");
+                        break;
+
+                    default:
+                        break;
+                }
+
+            }
+
+            // Realizar transferencia
+            monederoEmisor.retirarDinero(monto);
+            cuentaEmisora.setMonto(cuentaEmisora.getMonto() - monto);
+            cuentaReceptora.setMonto(cuentaReceptora.getMonto() + monto);
+
+            // Agregar puntos al cliente emisor y actualizar su ranking
+            cuentaEmisora.getClienteAsociado().agregarPuntos(transferencia);
+            actualizarRanking(cuentaEmisora.getClienteAsociado());
+
+            // Registrar la transacción
+            cuentaEmisora.agregarTransaccion(transferencia);
+            cuentaEmisora.agregarTransaccionReversible(transferencia);
+            cuentaReceptora.agregarTransaccion(transferencia);
+            listaTransacciones.add(transferencia);
+
+            System.out.println("Transferencia realizada exitosamente.");
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("Error al realizar la transferencia: " + e.getMessage());
+            e.printStackTrace(); // Para depuración
+            return false;
+        }
     }
-}
-
 
     // METODOS PARA REVERTIR TRANSACCIONES
     public void revertirTransferencia(Transferencia transferencia) throws Exception {
@@ -328,8 +365,17 @@ public class MonederoVirtual {
     public List<Transaccion> getTrasaccionesCliente(int idCliente) {
         List<Transaccion> lista = new ArrayList<>();
         for (Transaccion transaccion : listaTransacciones) {
+            // Transferencias donde el cliente es el emisor
             if (transaccion.getCuenta().getClienteAsociado().getId() == idCliente) {
                 lista.add(transaccion);
+            }
+            // Transferencias donde el cliente es el receptor (para Transferencias)
+            else if (transaccion instanceof Transferencia) {
+                Transferencia transferencia = (Transferencia) transaccion;
+                if (transferencia.getCuentaRecibe() != null &&
+                        transferencia.getCuentaRecibe().getClienteAsociado().getId() == idCliente) {
+                    lista.add(transaccion);
+                }
             }
         }
         return lista;
@@ -352,5 +398,31 @@ public class MonederoVirtual {
             monederosCliente.addAll(cuenta.getMonederos());
         }
         return monederosCliente;
+    }
+
+    public boolean actualizarCliente(int id, Cliente clienteData) throws Exception {
+        Cliente clienteAcutal = buscarCliente(id);
+        if (clienteAcutal == null) {
+            throw new Exception("El cliente a actualizar no existe");
+
+        } else {
+            clienteAcutal.setNombreCompleto(clienteData.getNombreCompleto());
+            clienteAcutal.setCelular(clienteData.getCelular());
+            clienteAcutal.setEmail(clienteData.getEmail());
+            clienteAcutal.setFechaNacimiento(clienteData.getFechaNacimiento());
+            clienteAcutal.setDirección(clienteData.getDirección());
+            clienteAcutal.setFechaRegistro(clienteData.getFechaRegistro());
+
+            if (clienteData.getListaCuentas() != null) {
+                clienteAcutal.getListaCuentas().addAll(clienteData.getListaCuentas());
+            }
+
+            if (clienteData.getListaNotificacion() != null) {
+                clienteAcutal.getListaNotificacion().addAll((clienteData.getListaNotificacion()));
+            }
+
+            return true;
+
+        }
     }
 }
