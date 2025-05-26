@@ -69,6 +69,9 @@ public class GestionTransferenciasViewController extends CoreViewController impl
     private Button notificationButton;
 
     @FXML
+    private Button revertTransferButton;
+
+    @FXML
     private TableColumn<Transferencia, String> originAccountColumn;
 
     @FXML
@@ -100,6 +103,12 @@ public class GestionTransferenciasViewController extends CoreViewController impl
     @FXML
     void onClearFields(ActionEvent event) {
         limpiarCampos();
+    }
+
+    @FXML
+    void onRevertTransfer(ActionEvent event) {
+        revertirTransferencia();
+
     }
 
     @FXML
@@ -216,6 +225,45 @@ public class GestionTransferenciasViewController extends CoreViewController impl
             }
         }
     }
+
+    private void revertirTransferencia() {
+    Cuenta cuentaSeleccionada = originAccountComboBox.getValue();
+
+    if (cuentaSeleccionada == null) {
+        mostrarMensaje("ERROR", "Cuenta no seleccionada",
+                "Por favor, selecciona una cuenta para revertir la transferencia.", Alert.AlertType.WARNING);
+        return;
+    }
+
+    if (mostrarMensajeConfirmacion("¿Deseás revertir la última transferencia de esta cuenta?")) {
+        // Pedí la última transferencia antes de revertirla
+        Transferencia ultimaTransferencia = transferenciasController.obtenerUltimaTransferencia(cuentaSeleccionada);
+
+        if (ultimaTransferencia == null) {
+            mostrarMensaje("Uff", "No se pudo revertir",
+                    "No se encontró ninguna transferencia para esta cuenta.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        if (transferenciasController.revertirTransferencia(cuentaSeleccionada)) {
+
+            // Eliminá visualmente la transferencia de la lista
+            listaTransferencias.remove(ultimaTransferencia);
+
+            mostrarMensaje("¡Hecho!", "Reversión exitosa", "Se revirtió la última transferencia, parcero.",
+                    Alert.AlertType.INFORMATION);
+            ObserverManagement.getInstance().notifyObservers(TipoEvento.TRANSFERENCIA);
+
+            transfersTable.refresh(); // actualizá la tabla visualmente
+
+        } else {
+            mostrarMensaje("Uff", "No se pudo revertir",
+                    "Puede que no haya transferencias para revertir o error inesperado",
+                    Alert.AlertType.ERROR);
+        }
+    }
+}
+
 
     private Transferencia buildTransferencia() {
         String idTransaccion;

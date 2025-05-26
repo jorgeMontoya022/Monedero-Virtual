@@ -82,7 +82,7 @@
                                 <RowConstraints />
                             </rowConstraints>
                             
-                            <!-- Campo Cuenta de Origen - CORREGIDO -->
+                            <!-- Campo Cuenta de Origen -->
                             <VBox spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.fillWidth="true">
                                 <Label style="-fx-font-size: 12; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Cuenta de origen" />
                                 <ComboBox fx:id="originAccountComboBox" maxWidth="1.7976931348623157E308" promptText="Seleccione la cuenta origen" style="-fx-padding: 6; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1; -fx-font-size: 12; -fx-pref-width: 100%;" HBox.hgrow="ALWAYS" />
@@ -94,7 +94,7 @@
                                 <TextField fx:id="destinationAccountField" maxWidth="1.7976931348623157E308" promptText="Ej: 9876543210" style="-fx-padding: 6; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1; -fx-font-size: 12;" />
                             </VBox>
 
-                            <!-- Campo Monedero - CORREGIDO -->
+                            <!-- Campo Monedero -->
                             <VBox spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.fillWidth="true">
                                 <Label style="-fx-font-size: 12; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Monedero" />
                                 <ComboBox fx:id="walletComboBox" maxWidth="1.7976931348623157E308" promptText="Seleccione monedero" style="-fx-padding: 6; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1; -fx-font-size: 12; -fx-pref-width: 100%;" HBox.hgrow="ALWAYS" />
@@ -121,6 +121,11 @@
                             <Button fx:id="clearButton" onAction="#onClearFields" style="-fx-background-color: #f0f2f5; -fx-text-fill: #666666; -fx-padding: 10 18; -fx-background-radius: 6; -fx-font-size: 13; -fx-font-weight: 500;" text="Limpiar">
                                 <effect>
                                     <DropShadow color="rgba(0,0,0,0.1)" radius="2" spread="0.01" />
+                                </effect>
+                            </Button>
+                            <Button fx:id="revertTransferButton" onAction="#onRevertTransfer" style="-fx-background-color: #ff6b6b; -fx-text-fill: white; -fx-padding: 10 18; -fx-background-radius: 6; -fx-font-size: 13; -fx-font-weight: 500;" text="Revertir transferencia">
+                                <effect>
+                                    <DropShadow color="rgba(255, 107, 107, 0.4)" radius="4" spread="0.03" />
                                 </effect>
                             </Button>
                             <Button fx:id="transferButton" onAction="#onTransfer" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-text-fill: white; -fx-padding: 10 18; -fx-background-radius: 6; -fx-font-size: 13; -fx-font-weight: 600;" text="Realizar transferencia">

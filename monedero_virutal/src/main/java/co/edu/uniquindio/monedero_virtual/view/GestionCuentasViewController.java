@@ -265,6 +265,8 @@ public class GestionCuentasViewController extends CoreViewController implements 
                     mostrarCantidadCuentas();
                     limpiarCampos();
 
+                } else {
+                    mostrarMensaje("Erro", "Falló al eliminar la cuenta", "No se pudo eliminar la cuenta. Intenta nuevamente", Alert.AlertType.ERROR);
                 }
             }
         } else {

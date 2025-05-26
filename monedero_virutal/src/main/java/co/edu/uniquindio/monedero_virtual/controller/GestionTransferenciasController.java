@@ -35,4 +35,12 @@ public class GestionTransferenciasController {
         return modelFactory.buscarCuenta(idCuenta);
     }
 
+    public boolean revertirTransferencia(Cuenta cuenta) {
+       return modelFactory.revertirTransferencia(cuenta);
+    }
+
+    public Transferencia obtenerUltimaTransferencia(Cuenta cuentaSeleccionada) {
+        return modelFactory.obtenerUltimaTransferencia(cuentaSeleccionada);
+    }
+
 }

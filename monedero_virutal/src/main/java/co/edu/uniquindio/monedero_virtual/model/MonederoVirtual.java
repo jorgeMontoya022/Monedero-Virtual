@@ -39,16 +39,19 @@ public class MonederoVirtual {
     }
 
     public boolean agregarCliente(Cliente cliente) {
-        //Busca en la lista de Clientes, si hay otro 
+        // Busca en la lista de Clientes, si hay otro
         Cliente clienteEncontrado = buscarCliente(cliente.getId());
-        /** Si el clienteEncontrado no es nulo, significa que un cliente
+        /**
+         * Si el clienteEncontrado no es nulo, significa que un cliente
          * con la misma ID ya está registrado, por lo cuál no se puede registrar
          */
         if (clienteEncontrado != null) {
             return false;
         } else {
-        /** Se añade el cliente a la lista de clientes del sistema
-         * y se inserta al ranking de puntos ya que sus puntos se inicializan en 0*/
+            /**
+             * Se añade el cliente a la lista de clientes del sistema
+             * y se inserta al ranking de puntos ya que sus puntos se inicializan en 0
+             */
             listaClientes.add(cliente);
             try {
                 rankingClientes.insertar(cliente);
@@ -68,8 +71,9 @@ public class MonederoVirtual {
 
         }
     }
-    //Recorre la lista mediante un for (ya que ownLinkedList es Iterable)
-    //buscando un cliente dada una ID
+
+    // Recorre la lista mediante un for (ya que ownLinkedList es Iterable)
+    // buscando un cliente dada una ID
     public Cliente buscarCliente(int id) {
         for (Cliente cliente : listaClientes) {
             if (cliente.getId() == (id)) {
@@ -161,7 +165,7 @@ public class MonederoVirtual {
                         System.out.println("Beneficio REDUCCION_COMISION aplicado, se redujo el costo de la comisión");
                         puntosCliente.setBeneficioActivo(null);
                         puntosCliente.setFechaDeActivacion(null);
-                    default: 
+                    default:
                         break;
 
                 }
@@ -266,32 +270,60 @@ public class MonederoVirtual {
     }
 
     // METODOS PARA REVERTIR TRANSACCIONES
-    public void revertirTransferencia(Transferencia transferencia) throws Exception {
-        double monto = transferencia.getMonto();
-        Cuenta cuentaEmisora = transferencia.getCuenta();
-        Monedero monederoEmisor = transferencia.getMonedero();
-
-        Cuenta cuentaReceptora = transferencia.getCuentaRecibe();
-
-        if (!verificarClienteExiste(cuentaEmisora.getClienteAsociado().getEmail())) {
-            throw new Exception("No se puede realizar la transferencia. El cliente no existe.");
-        }
-        if (!verificarClienteExiste(cuentaReceptora.getClienteAsociado().getEmail())) {
-            throw new Exception("No se puede realizar la transferencia. El cliente de destino no existe.");
-        }
-
-        try {
-            cuentaReceptora.setMonto(cuentaReceptora.getMonto() - monto);
-
-            monederoEmisor.agregarDinero(monto);
-            cuentaEmisora.setMonto(cuentaEmisora.getMonto() + monto);
-            cuentaEmisora.getClienteAsociado().retirarPuntos(transferencia);
-            actualizarRanking(cuentaEmisora.getClienteAsociado());
-
-        } catch (Exception e) {
-            System.out.println("No se pudo revertir la transferencia.");
-        }
+   public boolean revertirTransferencia(Cuenta cuenta) throws Exception {
+    // Verificar que la cuenta tenga transacciones reversibles
+    if (cuenta.getTransaccionesReversibles().isEmpty()) {
+        throw new Exception("No hay transferencias para revertir en esta cuenta.");
     }
+
+    // Obtener la última transferencia de la pila
+    Transaccion ultimaTransferencia = (Transaccion) cuenta.getTransaccionesReversibles().pop();
+    
+    // Verificar que sea una transferencia (no otro tipo de transacción)
+    if (!(ultimaTransferencia instanceof Transferencia)) {
+        // Si no es transferencia, la devolvemos a la pila
+        cuenta.getTransaccionesReversibles().push(ultimaTransferencia);
+        throw new Exception("La última transacción no es una transferencia.");
+    }
+    
+    Transferencia transferencia = (Transferencia) ultimaTransferencia;
+    double monto = transferencia.getMonto();
+    Cuenta cuentaEmisora = transferencia.getCuenta();
+    Monedero monederoEmisor = transferencia.getMonedero();
+    Cuenta cuentaReceptora = transferencia.getCuentaRecibe();
+
+    // Verificar que los clientes existan
+    if (!verificarClienteExiste(cuentaEmisora.getClienteAsociado().getEmail())) {
+        // Devolver la transferencia a la pila si hay error
+        cuenta.getTransaccionesReversibles().push(transferencia);
+        throw new Exception("No se puede revertir la transferencia. El cliente emisor no existe.");
+    }
+    if (!verificarClienteExiste(cuentaReceptora.getClienteAsociado().getEmail())) {
+        // Devolver la transferencia a la pila si hay error
+        cuenta.getTransaccionesReversibles().push(transferencia);
+        throw new Exception("No se puede revertir la transferencia. El cliente receptor no existe.");
+    }
+
+    try {
+        // Revertir los movimientos de dinero
+        cuentaReceptora.setMonto(cuentaReceptora.getMonto() - monto);
+        monederoEmisor.agregarDinero(monto);
+        cuentaEmisora.setMonto(cuentaEmisora.getMonto() + monto);
+        listaTransacciones.remove(transferencia);
+        cuentaEmisora.getTransacciones().remove(transferencia);
+        
+        // Revertir los puntos si es necesario
+        cuentaEmisora.getClienteAsociado().retirarPuntos(transferencia);
+        actualizarRanking(cuentaEmisora.getClienteAsociado());
+
+        return true; // Todo bien, parcero
+    } catch (Exception e) {
+        // Si hay error, devolver la transferencia a la pila
+        cuenta.getTransaccionesReversibles().push(transferencia);
+        System.out.println("No se pudo revertir la transferencia: " + e.getMessage());
+        return false; // Se fue todo pa'l carajo
+    }
+}
 
     public List<Cuenta> getCuentasUsuario(int idCliente) {
         Cliente cliente = buscarCliente(idCliente);
@@ -407,24 +439,29 @@ public class MonederoVirtual {
         return monederosCliente;
     }
 
-  public boolean actualizarCliente(int id, Cliente clienteData) throws Exception {
-    Cliente clienteAcutal = buscarCliente(id);
-    if (clienteAcutal == null) {
-        throw new Exception("El cliente a actualizar no existe");
+    public boolean actualizarCliente(int id, Cliente clienteData) throws Exception {
+        Cliente clienteAcutal = buscarCliente(id);
+        if (clienteAcutal == null) {
+            throw new Exception("El cliente a actualizar no existe");
 
-    } else {
-        clienteAcutal.setNombreCompleto(clienteData.getNombreCompleto());
-        clienteAcutal.setCelular(clienteData.getCelular());
-        clienteAcutal.setEmail(clienteData.getEmail());
-        clienteAcutal.setFechaNacimiento(clienteData.getFechaNacimiento());
-        clienteAcutal.setDirección(clienteData.getDirección());
-        clienteAcutal.setFechaRegistro(clienteData.getFechaRegistro());
+        } else {
+            clienteAcutal.setNombreCompleto(clienteData.getNombreCompleto());
+            clienteAcutal.setCelular(clienteData.getCelular());
+            clienteAcutal.setEmail(clienteData.getEmail());
+            clienteAcutal.setFechaNacimiento(clienteData.getFechaNacimiento());
+            clienteAcutal.setDirección(clienteData.getDirección());
+            clienteAcutal.setFechaRegistro(clienteData.getFechaRegistro());
 
-        // ELIMINADO: Lógica que causaba duplicación de cuentas
-        // if (clienteData.getListaCuentas() != null) {
-        //     clienteAcutal.getListaCuentas().addAll(clienteData.getListaCuentas());
-        // }
-        return true;
+            // ELIMINADO: Lógica que causaba duplicación de cuentas
+            // if (clienteData.getListaCuentas() != null) {
+            // clienteAcutal.getListaCuentas().addAll(clienteData.getListaCuentas());
+            // }
+            return true;
+        }
     }
-}
+
+    public Transferencia obtenerUltimaTransferencia(Cuenta cuentaSeleccionada) {
+        Transferencia ultimTransferencia = (Transferencia)cuentaSeleccionada.getTransaccionesReversibles().peek();
+        return ultimTransferencia;
+    }
 }

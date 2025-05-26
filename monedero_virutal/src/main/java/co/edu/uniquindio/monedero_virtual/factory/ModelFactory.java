@@ -130,4 +130,17 @@ public class ModelFactory {
         return monederoVirtual.buscarCliente(id);
     }
 
+    public boolean revertirTransferencia(Cuenta cuenta) {
+        try {
+            return monederoVirtual.revertirTransferencia(cuenta);
+        }catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Transferencia obtenerUltimaTransferencia(Cuenta cuentaSeleccionada) {
+        return monederoVirtual.obtenerUltimaTransferencia(cuentaSeleccionada);
+    }
+
 }
