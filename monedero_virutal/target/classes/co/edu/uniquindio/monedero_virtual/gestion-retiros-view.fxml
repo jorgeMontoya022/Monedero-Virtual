@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<AnchorPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: linear-gradient(to bottom, #f5f7fa, #c3cfe2);" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.monedero_virtual.view.GestionRetirosViewController">
+    
+    <!-- Contenedor principal anclado a los bordes de la ventana para asegurar responsive design -->
+    <BorderPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+        <center>
+            <!-- Tarjeta principal que ocupa todo el espacio disponible -->
+            <VBox style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                
+                <!-- Sección superior con gradiente -->
+                <VBox spacing="8" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-padding: 15; -fx-background-radius: 15 15 0 0;">
+                    
+                    <!-- Header con saludo y botón de notificación -->
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+                        <Label fx:id="userNameLabel" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: white;" text="Tus retiros, Carlos" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        
+                        <!-- Botón de notificaciones -->
+                        <StackPane>
+                            <Button fx:id="notificationButton" onAction="#onAbrirNotificaciones" style="-fx-background-color: transparent; -fx-padding: 8;">
+                                <graphic>
+                                    <StackPane>
+                                        <Circle radius="18" style="-fx-fill: white; -fx-opacity: 0.85;" />
+                                        <Label style="-fx-font-size: 18; -fx-text-fill: #764ba2;" text="🔔" />
+                                    </StackPane>
+                                </graphic>
+                                <tooltip>
+                                    <Tooltip text="Notificaciones" />
+                                </tooltip>
+                            </Button>
+                            <!-- Indicador de notificaciones nuevas -->
+                            <Circle radius="6" style="-fx-fill: #ff4757;" StackPane.alignment="TOP_RIGHT">
+                                <StackPane.margin>
+                                    <Insets right="-3.0" top="-1.0" />
+                                </StackPane.margin>
+                            </Circle>
+                        </StackPane>
+                    </HBox>
+                    
+                    <!-- Título de la sección -->
+                    <Label style="-fx-font-size: 16; -fx-text-fill: white; -fx-opacity: 0.9;" text="Realiza retiros de tus cuentas" />
+                </VBox>
+                
+                <!-- Contenedor principal con dos secciones verticales (formulario arriba, tabla abajo) -->
+                <VBox spacing="10" style="-fx-padding: 15;" VBox.vgrow="ALWAYS">
+                    
+                    <!-- Panel superior - Formulario para realizar retiros (REDUCIDO EN TAMAÑO) -->
+                    <VBox maxHeight="280.0" prefWidth="772.0" spacing="8" style="-fx-background-color: #f8f9fb; -fx-background-radius: 8; -fx-padding: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 3, 0, 0, 0);">
+                        <Label style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Nuevo retiro" />
+                        
+                        <!-- GridPane para organizar los campos del formulario en dos columnas -->
+                        <GridPane hgap="15" vgap="12" GridPane.fillWidth="true">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" minWidth="150.0" />
+                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" minWidth="150.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
+                            </rowConstraints>
+                            
+                            <!-- Campo Monto -->
+                            <VBox spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.fillWidth="true">
+                                <Label style="-fx-font-size: 12; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Monto" />
+                                <TextField fx:id="montoField" maxWidth="1.7976931348623157E308" promptText="Ej: 250000" style="-fx-padding: 6; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1; -fx-font-size: 12;" />
+                            </VBox>
+
+                            <!-- Campo Cuenta -->
+                            <VBox spacing="4" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.fillWidth="true">
+                                <Label style="-fx-font-size: 12; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Cuenta" />
+                                <ComboBox fx:id="cuentaComboBox" maxWidth="1.7976931348623157E308" promptText="Seleccione la cuenta" style="-fx-padding: 6; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1; -fx-font-size: 12; -fx-pref-width: 100%;" HBox.hgrow="ALWAYS" />
+                            </VBox>
+
+                            <!-- Campo Monedero -->
+                            <VBox spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.fillWidth="true">
+                                <Label style="-fx-font-size: 12; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Monedero" />
+                                <ComboBox fx:id="monederoComboBox" maxWidth="1.7976931348623157E308" promptText="Seleccione monedero" style="-fx-padding: 6; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1; -fx-font-size: 12; -fx-pref-width: 100%;" HBox.hgrow="ALWAYS" />
+                            </VBox>
+
+                            <!-- Campo Descripción -->
+                            <VBox spacing="4" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="2" GridPane.fillWidth="true">
+                                <Label style="-fx-font-size: 12; -fx-text-fill: #555555; -fx-font-weight: 500;" text="Descripción" />
+                                <TextField fx:id="descripcionField" maxWidth="1.7976931348623157E308" alignment="TOP_LEFT" prefHeight="64.0" promptText="Descripción del retiro (opcional)" style="-fx-padding: 6; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1; -fx-font-size: 12;" />
+                            </VBox>
+                        </GridPane>
+                        
+                        <!-- Botones de acción MEJORADOS EN TAMAÑO -->
+                        <HBox alignment="CENTER_RIGHT" spacing="12">
+                            <padding>
+                                <Insets top="10.0" />
+                            </padding>
+                            <Button fx:id="clearButton" onAction="#onClearFields" style="-fx-background-color: #f0f2f5; -fx-text-fill: #666666; -fx-padding: 10 18; -fx-background-radius: 6; -fx-font-size: 13; -fx-font-weight: 500;" text="Limpiar">
+                                <effect>
+                                    <DropShadow color="rgba(0,0,0,0.1)" radius="2" spread="0.01" />
+                                </effect>
+                            </Button>
+                            <Button fx:id="retiroButton" onAction="#onRetiro" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-text-fill: white; -fx-padding: 10 18; -fx-background-radius: 6; -fx-font-size: 13; -fx-font-weight: 600;" text="Realizar retiro">
+                                <effect>
+                                    <DropShadow color="rgba(102, 126, 234, 0.5)" radius="4" spread="0.03" />
+                                </effect>
+                            </Button>
+                        </HBox>
+                    </VBox>
+                    
+                    <!-- Separador horizontal -->
+                    <Separator />
+                    
+                    <!-- Panel inferior - Título y Tabla de retiros (AUMENTADO EN TAMAÑO) -->
+                    <VBox spacing="5" VBox.vgrow="ALWAYS">
+                    
+                        <!-- Tabla de retiros (AHORA CON MAYOR PRIORIDAD DE ESPACIO) -->
+                        <TableView fx:id="retirosTable" prefHeight="300.0" style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #e1e1e1;" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="idTransaccionColumn" prefWidth="120.0" text="ID Transacción" />
+                                <TableColumn fx:id="fechaTransaccionColumn" prefWidth="120.0" text="Fecha Transacción" />
+                                <TableColumn fx:id="montoColumn" prefWidth="100.0" text="Monto" />
+                                <TableColumn fx:id="descripcionColumn" prefWidth="140.0" text="Descripción" />
+                                <TableColumn fx:id="cuentaColumn" prefWidth="120.0" text="Cuenta" />
+                                <TableColumn fx:id="monederoColumn" prefWidth="120.0" text="Monedero" />
+                            </columns>
+                            <placeholder>
+                                <Label style="-fx-text-fill: #888888;" text="No hay retiros registrados" />
+                            </placeholder>
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                            </columnResizePolicy>
+                            <effect>
+                                <DropShadow color="rgba(0,0,0,0.1)" height="2.0" radius="0.5" width="0.0" />
+                            </effect>
+                        </TableView>
+                    </VBox>
+                </VBox>
+            </VBox>
+        </center>
+    </BorderPane>
+</AnchorPane>

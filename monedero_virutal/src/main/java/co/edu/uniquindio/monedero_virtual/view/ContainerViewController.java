@@ -85,6 +85,9 @@ public class ContainerViewController extends CoreViewController implements Initi
     @FXML
     private Node gestionPuntosView;
 
+    @FXML
+    private Node gestionRetirosView;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         currentSectionLabel.setText("Mis Cuentas");
@@ -139,7 +142,8 @@ public class ContainerViewController extends CoreViewController implements Initi
     @FXML
     private void onRetirosButtonClicked(ActionEvent event) {
         // Esta funcionalidad aún no está implementada
-        showMessage("Retiros");
+        showView("Retiros");
+        currentSectionLabel.setText("Mis retiros");
         highlightSelectedButton("retiros");
     }
 
@@ -201,6 +205,7 @@ public class ContainerViewController extends CoreViewController implements Initi
         gestionDepositosView.setVisible(false);
         gestionMonederosView.setVisible(false);
         gestionPuntosView.setVisible(false);
+        gestionRetirosView.setVisible(false);
 
         // Mostrar la vista seleccionada
         switch (viewName) {
@@ -225,6 +230,9 @@ public class ContainerViewController extends CoreViewController implements Initi
             case "Puntos":
                 gestionPuntosView.setVisible(true);
                 break;
+            case "Retiros":
+                gestionRetirosView.setVisible(true);
+                break;
             default:
                 // Por defecto mostrar la vista de cuentas
                 gestionCuentasView.setVisible(true);
@@ -246,6 +254,7 @@ public class ContainerViewController extends CoreViewController implements Initi
         gestionDepositosView.setVisible(false);
         gestionMonederosView.setVisible(false);
         gestionPuntosView.setVisible(false);
+        gestionRetirosView.setVisible(false);
 
         // Mostrar mensaje en la etiqueta de sección
         currentSectionLabel.setText(sectionName + " (No implementado)");
