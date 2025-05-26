@@ -359,6 +359,11 @@ public class GestionMovimientosViewController extends CoreViewController impleme
         cbCuenta.getSelectionModel().clearSelection();
         dpFechaInicio.setValue(null);
         dpFechaFin.setValue(null);
+        getTransacciones();
+        actualizarTotalTransacciones(listaTransacciones.size());
+        transactionsTable.getItems().clear();
+        transactionsTable.setItems(listaTransacciones);
+
 
         // Mostrar todas las transacciones nuevamente
 
