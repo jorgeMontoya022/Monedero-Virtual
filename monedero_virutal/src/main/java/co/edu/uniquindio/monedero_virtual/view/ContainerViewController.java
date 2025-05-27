@@ -30,8 +30,7 @@ public class ContainerViewController extends CoreViewController implements Initi
     @FXML
     private Button transfersButton;
 
-    @FXML
-    private Button statsButton;
+    
 
     @FXML
     private Button logoutButton;
@@ -162,12 +161,7 @@ public class ContainerViewController extends CoreViewController implements Initi
         highlightSelectedButton("puntos");
     }
 
-    @FXML
-    private void onStatsButtonClicked(ActionEvent event) {
-        // Esta funcionalidad aún no está implementada
-        showMessage("Estadísticas");
-        highlightSelectedButton("estadisticas");
-    }
+    
 
     @FXML
     private void onDepositsButtonClicked(ActionEvent event) {
@@ -277,7 +271,6 @@ public class ContainerViewController extends CoreViewController implements Initi
         accountsButton.setStyle(defaultStyle);
         transactionsButton.setStyle(defaultStyle);
         transfersButton.setStyle(defaultStyle);
-        statsButton.setStyle(defaultStyle);
         retirosButton.setStyle(defaultStyle);
         monederosButton.setStyle(defaultStyle);
         puntosButton.setStyle(defaultStyle);
@@ -298,9 +291,6 @@ public class ContainerViewController extends CoreViewController implements Initi
                 break;
             case "transferencias":
                 transfersButton.setStyle(selectedStyle);
-                break;
-            case "estadisticas":
-                statsButton.setStyle(selectedStyle);
                 break;
             case "retiros":
                 retirosButton.setStyle(selectedStyle);

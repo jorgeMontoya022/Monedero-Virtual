@@ -9,8 +9,10 @@ import co.edu.uniquindio.monedero_virtual.controller.GestionRetirosController;
 import co.edu.uniquindio.monedero_virtual.model.Cliente;
 import co.edu.uniquindio.monedero_virtual.model.Cuenta;
 import co.edu.uniquindio.monedero_virtual.model.Monedero;
+import co.edu.uniquindio.monedero_virtual.model.Notificacion;
 import co.edu.uniquindio.monedero_virtual.model.Retiro;
 import co.edu.uniquindio.monedero_virtual.model.Transaccion;
+import co.edu.uniquindio.monedero_virtual.model.enums.TipoNotifiacion;
 import co.edu.uniquindio.monedero_virtual.utils.Sesion;
 import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverManagement;
 import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverView;
@@ -20,6 +22,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -27,6 +30,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class GestionRetirosViewController extends CoreViewController implements ObserverView {
 
@@ -87,6 +91,9 @@ public class GestionRetirosViewController extends CoreViewController implements 
 
     @FXML
     void onAbrirNotificaciones(ActionEvent event) {
+        Stage ownerStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        openWindow("/co/edu/uniquindio/monedero_virtual/gestion-notificaciones-view.fxml", "Mis notificaciones",
+                ownerStage);
 
     }
 
@@ -116,7 +123,6 @@ public class GestionRetirosViewController extends CoreViewController implements 
         monederoComboBox.getSelectionModel().clearSelection();
         descripcionField.clear();
     }
-
 
     private void initView() {
         initDataBinding();
@@ -162,7 +168,6 @@ public class GestionRetirosViewController extends CoreViewController implements 
         userNameLabel.setText("Tus retiros, " + primerNombre);
     }
 
-
     private void realizarRetiro() {
         Retiro retiro = buildRetiro();
         if (retiro == null) {
@@ -175,10 +180,19 @@ public class GestionRetirosViewController extends CoreViewController implements 
             if (mostrarMensajeConfirmacion("Desea realizar el retiro?")) {
                 if (gestionRetirosController.realizarRetiro(retiro)) {
                     listaRetiros.add(retiro);
+                    mostrarMensaje("Información", "Retiro exitoso", "El retiro se ha realizado con éxito", Alert.AlertType.INFORMATION);
                     ObserverManagement.getInstance().notifyObservers(TipoEvento.RETIRO);
                     limpiarCampos();
+
+                    Notificacion retirNotificacion = new Notificacion(
+                            "Has retirado " + retiro.getMonto() + " de la cuenta " + retiro.getCuenta().getBanco() + "-"
+                                    + retiro.getCuenta().getNumeroCuenta(),
+                            TipoNotifiacion.INFORMACION,
+                            LocalDate.now());
+                    clienteLogueado.getListaNotificacion().add(retirNotificacion);
                 } else {
-                    mostrarMensaje("Error", "Retiro no realizado", "No se pudo realizar el retiro.\nIntentó retirar más que la cantidad disponible en su monedero",
+                    mostrarMensaje("Error", "Retiro no realizado",
+                            "No se pudo realizar el retiro.\nIntentó retirar más que la cantidad disponible en su monedero",
                             Alert.AlertType.ERROR);
                 }
             } else {
@@ -263,7 +277,6 @@ public class GestionRetirosViewController extends CoreViewController implements 
         return true;
 
     }
-
 
     @Override
     public void updateView(TipoEvento event) {

@@ -1,6 +1,7 @@
 package co.edu.uniquindio.monedero_virtual.view;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -10,16 +11,16 @@ import co.edu.uniquindio.monedero_virtual.model.Cliente;
 import co.edu.uniquindio.monedero_virtual.model.Cuenta;
 import co.edu.uniquindio.monedero_virtual.model.CuentaAhorrro;
 import co.edu.uniquindio.monedero_virtual.model.CuentaCorriente;
+import co.edu.uniquindio.monedero_virtual.model.Notificacion;
+import co.edu.uniquindio.monedero_virtual.model.enums.TipoNotifiacion;
 import co.edu.uniquindio.monedero_virtual.utils.Sesion;
 import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverManagement;
 import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverView;
 import co.edu.uniquindio.monedero_virtual.view.obeserver.TipoEvento;
-import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -247,6 +248,12 @@ public class GestionCuentasViewController extends CoreViewController implements 
                         "La cuenta ha sido agregada con éxito", Alert.AlertType.INFORMATION);
                 mostrarCantidadCuentas();
                 limpiarCampos();
+
+                Notificacion cuentaNotificacion = new Notificacion(
+                        "Has creado la cuenta " + cuenta.getBanco() + "-" + cuenta.getNumeroCuenta(),
+                        TipoNotifiacion.INFORMACION,
+                        LocalDate.now());
+                clienteLogueado.getListaNotificacion().add(cuentaNotificacion);
             } else {
                 mostrarMensaje("Error", "Cuenta no agregada",
                         "La cuenta no pudo ser agregada", Alert.AlertType.ERROR);
@@ -262,11 +269,19 @@ public class GestionCuentasViewController extends CoreViewController implements 
                     ObserverManagement.getInstance().notifyObservers(TipoEvento.CUENTA);
                     mostrarMensaje("Notificación", "Cuenta Eliminada",
                             "La cuenta ha sido eliminada con éxito", Alert.AlertType.INFORMATION);
+
                     mostrarCantidadCuentas();
                     limpiarCampos();
 
+                     Notificacion cuentaNotificacion = new Notificacion(
+                        "Has eliminado una cueta" ,
+                        TipoNotifiacion.INFORMACION,
+                        LocalDate.now());
+                    clienteLogueado.getListaNotificacion().add(cuentaNotificacion);
+
                 } else {
-                    mostrarMensaje("Erro", "Falló al eliminar la cuenta", "No se pudo eliminar la cuenta. Intenta nuevamente", Alert.AlertType.ERROR);
+                    mostrarMensaje("Erro", "Falló al eliminar la cuenta",
+                            "No se pudo eliminar la cuenta. Intenta nuevamente", Alert.AlertType.ERROR);
                 }
             }
         } else {

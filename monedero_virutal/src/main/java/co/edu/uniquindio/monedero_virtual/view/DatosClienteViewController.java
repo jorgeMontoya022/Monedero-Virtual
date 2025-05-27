@@ -2,25 +2,27 @@ package co.edu.uniquindio.monedero_virtual.view;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import co.edu.uniquindio.monedero_virtual.controller.DatosClienteController;
 import co.edu.uniquindio.monedero_virtual.model.Cliente;
+import co.edu.uniquindio.monedero_virtual.model.Notificacion;
+import co.edu.uniquindio.monedero_virtual.model.enums.TipoNotifiacion;
 import co.edu.uniquindio.monedero_virtual.utils.Sesion;
 import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverManagement;
 import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverView;
 import co.edu.uniquindio.monedero_virtual.view.obeserver.TipoEvento;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class DatosClienteViewController extends CoreViewController implements ObserverView {
 
@@ -66,6 +68,9 @@ public class DatosClienteViewController extends CoreViewController implements Ob
 
     @FXML
     void onAbrirNotificaciones(ActionEvent event) {
+        Stage ownerStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        openWindow("/co/edu/uniquindio/monedero_virtual/gestion-notificaciones-view.fxml", "Mis notificaciones",
+                ownerStage);
 
     }
 
@@ -143,6 +148,12 @@ public class DatosClienteViewController extends CoreViewController implements Ob
                 clienteLogueado = datosClienteController.getClienteById(clienteLogueado.getId());
                 Sesion.getInstance().setCliente(clienteLogueado);
                 ObserverManagement.getInstance().notifyObservers(TipoEvento.CLIENTE);
+
+                Notificacion cuentaNotificacion = new Notificacion(
+                        "Has editado tu perfil ",
+                        TipoNotifiacion.INFORMACION,
+                        LocalDate.now());
+                clienteLogueado.getListaNotificacion().add(cuentaNotificacion);
 
                 // Actualizar la vista
                 mostrarInformacion(clienteLogueado);
@@ -235,7 +246,6 @@ public class DatosClienteViewController extends CoreViewController implements Ob
         return matcher.find();
     }
 
-   
     private boolean esAdulto(LocalDate fechaNacimiento) {
         return fechaNacimiento != null && fechaNacimiento.plusYears(18).isBefore(LocalDate.now().plusDays(1));
     }

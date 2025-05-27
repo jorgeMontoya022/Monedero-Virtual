@@ -9,8 +9,10 @@ import co.edu.uniquindio.monedero_virtual.controller.GestionTransferenciasContro
 import co.edu.uniquindio.monedero_virtual.model.Cliente;
 import co.edu.uniquindio.monedero_virtual.model.Cuenta;
 import co.edu.uniquindio.monedero_virtual.model.Monedero;
+import co.edu.uniquindio.monedero_virtual.model.Notificacion;
 import co.edu.uniquindio.monedero_virtual.model.Transaccion;
 import co.edu.uniquindio.monedero_virtual.model.Transferencia;
+import co.edu.uniquindio.monedero_virtual.model.enums.TipoNotifiacion;
 import co.edu.uniquindio.monedero_virtual.utils.Sesion;
 import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverManagement;
 import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverView;
@@ -20,6 +22,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -27,6 +30,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class GestionTransferenciasViewController extends CoreViewController implements ObserverView {
 
@@ -97,6 +101,9 @@ public class GestionTransferenciasViewController extends CoreViewController impl
 
     @FXML
     void onAbrirNotificaciones(ActionEvent event) {
+        Stage ownerStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        openWindow("/co/edu/uniquindio/monedero_virtual/gestion-notificaciones-view.fxml", "Mis notificaciones",
+                ownerStage);
 
     }
 
@@ -210,11 +217,18 @@ public class GestionTransferenciasViewController extends CoreViewController impl
         }
 
         if (validarDatos(transferencia)) {
-            if (mostrarMensajeConfirmacion("Desea realizar la transferencia")) {
+            if (mostrarMensajeConfirmacion("¿Desea realizar la transferencia")) {
                 if (transferenciasController.realizarTransferencia(transferencia)) {
                     listaTransferencias.add(transferencia);
+                    mostrarMensaje("Información", "Transferencia éxitosa", "La transferencia se ha realizado con éxito", Alert.AlertType.INFORMATION);
                     ObserverManagement.getInstance().notifyObservers(TipoEvento.TRANSFERENCIA);
                     limpiarCampos();
+
+                     Notificacion transferenciaNotificacion = new Notificacion(
+                            "Transferencia realizada de "+transferencia.getCuenta().getBanco()+"-"+transferencia.getCuentaRecibe().getNumeroCuenta() + "a "+transferencia.getCuentaRecibe().getBanco()+"-"+transferencia.getCuentaRecibe().getNumeroCuenta(),
+                            TipoNotifiacion.INFORMACION,
+                            LocalDate.now());
+                    clienteLogueado.getListaNotificacion().add(transferenciaNotificacion);
                 } else {
                     mostrarMensaje("Error", "Transferencia no realizada", "No se pudo realizar la transferencia",
                             Alert.AlertType.ERROR);
@@ -250,11 +264,17 @@ public class GestionTransferenciasViewController extends CoreViewController impl
             // Eliminá visualmente la transferencia de la lista
             listaTransferencias.remove(ultimaTransferencia);
 
-            mostrarMensaje("¡Hecho!", "Reversión exitosa", "Se revirtió la última transferencia, parcero.",
+            mostrarMensaje("Información", "Reversión exitosa", "Se revirtió la última con éxito",
                     Alert.AlertType.INFORMATION);
             ObserverManagement.getInstance().notifyObservers(TipoEvento.TRANSFERENCIA);
 
             transfersTable.refresh(); // actualizá la tabla visualmente
+
+             Notificacion transferenciaNotificacion = new Notificacion(
+                        "Has revertido una transferencia",
+                        TipoNotifiacion.INFORMACION,
+                        LocalDate.now());
+            clienteLogueado.getListaNotificacion().add(transferenciaNotificacion);
 
         } else {
             mostrarMensaje("Uff", "No se pudo revertir",

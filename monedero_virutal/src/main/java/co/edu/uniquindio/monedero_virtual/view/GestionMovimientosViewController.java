@@ -12,8 +12,10 @@ import co.edu.uniquindio.monedero_virtual.controller.GestionMovimientosControlle
 import co.edu.uniquindio.monedero_virtual.model.Cliente;
 import co.edu.uniquindio.monedero_virtual.model.Cuenta;
 import co.edu.uniquindio.monedero_virtual.model.Deposito;
+import co.edu.uniquindio.monedero_virtual.model.Notificacion;
 import co.edu.uniquindio.monedero_virtual.model.Transaccion;
 import co.edu.uniquindio.monedero_virtual.model.Transferencia;
+import co.edu.uniquindio.monedero_virtual.model.enums.TipoNotifiacion;
 import co.edu.uniquindio.monedero_virtual.utils.Sesion;
 import co.edu.uniquindio.monedero_virtual.utils.services.ExportsPdfService;
 import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverManagement;
@@ -105,7 +107,7 @@ public class GestionMovimientosViewController extends CoreViewController impleme
     @FXML
     void onAbrirNotificaciones(ActionEvent event) {
         Stage ownerStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        openWindow("/view/notification-view.fxml", "Notificaciones", ownerStage);
+        openWindow("/co/edu/uniquindio/monedero_virtual/gestion-notificaciones-view.fxml", "Notificaciones", ownerStage);
 
     }
 
@@ -178,6 +180,13 @@ public class GestionMovimientosViewController extends CoreViewController impleme
                                 fechaInicio.toString(),
                                 fechaFin.toString()),
                         Alert.AlertType.INFORMATION);
+
+                 Notificacion movimientosNotificacion = new Notificacion(
+                        "Has Realizado un reporte en pdf " ,
+                        TipoNotifiacion.INFORMACION,
+                        LocalDate.now());
+
+                    clienteLogueado.getListaNotificacion().add(movimientosNotificacion);
 
             } catch (Exception e) {
                 mostrarMensaje("ERROR", "Error en el reporte",

@@ -1,15 +1,15 @@
 package co.edu.uniquindio.monedero_virtual.view;
 
 import java.net.URL;
-import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import co.edu.uniquindio.monedero_virtual.controller.GestionMonederosController;
 import co.edu.uniquindio.monedero_virtual.model.Cliente;
 import co.edu.uniquindio.monedero_virtual.model.Cuenta;
-import co.edu.uniquindio.monedero_virtual.model.Deposito;
 import co.edu.uniquindio.monedero_virtual.model.Monedero;
+import co.edu.uniquindio.monedero_virtual.model.Notificacion;
+import co.edu.uniquindio.monedero_virtual.model.enums.TipoNotifiacion;
 import co.edu.uniquindio.monedero_virtual.utils.Sesion;
 import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverManagement;
 import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverView;
@@ -19,6 +19,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -26,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class GestionMonederosViewController extends CoreViewController implements ObserverView {
 
@@ -80,6 +82,9 @@ public class GestionMonederosViewController extends CoreViewController implement
 
     @FXML
     void onAbrirNotificaciones(ActionEvent event) {
+        Stage ownerStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        openWindow("/co/edu/uniquindio/monedero_virtual/gestion-notificaciones-view.fxml", "Mis notificaciones",
+                ownerStage);
 
     }
 
@@ -162,10 +167,18 @@ public class GestionMonederosViewController extends CoreViewController implement
         if (validarDatos(monedero)) {
             if (gestionMonederosController.agregarMonedero(monedero)) {
                 listaMonederos.add(monedero);
-                ObserverManagement.getInstance().notifyObservers(TipoEvento.MONEDERO);
+                
                 mostrarMensaje("Notificación", "Monedero creado",
                         "El monedero ha sido creado con éxito", Alert.AlertType.INFORMATION);
+                ObserverManagement.getInstance().notifyObservers(TipoEvento.MONEDERO);
                 limpiarCampos();
+
+                 Notificacion monederoNotificacion = new Notificacion(
+                        "Has creado el monedero "+monedero.getNombreMonedero() ,
+                        TipoNotifiacion.INFORMACION,
+                        LocalDate.now());
+
+                    clienteLogueado.getListaNotificacion().add(monederoNotificacion);
             } else {
                 mostrarMensaje("Error", "Monedero no creado",
                         "No se pudo crear el monedero", Alert.AlertType.ERROR);

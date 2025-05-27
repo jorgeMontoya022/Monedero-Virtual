@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import co.edu.uniquindio.monedero_virtual.model.*;
 import co.edu.uniquindio.monedero_virtual.model.enums.TipoRango;
+import co.edu.uniquindio.monedero_virtual.model.enums.TipoNotifiacion;
 
 public class MonederoVirtualUtils {
 
@@ -24,8 +25,13 @@ public class MonederoVirtualUtils {
         Cuenta ahorroJorge = new CuentaAhorrro(1_000_000, "Davivienda", 109989022, jorge);
         Cuenta corrienteJorge = new CuentaCorriente(1_500_000, "Banco de Bogotá", 1022938292, jorge);
 
-        Monedero monederoComida = new Monedero(1029, 500000, "Comida", corrienteJorge);
+        Monedero monederoComida = new Monedero(1029, 500_000, "Comida", corrienteJorge);
         ahorroJorge.getMonederos().add(monederoComida);
+
+        // Notificaciones de creación para Jorge
+        jorge.getListaNotificacion().add(new Notificacion("Se ha creado tu cuenta de ahorros en Davivienda.", TipoNotifiacion.INFORMACION, LocalDate.now()));
+        jorge.getListaNotificacion().add(new Notificacion("Se ha creado tu cuenta corriente en Banco de Bogotá.", TipoNotifiacion.INFORMACION, LocalDate.now()));
+        jorge.getListaNotificacion().add(new Notificacion("Se ha creado el monedero 'Comida' con saldo de $500.000.", TipoNotifiacion.INFORMACION, LocalDate.now()));
 
         // Transacciones para Jorge
         Transaccion deposito1 = new Deposito("9001", LocalDate.of(2024, 12, 20), 10_000, "Depósito para comida",
@@ -35,6 +41,10 @@ public class MonederoVirtualUtils {
 
         ahorroJorge.agregarTransaccion(deposito1);
         ahorroJorge.agregarTransaccion(retiro1);
+
+        // Notificaciones de transacciones para Jorge
+        jorge.getListaNotificacion().add(new Notificacion("Se ha realizado un depósito de $10.000 para comida.", TipoNotifiacion.INFORMACION, deposito1.getFechaTransaccion()));
+        jorge.getListaNotificacion().add(new Notificacion("Se ha realizado un retiro de $5.000 del monedero 'Comida'.", TipoNotifiacion.INFORMACION, retiro1.getFechaTransaccion()));
 
         jorge.getListaCuentas().add(corrienteJorge);
         jorge.getListaCuentas().add(ahorroJorge);
@@ -54,8 +64,13 @@ public class MonederoVirtualUtils {
         Cuenta ahorroAndrea = new CuentaAhorrro(500_000, "Bancolombia", 204455667, andrea);
         Cuenta corrienteAndrea = new CuentaCorriente(800_000, "Nequi", 889977445, andrea);
 
-        Monedero monederoAhorro = new Monedero(2932, 500000, "Ahorro Viaje", corrienteAndrea);
+        Monedero monederoAhorro = new Monedero(2932, 500_000, "Ahorro Viaje", corrienteAndrea);
         ahorroAndrea.getMonederos().add(monederoAhorro);
+
+        // Notificaciones de creación para Andrea
+        andrea.getListaNotificacion().add(new Notificacion("Se ha creado tu cuenta de ahorros en Bancolombia.", TipoNotifiacion.INFORMACION, LocalDate.now()));
+        andrea.getListaNotificacion().add(new Notificacion("Se ha creado tu cuenta corriente en Nequi.", TipoNotifiacion.INFORMACION, LocalDate.now()));
+        andrea.getListaNotificacion().add(new Notificacion("Se ha creado el monedero 'Ahorro Viaje' con saldo de $500.000.", TipoNotifiacion.INFORMACION, LocalDate.now()));
 
         // Transacciones para Andrea
         Transaccion deposito2 = new Deposito("9004", LocalDate.of(2025, 2, 5), 20_000, "Ahorro para viaje",
@@ -69,15 +84,21 @@ public class MonederoVirtualUtils {
         ahorroAndrea.agregarTransaccion(retiro2);
         ahorroAndrea.agregarTransaccion(transferencia2);
 
+        // Notificaciones de transacciones para Andrea
+        andrea.getListaNotificacion().add(new Notificacion("Se ha realizado un depósito de $20.000 para el viaje.", TipoNotifiacion.INFORMACION, deposito2.getFechaTransaccion()));
+        andrea.getListaNotificacion().add(new Notificacion("Se ha realizado un retiro de $10.000 para pagar el hotel.", TipoNotifiacion.INFORMACION, retiro2.getFechaTransaccion()));
+        andrea.getListaNotificacion().add(new Notificacion("Has recibido una transferencia de $5.000 de Jorge William Montoya.", TipoNotifiacion.INFORMACION, transferencia2.getFechaTransaccion()));
+
         andrea.getListaCuentas().add(corrienteAndrea);
         andrea.getListaCuentas().add(ahorroAndrea);
 
-
-        //Transferencia de Jorge a Andrea
-
+        // Transferencia de Jorge a Andrea
         Transaccion transferencia1 = new Transferencia("9003", LocalDate.of(2025, 3, 15), 3_000,
                 "Transferencia a Andrea", ahorroJorge, ahorroAndrea, monederoComida);
         ahorroJorge.agregarTransaccion(transferencia1);
+
+        // Notificación para Jorge por transferencia enviada
+        jorge.getListaNotificacion().add(new Notificacion("Has transferido $3.000 a Andrea Gómez.", TipoNotifiacion.INFORMACION, transferencia1.getFechaTransaccion()));
 
         // ------------------- Construcción del sistema -------------------
         MonederoVirtual sistema = new MonederoVirtual();

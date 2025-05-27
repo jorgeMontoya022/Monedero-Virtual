@@ -5,17 +5,19 @@ import java.util.ResourceBundle;
 
 import co.edu.uniquindio.monedero_virtual.controller.GestionPuntosController;
 import co.edu.uniquindio.monedero_virtual.model.Cliente;
-import co.edu.uniquindio.monedero_virtual.model.enums.TipoRango;
+
 import co.edu.uniquindio.monedero_virtual.utils.Sesion;
 import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverManagement;
 import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverView;
 import co.edu.uniquindio.monedero_virtual.view.obeserver.TipoEvento;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
-public class GestionPuntosViewController implements ObserverView {
+public class GestionPuntosViewController extends CoreViewController implements ObserverView {
 
     GestionPuntosController gestionPuntosController;
     Cliente clienteLogueado;
@@ -49,6 +51,9 @@ public class GestionPuntosViewController implements ObserverView {
 
     @FXML
     void onAbrirNotificaciones(ActionEvent event) {
+        Stage ownerStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        openWindow("/co/edu/uniquindio/monedero_virtual/gestion-notificaciones-view.fxml", "Mis notificaciones",
+                ownerStage);
 
     }
 
