@@ -10,6 +10,7 @@ import co.edu.uniquindio.monedero_virtual.model.MonederoVirtual;
 import co.edu.uniquindio.monedero_virtual.model.Retiro;
 import co.edu.uniquindio.monedero_virtual.model.Transaccion;
 import co.edu.uniquindio.monedero_virtual.model.Transferencia;
+import co.edu.uniquindio.monedero_virtual.model.enums.Beneficio;
 import co.edu.uniquindio.monedero_virtual.utils.MonederoVirtualUtils;
 
 public class ModelFactory {
@@ -166,6 +167,10 @@ public class ModelFactory {
 
     public Transferencia obtenerUltimaTransferencia(Cuenta cuentaSeleccionada) {
         return monederoVirtual.obtenerUltimaTransferencia(cuentaSeleccionada);
+    }
+
+    public List<Beneficio> getBeneficios(){
+        return monederoVirtual.getBeneficios();
     }
 
 }

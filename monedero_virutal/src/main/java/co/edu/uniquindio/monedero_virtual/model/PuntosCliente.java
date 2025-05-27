@@ -16,6 +16,8 @@ public class PuntosCliente {
     public PuntosCliente(Cliente cliente) {
         this.puntosAcumulados = 0;
         this.cliente = cliente;
+        this.beneficioActivo = null;
+        this.fechaDeActivacion = null;
     }
 
     public int getPuntosAcumulados() {
@@ -85,6 +87,8 @@ public class PuntosCliente {
             case BONO_SALDO:
                 puntosRequeridos = 1000;
                 break;
+            case NINGUNO:
+                return false;
             default:
                 return false;
         }

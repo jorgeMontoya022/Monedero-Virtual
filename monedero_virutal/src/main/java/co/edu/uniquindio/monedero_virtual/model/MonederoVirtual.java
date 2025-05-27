@@ -480,4 +480,9 @@ public class MonederoVirtual {
         Transferencia ultimTransferencia = (Transferencia)cuentaSeleccionada.getTransaccionesReversibles().peek();
         return ultimTransferencia;
     }
+
+    public List<Beneficio> getBeneficios(){
+        List<Beneficio> beneficios = new ArrayList<>(List.of(Beneficio.values()));
+        return beneficios;
+    }
 }

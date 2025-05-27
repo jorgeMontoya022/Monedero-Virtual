@@ -49,6 +49,10 @@ public class MonederoVirtualUtils {
         jorge.getListaCuentas().add(corrienteJorge);
         jorge.getListaCuentas().add(ahorroJorge);
 
+        jorge.getPuntos().añadirPuntos(retiro1);
+        jorge.getPuntos().añadirPuntos(deposito1);
+
+
         // ------------------- Cliente 2: Andrea Gómez -------------------
         Cliente andrea = new Cliente(
                 "Andrea Gómez",

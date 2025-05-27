@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.DropShadow?>
@@ -100,6 +101,7 @@
                             <Label style="-fx-font-size: 14; -fx-text-fill: #888888;" text="inicio del programa" />
                         </VBox>
                     </GridPane>
+               <ComboBox fx:id="beneficiosComboBox" prefWidth="150.0" promptText="Seleccione Beneficio" />
                     
                     <!-- Botón para actualizar información -->
                     <Button fx:id="canjearBeneficioButton" onAction="#onCanjearBeneficio" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-text-fill: white; -fx-padding: 12 24; -fx-background-radius: 8; -fx-font-size: 14; -fx-font-weight: 600;" text="Canjear Beneficio">
