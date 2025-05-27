@@ -7,6 +7,7 @@ import co.edu.uniquindio.monedero_virtual.model.Cuenta;
 import co.edu.uniquindio.monedero_virtual.model.Deposito;
 import co.edu.uniquindio.monedero_virtual.model.Monedero;
 import co.edu.uniquindio.monedero_virtual.model.MonederoVirtual;
+import co.edu.uniquindio.monedero_virtual.model.Retiro;
 import co.edu.uniquindio.monedero_virtual.model.Transaccion;
 import co.edu.uniquindio.monedero_virtual.model.Transferencia;
 import co.edu.uniquindio.monedero_virtual.utils.MonederoVirtualUtils;
@@ -84,6 +85,10 @@ public class ModelFactory {
         return monederoVirtual.getDepositosCliente(idCliente);
     }
 
+    public List<Transaccion> getRetirosCliente(int idCliente) {
+        return monederoVirtual.getRetirosCliente(idCliente);
+    }
+
     public List<Transaccion> getTransferenciasCliente(int idCliente) {
         return monederoVirtual.getTransferenciasCliente(idCliente);
     }
@@ -95,6 +100,16 @@ public class ModelFactory {
     public boolean realizarDeposito(Deposito deposito) {
         try {
             return monederoVirtual.realizarDeposito(deposito);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public boolean realizarRetiro(Retiro retiro) {
+        try {
+            return monederoVirtual.realizarRetiro(retiro);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
