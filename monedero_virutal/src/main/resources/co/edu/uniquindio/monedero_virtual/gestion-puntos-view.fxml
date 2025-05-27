@@ -102,7 +102,7 @@
                     </GridPane>
                     
                     <!-- Botón para actualizar información -->
-                    <Button fx:id="actualizarButton" onAction="#onActualizarPuntos" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-text-fill: white; -fx-padding: 12 24; -fx-background-radius: 8; -fx-font-size: 14; -fx-font-weight: 600;" text="Actualizar información">
+                    <Button fx:id="canjearBeneficioButton" onAction="#onCanjearBeneficio" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-text-fill: white; -fx-padding: 12 24; -fx-background-radius: 8; -fx-font-size: 14; -fx-font-weight: 600;" text="Canjear Beneficio">
                         <effect>
                             <DropShadow color="rgba(102, 126, 234, 0.5)" radius="6" spread="0.03" />
                         </effect>

@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import co.edu.uniquindio.monedero_virtual.controller.GestionPuntosController;
 import co.edu.uniquindio.monedero_virtual.model.Cliente;
+import co.edu.uniquindio.monedero_virtual.model.enums.TipoRango;
 import co.edu.uniquindio.monedero_virtual.utils.Sesion;
 import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverManagement;
 import co.edu.uniquindio.monedero_virtual.view.obeserver.ObserverView;
@@ -26,7 +27,7 @@ public class GestionPuntosViewController implements ObserverView {
     private URL location;
 
     @FXML
-    private Button actualizarButton;
+    private Button canjearBeneficioButton;
 
     @FXML
     private Label beneficioLabel;
@@ -52,7 +53,7 @@ public class GestionPuntosViewController implements ObserverView {
     }
 
     @FXML
-    void onActualizarPuntos(ActionEvent event) {
+    void onCanjearBeneficio(ActionEvent event) {
 
     }
 
@@ -73,12 +74,23 @@ public class GestionPuntosViewController implements ObserverView {
         String primerNombre = nombreCompleto.split(" ")[0]; // divide por espacios y toma el primero
         userNameLabel.setText("Tus Puntos, " + primerNombre);
 
+        
+
     }
 
     @Override
     public void updateView(TipoEvento event) {
         switch (event) {
             case CLIENTE:
+                mostrarInformacion(clienteLogueado);
+                break;
+            case DEPOSITO:
+                mostrarInformacion(clienteLogueado);
+                break;
+            case TRANSFERENCIA:
+                mostrarInformacion(clienteLogueado);
+                break;
+            case RETIRO:
                 mostrarInformacion(clienteLogueado);
                 break;
             default:
