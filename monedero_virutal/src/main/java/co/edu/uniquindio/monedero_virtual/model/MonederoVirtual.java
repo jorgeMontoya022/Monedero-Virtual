@@ -321,7 +321,7 @@ public class MonederoVirtual {
         // Si hay error, devolver la transferencia a la pila
         cuenta.getTransaccionesReversibles().push(transferencia);
         System.out.println("No se pudo revertir la transferencia: " + e.getMessage());
-        return false; // Se fue todo pa'l carajo
+        return false;
     }
 }
 
