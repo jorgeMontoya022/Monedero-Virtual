@@ -171,7 +171,7 @@ public class MonederoVirtual {
                 }
             }
 
-            monedero.retirarDinero(monto - comision);
+            monedero.retirarDinero(monto + comision);
             cuenta.setMonto(cuenta.getMonto() - monto - comision);
             cuenta.getClienteAsociado().agregarPuntos(retiro);
             actualizarRanking(cuenta.getClienteAsociado());

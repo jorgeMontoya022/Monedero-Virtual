@@ -237,7 +237,7 @@ public class GestionRetirosViewController extends CoreViewController implements 
                 descripcionField.getText(),
                 cuentaComboBox.getValue(),
                 0,
-                500,
+                monto * 0.05,
                 monederoComboBox.getValue());
     }
 
