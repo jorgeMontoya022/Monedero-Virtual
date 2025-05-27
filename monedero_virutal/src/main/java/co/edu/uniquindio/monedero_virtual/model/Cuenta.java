@@ -114,6 +114,10 @@ public class Cuenta {
         transaccionesReversibles.push(transaccion);
     }
 
+    public void agregarMonedero(Monedero monedero){
+        monederos.add(monedero);
+    }
+
 
     @Override
     public String toString() {

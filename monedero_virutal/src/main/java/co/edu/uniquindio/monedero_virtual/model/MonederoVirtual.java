@@ -401,6 +401,17 @@ public class MonederoVirtual {
         }
     }
 
+    public boolean agregarMonedero(Monedero monedero) {
+        Cuenta cuenta = monedero.getCuenta();
+        if(!cuenta.getMonederos().contains(monedero)){
+            cuenta.agregarMonedero(monedero);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
     public List<Transaccion> getTrasaccionesCliente(int idCliente) {
         List<Transaccion> lista = new ArrayList<>();
         for (Transaccion transaccion : listaTransacciones) {

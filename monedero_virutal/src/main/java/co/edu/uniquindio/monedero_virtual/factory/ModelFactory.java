@@ -77,6 +77,16 @@ public class ModelFactory {
         }
     }
 
+    public boolean agregarMonedero(Monedero monedero) {
+        try {
+            return monederoVirtual.agregarMonedero(monedero);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public List<Transaccion> getTrasaccionesCliente(int idCliente) {
         return monederoVirtual.getTrasaccionesCliente(idCliente);
     }
