@@ -106,6 +106,7 @@ public class GestionMonederosViewController extends CoreViewController implement
         ObserverManagement.getInstance().addObserver(TipoEvento.DEPOSITO, this);
         ObserverManagement.getInstance().addObserver(TipoEvento.TRANSFERENCIA, this);
         ObserverManagement.getInstance().addObserver(TipoEvento.RETIRO, this);
+        ObserverManagement.getInstance().addObserver(TipoEvento.CUENTA, this);
         initView();
     }
 
@@ -141,7 +142,6 @@ public class GestionMonederosViewController extends CoreViewController implement
         cuentaComboBox.getItems().addAll(gestionMonederosController.getCuentasUsuario(idCliente));
     }
 
-
     private void limpiarCampos() {
         cuentaComboBox.getSelectionModel().clearSelection();
         nombreMonederoField.clear();
@@ -156,7 +156,6 @@ public class GestionMonederosViewController extends CoreViewController implement
 
     }
 
-
     private void agregarMonedero() {
         Monedero monedero = buildMonedero();
         if (monedero == null) {
@@ -167,18 +166,18 @@ public class GestionMonederosViewController extends CoreViewController implement
         if (validarDatos(monedero)) {
             if (gestionMonederosController.agregarMonedero(monedero)) {
                 listaMonederos.add(monedero);
-                
+
                 mostrarMensaje("Notificación", "Monedero creado",
                         "El monedero ha sido creado con éxito", Alert.AlertType.INFORMATION);
                 ObserverManagement.getInstance().notifyObservers(TipoEvento.MONEDERO);
                 limpiarCampos();
 
-                 Notificacion monederoNotificacion = new Notificacion(
-                        "Has creado el monedero "+monedero.getNombreMonedero() ,
+                Notificacion monederoNotificacion = new Notificacion(
+                        "Has creado el monedero " + monedero.getNombreMonedero(),
                         TipoNotifiacion.INFORMACION,
                         LocalDate.now());
 
-                    clienteLogueado.getListaNotificacion().add(monederoNotificacion);
+                clienteLogueado.getListaNotificacion().add(monederoNotificacion);
             } else {
                 mostrarMensaje("Error", "Monedero no creado",
                         "No se pudo crear el monedero", Alert.AlertType.ERROR);
@@ -211,9 +210,9 @@ public class GestionMonederosViewController extends CoreViewController implement
 
         double montoInicial = 0;
         String montoText = montoInicialField.getText();
-        if(montoText == null){
+        if (montoText == null) {
             montoInicial = 0;
-        }else if (montoText != null && !montoText.trim().isEmpty()) {
+        } else if (montoText != null && !montoText.trim().isEmpty()) {
             try {
                 montoInicial = Double.parseDouble(montoText);
 
@@ -266,7 +265,6 @@ public class GestionMonederosViewController extends CoreViewController implement
         return true;
 
     }
-    
 
     @Override
     public void updateView(TipoEvento event) {
@@ -277,7 +275,6 @@ public class GestionMonederosViewController extends CoreViewController implement
             case CLIENTE:
                 mostrarInformacion();
                 break;
-
             default:
                 break;
         }
