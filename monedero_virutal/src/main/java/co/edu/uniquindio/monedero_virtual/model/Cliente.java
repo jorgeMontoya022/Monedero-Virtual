@@ -174,6 +174,19 @@ public class Cliente implements Comparable<Cliente> {
         return depositos;
     }
 
+    public List<Transaccion> getListaRetiros() {
+        List<Transaccion> retiros = new LinkedList<>();
+        for (Cuenta cuenta : listaCuentas) {
+            OwnLinkedList<Transaccion> transacciones = cuenta.getTransacciones();
+            for (Transaccion transaccion : transacciones) {
+                if (transaccion instanceof Retiro) {
+                    retiros.add(transaccion);
+                }
+            }
+        }
+        return retiros;
+    }
+
     public List<Transaccion> getListaTransferencias() {
         List<Transaccion> transferencias = new LinkedList<>();
         for (Cuenta cuenta : listaCuentas) {

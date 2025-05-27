@@ -68,7 +68,7 @@ public class Monedero {
 
     @Override
     public String toString() {
-        return nombreMonedero;
+        return nombreMonedero + " - Monto: " + monto;
     }
 
     

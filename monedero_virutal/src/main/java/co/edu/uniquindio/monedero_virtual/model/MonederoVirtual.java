@@ -171,7 +171,7 @@ public class MonederoVirtual {
                 }
             }
 
-            monedero.retirarDinero(monto);
+            monedero.retirarDinero(monto - comision);
             cuenta.setMonto(cuenta.getMonto() - monto - comision);
             cuenta.getClienteAsociado().agregarPuntos(retiro);
             actualizarRanking(cuenta.getClienteAsociado());
@@ -423,6 +423,11 @@ public class MonederoVirtual {
     public List<Transaccion> getDepositosCliente(int idCliente) {
         Cliente cliente = buscarCliente(idCliente);
         return cliente.getListaDepositos();
+    }
+
+    public List<Transaccion> getRetirosCliente(int idCliente) {
+        Cliente cliente = buscarCliente(idCliente);
+        return cliente.getListaRetiros();
     }
 
     public List<Transaccion> getTransferenciasCliente(int idCliente) {
